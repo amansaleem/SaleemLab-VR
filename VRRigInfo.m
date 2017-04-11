@@ -12,7 +12,7 @@ classdef VRRigInfo < handle
         DevType = 'NI'; %('NI' / 'ARDUINO')
         NIdevID = 'Dev1';
         NIsessRate = 10000;
-        NIRotEnc = 'ctr0';
+        NIRotEnc = 'ctr0';      
         NILicEnc = 'ctr1';
         NIRewVal = 'ao0';
         ARDrotCountPos = 1;
