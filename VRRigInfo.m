@@ -24,7 +24,7 @@ classdef VRRigInfo < handle
         dirSave = 'C:\Behaviour';
         % Screen related info
         dirScreenCalib;
-        filenameScreenCalib;
+        filenameScreenCalib;    
         screenType = '3SCREEN'; %'3SCREEN', 'DOME'
         numCameras = 1; %
         % External computer connection info
