@@ -230,13 +230,15 @@ try
                 switch rigInfo.screenType
                     case 'DOME'
                         if icam==rigInfo.numCameras
-                            glViewport(round(1280/3)*(icam-1),0,round(1280/3)-1,800);
+                            glViewport(round(1280/rigInfo.numCameras)*(icam-1)+1,0,1279-(round(1280/rigInfo.numCameras)*(icam-1)),800);
                         else
-                            glViewport(round(1280/3)*(icam-1),0,round(1280/3),800);
+                            glViewport(round(1280/rigInfo.numCameras)*(icam-1)+1,0,round(1280/rigInfo.numCameras),800);
                         end
                         glMatrixMode(GL.PROJECTION);
                         glLoadIdentity;
-                        glFrustum( -sind(40*(1/3))*0.1, sind(40*(1/3))*0.1, -sind(30*(1/3))*0.1, sind(90*(1/3))*0.1, 0.1,expInfo.EXP.visibleDepth)
+                        glFrustum( -sind((240/rigInfo.numCameras/2)*(1/3))*0.1, ...
+                                    sind((240/rigInfo.numCameras/2)*(1/3))*0.1, ...
+                                   -sind(30*(1/3))*0.1, sind(90*(1/3))*0.1, 0.1,expInfo.EXP.visibleDepth)
                     case '3SCREEN'
                         glMatrixMode(GL.PROJECTION);
                         glLoadIdentity;
@@ -246,12 +248,19 @@ try
                 glLoadIdentity;
                 glClear(GL.DEPTH_BUFFER_BIT);
                 if strcmp(rigInfo.screenType,'DOME')
-                    glRotatef((-(240/3)+((icam-1)*(240/3)))*(1/3),0.0,1.0,0.0); % 0.375 is a parameter to get the desired rotation in degrees
+                    glRotated((-(240/2)+(240/2/rigInfo.numCameras)+((icam-1)*(240/rigInfo.numCameras)))*(1/3),0.0,1.0,0.0); % 0.333 is a parameter to get the desired rotation in degrees
                 else
-                    glRotated (0,1,0,0); % to look a little bit downward
-                    
+                    glRotated (0,1,0,0); % to look a little bit downward 
                     glRotated (TRIAL.posdata(runInfo.currTrial,runInfo.count,T)/pi*180,0,1,0);
                 end
+                
+                 %% get movement and draw
+                %         if ~runInfo.blank_screen
+                if icam==1
+                    getVRMovement
+                    runInfo = getTrajectory(dbx, X, Y, Z, T, rigInfo, hwInfo, expInfo, runInfo);
+                end
+                
                 % Set background color to 'gray':
                 glClearColor(0.5,0.5,0.5,1);
                 glLightfv(GL.LIGHT0,GL.AMBIENT, [ 0.5 0.5 0.5 1 ]);
@@ -264,14 +273,10 @@ try
                 glPushMatrix;
                 glPopMatrix;
                 glPopMatrix;
-                %% get movement and draw
-                %         if ~runInfo.blank_screen
-                getVRMovement
-                runInfo = getTrajectory(dbx, X, Y, Z, T, rigInfo, hwInfo, expInfo, runInfo);
+               
             end %%% end of for loop of viewports
-        end 
-            
-            % open loop
+        end
+                
             if expInfo.REPLAY
                 endExpt = 0;
                 if (runInfo.currTrial>=expInfo.EXP.maxTraj)
@@ -686,6 +691,7 @@ end
             end
         end
     end
+
     function getVRMovement
         if ~expInfo.OFFLINE
             switch expInfo.EXP.wheelType
@@ -728,7 +734,6 @@ end
                     % convert to cm
                     dbx = dbx*((2*pi*expInfo.EXP.wheelRadius)./(1024*4)); % (cm)% because it is a 4 x 1024 unit encoder
                     % dbx = 50*dbx; % to be removed when the room is better calibrated
-                    
                     TRIAL.balldata(runInfo.currTrial,runInfo.count,:) = [ballTime, dax, dbx, day, dby];
                     dbx = nansum([dbx 0]).*scaling_factor.*expInfo.EXP.wheelToVR;
                     % Remove 'BALL_TO_ROOM' after this set of animals (28th
