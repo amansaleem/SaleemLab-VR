@@ -4,17 +4,6 @@ function [fhandle, runInfo] = prepareNextTrial(rigInfo, hwInfo, expInfo, runInfo
 % information
 
 global TRIAL; % save trial specific info here
-% global TRIAL_COUNT; % necessary to keep track of TRIAL count and set it for next trial;
-% global EXP;
-% global ROOM;
-% global OLD;
-% global SESSION_NAME;
-% global REPLAY;
-% global TRAJ;
-% global SAVE_COUNT
-% global rewStatus
-% global currTrial
-
 
 runInfo.currTrial = 1;
 switch expInfo.EXP.trajDir
