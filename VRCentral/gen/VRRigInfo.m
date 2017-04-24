@@ -64,7 +64,7 @@ classdef VRRigInfo < handle
                     RigInfo.screenType = 'DOME';
                     RigInfo.numCameras = 3;
                     
-                    RigInfo.DevType = 'NI';
+                    RigInfo.DevType = 'ARDUINO';
                     RigInfo.ARDrotCountPos = 1;
                     RigInfo.ARDCOMPort = 3;
                     RigInfo.ARDHistory = [0 0];

@@ -103,6 +103,5 @@ hwInfo;
 expInfo;
 
 fhandle =  @run_latest;
-display('Move to run latest')
 return
 end

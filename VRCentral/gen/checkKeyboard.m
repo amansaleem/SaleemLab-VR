@@ -10,12 +10,14 @@ if keyIsDown
         keyType = 1;
     end
 end
-[msgId, data, host] = rigInfo.comms.checkMessages;
-if ~isempty(msgId)
+if rigInfo.comms.IsMessageAvailable
+    [msgId, data, host] = rigInfo.comms.receive;
     switch msgId
         case 'Reward'
             keyType = 2;
         case 'Quit'
             keyType = 1;
+        otherwise
+            display(['Recieved message from ' host ', says: ' msgId])
     end
 end

@@ -207,7 +207,7 @@ if ~expInfo.OFFLINE
         pause(1);
     end
 end
-display('Starting rendering');
+
 %% The main programme
 try
     while (~timeIsUp && ~TRIAL.info.abort)
@@ -250,10 +250,10 @@ try
                 % Set background color to 'gray':
             end
         end
-        glMatrixMode(GL.MODELVIEW);
-        glLoadIdentity;
-        glClear(GL.DEPTH_BUFFER_BIT);
-        if strcmp(rigInfo.screenType,'DOME')
+            glMatrixMode(GL.MODELVIEW);
+            glLoadIdentity;
+            glClear(GL.DEPTH_BUFFER_BIT);
+            if strcmp(rigInfo.screenType,'DOME')
             glRotatef((-(240/3)+((icam-1)*(240/3)))*(1/3),0.0,1.0,0.0); % 0.375 is a parameter to get the desired rotation in degrees
         end
         glClearColor(0.5,0.5,0.5,1);
@@ -535,7 +535,7 @@ try
                 runInfo.SAVE_COUNT = TRIAL.nCompTraj;
             end
             
-            %             hwInfo.rotEnc.zero;
+%             hwInfo.rotEnc.zero;
         end
         
         keyPressed = checkKeyboard;

@@ -10,6 +10,7 @@ if ~expInfo.OFFLINE
     VRLogMessage(expInfo, VRmessage);
 end
 if TRIAL.info.no > 0
+    display('Ending expt');
     s = sprintf('%s_trial%03d', expInfo.SESSION_NAME, TRIAL.info.no);
     EXP    = expInfo.EXP;
     REWARD = runInfo.REWARD;
