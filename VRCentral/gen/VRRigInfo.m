@@ -4,7 +4,7 @@ classdef VRRigInfo < handle
         % Local computer info (basic)
         computerName;
         screenNumber;
-        screenDist;
+        screenDist = 20;
         photodiodePos = 'left';
         photodiodeSize;
         photodiodeRect = [0 0 1 1];

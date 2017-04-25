@@ -222,28 +222,30 @@ try
         %         Screen('Flip', hwInfo.MYSCREEN.windowPtr(1));
         % Switch to OpenGL rendering again for drawing of next frame:
         Screen('BeginOpenGL', hwInfo.MYSCREEN.windowPtr(1));
-        if ~runInfo.blank_screen
+%         if ~runInfo.blank_screen
             % Camera showing 180 degrees of the VR world onto a screen
             % surface of same angular span
             %             glViewport((1280-1280/240*180)/2,0,(1280/240*180),800);
             for icam = 1:rigInfo.numCameras
-                switch rigInfo.screenType
-                    case 'DOME'
-                        if icam==rigInfo.numCameras
-                            glViewport(round(1280/3)*(icam-1),0,round(1280/3)-1,800);
-                        else
-                            glViewport(round(1280/3)*(icam-1),0,round(1280/3),800);
-                        end
-                        glMatrixMode(GL.PROJECTION);
-                        glLoadIdentity;
-                        glFrustum( -sind(40*(1/3))*0.1, sind(40*(1/3))*0.1, -sind(30*(1/3))*0.1, sind(90*(1/3))*0.1, 0.1,expInfo.EXP.visibleDepth)
-                    case '3SCREEN'
-                        glMatrixMode(GL.PROJECTION);
-                        glLoadIdentity;
-                        gluPerspective(atan(hwInfo.MYSCREEN.MonitorHeight/(2*hwInfo.MYSCREEN.Dist))*360/pi,1/ar,0.1,expInfo.EXP.visibleDepth);
+                if ~runInfo.blank_screen
+                    switch rigInfo.screenType
+                        case 'DOME'
+                            if icam==rigInfo.numCameras
+                                glViewport(round(1280/3)*(icam-1),0,round(1280/3)-1,800);
+                            else
+                                glViewport(round(1280/3)*(icam-1),0,round(1280/3),800);
+                            end
+                            glMatrixMode(GL.PROJECTION);
+                            glLoadIdentity;
+                            glFrustum( -sind(40*(1/3))*0.1, sind(40*(1/3))*0.1, -sind(30*(1/3))*0.1, sind(90*(1/3))*0.1, 0.1,expInfo.EXP.visibleDepth)
+                        case '3SCREEN'
+                            glMatrixMode(GL.PROJECTION);
+                            glLoadIdentity;
+                            gluPerspective(atan(hwInfo.MYSCREEN.MonitorHeight/(2*hwInfo.MYSCREEN.Dist))*360/pi,1/ar,0.1,expInfo.EXP.visibleDepth);
+                    end
+                    glMatrixMode(GL.MODELVIEW);
+                    glLoadIdentity;
                 end
-                glMatrixMode(GL.MODELVIEW);
-                glLoadIdentity;
                 glClear(GL.DEPTH_BUFFER_BIT);
                 if strcmp(rigInfo.screenType,'DOME')
                     glRotatef((-(240/3)+((icam-1)*(240/3)))*(1/3),0.0,1.0,0.0); % 0.375 is a parameter to get the desired rotation in degrees
@@ -269,7 +271,7 @@ try
                 getVRMovement
                 runInfo = getTrajectory(dbx, X, Y, Z, T, rigInfo, hwInfo, expInfo, runInfo);
             end %%% end of for loop of viewports
-        end 
+%         end 
             
             % open loop
             if expInfo.REPLAY

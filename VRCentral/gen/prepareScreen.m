@@ -4,9 +4,9 @@ function myscreen = prepareScreen(whichScreen,rigInfo,expInfo)
 % asks for screen distance
 
 % screen distance
-myscreen.Dist = 34;
-
-Dist = input(['Enter screen distance (' num2str(rigInfo.screenDist) ' cm is usual): ']);
+myscreen.Dist = rigInfo.screenDist;
+Dist = rigInfo.screenDist;
+% Dist = input(['Enter screen distance (' num2str(rigInfo.screenDist) ' cm is usual): ']);
 
 screens=Screen('Screens');
 try
