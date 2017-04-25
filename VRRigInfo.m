@@ -99,6 +99,53 @@ classdef VRRigInfo < handle
                     RigInfo.TTLchannel = [];
                     RigInfo.runTimeLine = 0;
                     
+                    case 'SALEEM05' % Tomaso's desk
+                    % Local computer info (basic)
+                    RigInfo.computerName = 'SALEEM05';
+                    RigInfo.screenNumber = 2;
+                    RigInfo.screenDist = 60; % in cm
+                    RigInfo.dialogueXYPosition = [440 150];
+                    
+                    RigInfo.screenType = '3SCREEN';
+                    RigInfo.numCameras = 7;
+                    
+                    RigInfo.DevType = 'ARDUINO';
+                    RigInfo.ARDrotCountPos = 1;
+                    RigInfo.ARDCOMPort = 3;
+                    RigInfo.ARDHistory = [0 0];
+                    
+                    RigInfo.NIdevID = 'Dev1';
+                    RigInfo.NIsessRate = 10000;
+                    RigInfo.NIRotEnc = 'ctr0';
+                    RigInfo.NILicEnc = 'ctr1';
+                    RigInfo.NIRewVal = 'ao1';
+                    RigInfo.photodiodePos  = 'right';
+                    RigInfo.photodiodeSize = [75 75];
+                    RigInfo.rotEncPos = 'left';
+                    % Saving directories
+                    % local
+%                     serverName    = 'zserver';
+%                     serverDataDir = [filesep filesep serverName filesep 'Data' filesep];
+                    RigInfo.dirSave = ['C:\SaleemLab-VR-master\data'];
+                    % Screen related info
+                    RigInfo.dirScreenCalib = 'C:\Users\t.muzzu\AppData\Roaming\Psychtoolbox\GeometryCalibration\'%'C:\Users\Aman\AppData\Roaming\Psychtoolbox\GeometryCalibration\';%'C:\Users\experimenter\AppData\Roaming\Psychtoolbox\GeometryCalibration\';
+                    RigInfo.filenameScreenCalib = 'HalfCylinderCalibdata_2_1920_1080.mat';%'test.mat';%'HalfCylinderCalibdata_2_2695_1024.mat';%'HalfCylinderCalibdata_1_2400_600.mat';
+                    % External computer connection info
+                    % (These are optinal)
+                    RigInfo.connectIPs{1} = []; % 'Zirkus'
+                    RigInfo.connectPCs{1} = [];
+%                     
+%                     RigInfo.connectIPs{2} = '144.82.135.51'; % 'Zankh'
+%                     RigInfo.connectPCs{2} = 'Zankh';
+%                     
+%                     RigInfo.connectIPs{3} = '144.82.135.117'; % 'Zankh'
+%                     RigInfo.connectPCs{3} = 'Zoo';
+                    
+                    RigInfo.numConnect = length(RigInfo.connectIPs);
+                    RigInfo.sendTTL = 0;
+                    RigInfo.TTLchannel = [];
+                    RigInfo.runTimeLine = 0;
+                    
                 case 'ZUPERDUPER'
                     % Local computer info (basic)
                     RigInfo.computerName = 'ZUPERDUPER';
