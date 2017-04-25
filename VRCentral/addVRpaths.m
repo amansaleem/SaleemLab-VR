@@ -12,8 +12,6 @@ VRCentralPath = fileparts(mfilename('fullpath'));
 cbToolsPath = fullfile(VRCentralPath, 'cb-tools');
 
 %%%% Add the behaviour / code folders here %%%%
-
-
 addpath(...
 ...%   cortexLabAddonsPath,... % add the behaviour folders here
   VRCentralPath,... % add Rigbox itself

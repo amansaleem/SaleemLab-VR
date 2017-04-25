@@ -39,15 +39,15 @@ if ~expInfo.OFFLINE %& ~strcmp(rigInfo.computerName,'ZOOROPA') & ~strcmp(rigInfo
     end
 end
 
-if ~expInfo.OFFLINE
-    % to get fish-eye transform: uncomment previous statement to remove
-    transformFile = [rigInfo.dirScreenCalib rigInfo.filenameScreenCalib];
-    display(['Using transform file: ' transformFile]);
-    PsychImaging('PrepareConfiguration');
-    PsychImaging('AddTask', 'AllViews', 'GeometryCorrection', transformFile);
-    %     On zuperduper: 'C:\Users\experimenter\AppData\Roaming\Psychtoolbox\GeometryCalibration\HalfCylinderCalibdata_1_2400_600.mat'
-    %     on zupervision: C:\Documents and Settings\experiment.ZUPERVISION\Application Data\Psychtoolbox\GeometryCalibration\HalfCylinderCalibdata_2_2400_600.mat
-    PsychImaging('AddTask', 'AllViews', 'FlipHorizontal');
-    [myscreen.windowPtr, myscreen.screenRect] = PsychImaging('OpenWindow', whichScreen, myscreen.grayIndex);
-end
+% if ~expInfo.OFFLINE
+%     % to get fish-eye transform: uncomment previous statement to remove
+%     transformFile = [rigInfo.dirScreenCalib rigInfo.filenameScreenCalib];
+%     display(['Using transform file: ' transformFile]);
+%     PsychImaging('PrepareConfiguration');
+%     PsychImaging('AddTask', 'AllViews', 'GeometryCorrection', transformFile);
+%     %     On zuperduper: 'C:\Users\experimenter\AppData\Roaming\Psychtoolbox\GeometryCalibration\HalfCylinderCalibdata_1_2400_600.mat'
+%     %     on zupervision: C:\Documents and Settings\experiment.ZUPERVISION\Application Data\Psychtoolbox\GeometryCalibration\HalfCylinderCalibdata_2_2400_600.mat
+%     PsychImaging('AddTask', 'AllViews', 'FlipHorizontal');
+%     [myscreen.windowPtr, myscreen.screenRect] = PsychImaging('OpenWindow', whichScreen, myscreen.grayIndex);
+% end
 fprintf('done\n');
