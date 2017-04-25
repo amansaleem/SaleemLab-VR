@@ -83,6 +83,7 @@ classdef VRRigInfo < handle
 %                     serverName    = 'zserver';
 %                     serverDataDir = [filesep filesep serverName filesep 'Data' filesep];
                     RigInfo.dirSave = ['C:\Home\Data\ball'];
+                    RigInfo.dirCode = ['E:\Dropbox\Work\Code\VR code\SaleemLab-VR\VRCentral'];
                     % Screen related info
                     RigInfo.screenCalibration = false;
                     RigInfo.dirScreenCalib = 'C:\Home\Code\VR-Stimulus-master\Linear Track Behav - 2pNew - Dev Version - Copy\'%'C:\Users\Aman\AppData\Roaming\Psychtoolbox\GeometryCalibration\';%'C:\Users\experimenter\AppData\Roaming\Psychtoolbox\GeometryCalibration\';
