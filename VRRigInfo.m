@@ -129,7 +129,7 @@ classdef VRRigInfo < handle
                     RigInfo.dirSave = ['C:\SaleemLab-VR-master\data'];
                     % Screen related info
                     RigInfo.dirScreenCalib = 'C:\Users\t.muzzu\AppData\Roaming\Psychtoolbox\GeometryCalibration\'%'C:\Users\Aman\AppData\Roaming\Psychtoolbox\GeometryCalibration\';%'C:\Users\experimenter\AppData\Roaming\Psychtoolbox\GeometryCalibration\';
-                    RigInfo.filenameScreenCalib = 'HalfCylinderCalibdata_2_1920_1080.mat';%'test.mat';%'HalfCylinderCalibdata_2_2695_1024.mat';%'HalfCylinderCalibdata_1_2400_600.mat';
+                    RigInfo.filenameScreenCalib = 'HalfCylinderCalibdata_2_1920_1080.mat';%'HalfCylinderCalibdata_2_800_600.mat';%'test.mat';%'HalfCylinderCalibdata_2_2695_1024.mat';%'HalfCylinderCalibdata_1_2400_600.mat';
                     % External computer connection info
                     % (These are optinal)
                     RigInfo.connectIPs{1} = []; % 'Zirkus'
