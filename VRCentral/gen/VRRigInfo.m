@@ -55,7 +55,10 @@ classdef VRRigInfo < handle
                     % Local computer info (basic)
                     %
                     %%
-                 case 'SALEEM01'
+                case 'SALEEM06'
+                    RigInfo.dirSave = ['C:\Home\Data\ball'];
+                    RigInfo.dirCode = ['C:\Home\Code\SaleemLab-VR\VRCentral'];
+                case 'SALEEM01'
                     % Local computer info (basic)
                     RigInfo.computerName = 'SALEEM01';
                     RigInfo.screenNumber = 2;
