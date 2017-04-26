@@ -7,6 +7,7 @@ classdef VRclient < handle
         serverList
         Connected = false;
         ExpRunning = false;
+        local = false;
     end
     properties (Constant)
         DefaultPort = 2014

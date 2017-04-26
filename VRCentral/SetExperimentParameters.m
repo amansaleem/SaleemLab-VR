@@ -387,31 +387,34 @@ clear VRparameters VRchoose
                 'BackgroundColor',[1 0.5 0.5],...
                 'String','Disconnected',...
                 'fontsize',14,'Enable','off');
+        
+        if client(VRchoose.numExpt).local
+            uiresume(MainFig);
+            close(MainFig);
+            MouseBallExp(ca.replay, exp_out, ca.animal, []);
+        else
+            client(VRchoose.numExpt).startExperiment(ca.animal, ca.replay, exp_out);
             
-        if VRchoose.numExpt == 1;
-            uiextras.Empty('Parent',VRchoose.ExpLive);
+            
+            VRchoose.numExpt = VRchoose.numExpt + 1;
+            set(VRchoose.clientUI.StatusButton,'Enable','on')
+            set(VRchoose.clientUI.popup,'Enable','on')
+            
+            v.addExp;
+            VRchoose.numExpt = v.currExp
+            client(VRchoose.numExpt) = v.client{v.currExp};
+            
+            %         ca.isChosen = 1;
+            set(ca.VRchoose.animalChoice.popup, 'Enable','on')
+            set(ca.VRchoose.animalChoice.editA, 'Enable','on')
+            set(ca.VRchoose.animalChoice.popup2, 'Enable','on')
+            set(ca.VRchoose.animalChoice.editB, 'Enable','on')
+            
+            set(VRparameters.runButton, 'Enable','off')
+            set(VRparameters.saveButton, 'Enable','off')
+            
+            startloop;
         end
-        
-        client(VRchoose.numExpt).startExperiment(ca.animal, ca.replay, exp_out);
-        
-        VRchoose.numExpt = VRchoose.numExpt + 1;
-        set(VRchoose.clientUI.StatusButton,'Enable','on')
-        set(VRchoose.clientUI.popup,'Enable','on')
-        
-        v.addExp;
-        VRchoose.numExpt = v.currExp
-        client(VRchoose.numExpt) = v.client{v.currExp};
-        
-%         ca.isChosen = 1;
-        set(ca.VRchoose.animalChoice.popup, 'Enable','on')
-        set(ca.VRchoose.animalChoice.editA, 'Enable','on')
-        set(ca.VRchoose.animalChoice.popup2, 'Enable','on')
-        set(ca.VRchoose.animalChoice.editB, 'Enable','on')
-        
-        set(VRparameters.runButton, 'Enable','off')
-        set(VRparameters.saveButton, 'Enable','off')
-        
-        startloop;
         %         uiresume(MainFig);
     end
 

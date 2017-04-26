@@ -6,7 +6,9 @@ global GL;
 if ~expInfo.OFFLINE
     VRmessage = ['BlockEnd ' expInfo.animalName ' ' expInfo.dateStr ' ' expInfo.sessionName];
     rigInfo.sendUDPmessage(VRmessage);
-    rigInfo.comms.send('Bye','Bye');
+    if ~isempty(rigInfo.comms)
+        rigInfo.comms.send('Bye','Bye');
+    end
     VRLogMessage(expInfo, VRmessage);
 end
 if TRIAL.info.no > 0

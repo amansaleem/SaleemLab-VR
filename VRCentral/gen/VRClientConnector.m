@@ -7,6 +7,7 @@ classdef VRClientConnector < handle %(VRchoose, VRparameters)
         list_servers
         currExp = 1;
         changeButton = true;
+        local = false;
     end
         
     methods
@@ -61,24 +62,43 @@ classdef VRClientConnector < handle %(VRchoose, VRparameters)
         
         function server_chosen(v)
             serverID = v.VRchoose.clientUI.popup.Value;
-            v.client{v.currExp}.connect(serverID);
-            pause(1e-2)
-            v.status
-            set(v.VRchoose.clientUI.StatusButton,'Enable','on')
-            set(v.VRchoose.clientUI.popup,'Enable','off')
+            if ~strcmp(v.list_servers(serverID), 'LOCAL')
+                v.local = false;
+                v.client{v.currExp}.connect(serverID);
+                pause(1e-2)
+                v.status
+                set(v.VRchoose.clientUI.StatusButton,'Enable','on')
+                set(v.VRchoose.clientUI.popup,'Enable','off')
+            else
+                v.local = true;
+                v.client{v.currExp}.local = true;
+                set(v.VRchoose.clientUI.textB, 'String','LOCAL!',...
+                    'BackgroundColor',[0.5 1 0.5]);
+%                 set(v.VRchoose.clientUI.popup,'Enable','off')
+                v.status
+            end    
         end
         
         function status(v)
-            state = v.client{v.currExp}.status;
-            if state==0
-                set(v.VRchoose.clientUI.textB, 'String','Disconnected',...
-                    'BackgroundColor',[1 0.5 0.5]);
-            elseif state==1
-                set(v.VRchoose.clientUI.textB, 'String','Connected!',...
+            if ~v.local
+                state = v.client{v.currExp}.status;
+                if state==0
+                    set(v.VRchoose.clientUI.textB, 'String','Disconnected',...
+                        'BackgroundColor',[1 0.5 0.5]);
+                elseif state==1
+                    set(v.VRchoose.clientUI.textB, 'String','Connected!',...
+                        'BackgroundColor',[0.5 1 0.5]);
+                    if v.changeButton
+                        set(v.VRparameters.runButton,'Enable','on', 'BackgroundColor', [0.5 1 0.5])
+                    end
+                end
+            else
+                set(v.VRchoose.clientUI.textB, 'String','LOCAL!',...
                     'BackgroundColor',[0.5 1 0.5]);
                 if v.changeButton
                     set(v.VRparameters.runButton,'Enable','on', 'BackgroundColor', [0.5 1 0.5])
                 end
+                set(v.VRchoose.clientUI.DisconButton, 'Enable', 'off');
             end
         end
         
