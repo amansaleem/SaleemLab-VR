@@ -1,0 +1,16 @@
+        
+25-Apr-2017 17:40:10.877     Starting new experiment with animal new: 
+        
+25-Apr-2017 17:40:10.884     ExpStart new 425 101 
+25-Apr-2017 17:40:12.124     BlockStart new 425 101 
+25-Apr-2017 17:40:12.127     StimStart new 425 101 1 1 300 
+25-Apr-2017 17:40:18.763     StimEnd new 425 101 2 1 300 
+25-Apr-2017 17:40:22.826     StimStart new 425 101 2 1 300 
+25-Apr-2017 17:40:29.554     StimEnd new 425 101 3 1 300 
+25-Apr-2017 17:40:34.207     StimStart new 425 101 3 1 300 
+25-Apr-2017 17:40:37.993     StimEnd new 425 101 3 1 300 
+25-Apr-2017 17:40:38.099     BlockEnd new 425 101 
+25-Apr-2017 17:40:38.235     VR_ExpEnd new 425 101 
+25-Apr-2017 17:40:39.238     ExpEnd new 425 101 
+        
+        
