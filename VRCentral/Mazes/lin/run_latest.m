@@ -742,12 +742,24 @@ end
                         TRIAL.lick(runInfo.currTrial,runInfo.count) = 0;
                     end
                 case 'KEYBRD'
-                    getNonBallDeltas;
-                    ballTime = TRIAL.time(runInfo.currTrial,runInfo.count);
-                    dax = runInfo.MOUSEXY.dax;
-                    day = runInfo.MOUSEXY.day;
-                    dbx = runInfo.MOUSEXY.dbx;
-                    dby = runInfo.MOUSEXY.dby;
+                    [KeyIsDown, secs, KeyCode] = KbCheck;
+                    if keyIsDown
+                        if keyCode(30) % up
+                            dbx = 3;
+                        end
+                        if keyCode(31) % down
+                            dbx = 3;
+                        end
+                    end
+                    TRIAL.balldata(runInfo.currTrial,runInfo.count,:) = [ballTime, dax, dbx, day, dby];
+                    dbx = nansum([dbx 0]).*scaling_factor.*expInfo.EXP.wheelToVR;
+                    
+%                     getNonBallDeltas;
+%                     ballTime = TRIAL.time(runInfo.currTrial,runInfo.count);
+%                     dax = runInfo.MOUSEXY.dax;
+%                     day = runInfo.MOUSEXY.day;
+%                     dbx = runInfo.MOUSEXY.dbx;
+%                     dby = runInfo.MOUSEXY.dby;
             end
         else
             getNonBallDeltas;
