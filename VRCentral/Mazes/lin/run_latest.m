@@ -1,4 +1,4 @@
-function [fhandle, runInfo] = run(rigInfo, hwInfo, expInfo, runInfo)
+function [fhandle, runInfo] = run_latest(rigInfo, hwInfo, expInfo, runInfo)
 
 global GL;
 global TRIAL;

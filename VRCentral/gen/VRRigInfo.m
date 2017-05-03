@@ -57,7 +57,7 @@ classdef VRRigInfo < handle
                     %%
                 case 'SALEEM06'
                     % Local computer info (basic)
-                    RigInfo.computerName = 'SALEEM01';
+                    RigInfo.computerName = 'SALEEM06';
                     RigInfo.screenNumber = 0;
                     RigInfo.screenDist = 60; % in cm
                     RigInfo.dialogueXYPosition = [440 150];
@@ -90,8 +90,8 @@ classdef VRRigInfo < handle
                     % local
 %                     serverName    = 'zserver';
 %                     serverDataDir = [filesep filesep serverName filesep 'Data' filesep];
-                    %RigInfo.dirSave = ['C:\Home\Data\ball'];
-                    %RigInfo.dirCode = ['E:\Dropbox\Work\Code\VR code\SaleemLab-VR\VRCentral'];
+                    RigInfo.dirSave = ['C:\Home\Data\ball'];
+                    RigInfo.dirCode = ['E:\Dropbox\Work\Code\VR code\SaleemLab-VR\VRCentral'];
                     % Screen related info
                     RigInfo.screenCalibration = false;
                     RigInfo.dirScreenCalib = '';%'C:\Home\Code\VR-Stimulus-master\Linear Track Behav - 2pNew - Dev Version - Copy\'%'C:\Users\Aman\AppData\Roaming\Psychtoolbox\GeometryCalibration\';%'C:\Users\experimenter\AppData\Roaming\Psychtoolbox\GeometryCalibration\';
