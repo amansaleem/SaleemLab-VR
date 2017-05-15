@@ -1,0 +1,15 @@
+2017-04-10 15:05:06,810 [7868] ERROR DefaultBootstrap - Failed to create server instance YourServerInstanceName!
+System.IO.FileNotFoundException: Could not load file or assembly 'YourServiceAssembly' or one of its dependencies. The system cannot find the file specified.
+File name: 'YourServiceAssembly'
+   at System.RuntimeTypeHandle.GetTypeByName(String name, Boolean throwOnError, Boolean ignoreCase, Boolean reflectionOnly, StackCrawlMarkHandle stackMark, IntPtr pPrivHostBinder, Boolean loadTypeFromPartialName, ObjectHandleOnStack type)
+   at System.RuntimeTypeHandle.GetTypeByName(String name, Boolean throwOnError, Boolean ignoreCase, Boolean reflectionOnly, StackCrawlMark& stackMark, IntPtr pPrivHostBinder, Boolean loadTypeFromPartialName)
+   at System.RuntimeType.GetType(String typeName, Boolean throwOnError, Boolean ignoreCase, Boolean reflectionOnly, StackCrawlMark& stackMark)
+   at System.Type.GetType(String typeName, Boolean throwOnError)
+   at SuperSocket.SocketEngine.DefaultBootstrap.CreateWorkItemInstance(String serviceTypeName) in d:\Kerry\Workshop\SuperSocket\v1.5\SocketEngine\DefaultBootstrap.cs:line 177
+   at SuperSocket.SocketEngine.DefaultBootstrap.Initialize(Func`2 serverConfigResolver, ILogFactory logFactory) in d:\Kerry\Workshop\SuperSocket\v1.5\SocketEngine\DefaultBootstrap.cs:line 312
+
+WRN: Assembly binding logging is turned OFF.
+To enable assembly bind failure logging, set the registry value [HKLM\Software\Microsoft\Fusion!EnableLog] (DWORD) to 1.
+Note: There is some performance penalty associated with assembly bind failure logging.
+To turn this feature off, remove the registry value [HKLM\Software\Microsoft\Fusion!EnableLog].
+

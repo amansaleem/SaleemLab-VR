@@ -497,7 +497,7 @@ try
             %             hwInfo.rotEnc.zero;
         end
         
-        keyPressed = checkKeyboard;
+        keyPressed = checkKeyboard(rigInfo);
         if keyPressed == 1
             TRIAL.info.abort =1;
             if ~expInfo.OFFLINE
