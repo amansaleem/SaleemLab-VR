@@ -1,12 +1,14 @@
-function [exp, exp_out] = SetExperimentParameters(animalName, RigInfo)
+function [exp, exp_out] = SetExperimentParameters
+%(animalName, RigInfo)
 
-if nargin>1
+RigInfo = VRRigInfo;
+% if nargin>1
     dataDir = RigInfo.dirSave;
     codeDir = RigInfo.dirCode;
-else
-    dataDir = '\\zserver.cortexlab.net\Data\Ball';
-    codeDir = '\\zserver.cortexlab.net\Code\MouseRoom\VRCentral\';
-end
+% else
+%     dataDir = '\\zserver.cortexlab.net\Data\Ball';
+%     codeDir = '\\zserver.cortexlab.net\Code\MouseRoom\VRCentral\';
+% end
 
 VRchoose.numExpt = 1;
 
