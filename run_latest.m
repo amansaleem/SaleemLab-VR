@@ -242,8 +242,7 @@ try
                     case '3SCREEN'
                         glMatrixMode(GL.PROJECTION);
                         glLoadIdentity;
-                        gluPerspective(atan(hwInfo.MYSCREEN.MonitorHeight/(2*hwInfo.MYSCREEN.Dist))*360/pi,1/ar,0.1,expInfo.EXP.visibleDepth);
-                        
+                        glFrustum( -sind(30)*0.1, sind(30)*0.1, -sind(30)*0.1, sind(90)*0.1, 0.1,expInfo.EXP.visibleDepth)
                 end
                 glMatrixMode(GL.MODELVIEW);
                 glLoadIdentity;
