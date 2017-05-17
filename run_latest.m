@@ -243,6 +243,7 @@ try
                         glMatrixMode(GL.PROJECTION);
                         glLoadIdentity;
                         gluPerspective(atan(hwInfo.MYSCREEN.MonitorHeight/(2*hwInfo.MYSCREEN.Dist))*360/pi,1/ar,0.1,expInfo.EXP.visibleDepth);
+                        
                 end
                 glMatrixMode(GL.MODELVIEW);
                 glLoadIdentity;
@@ -260,6 +261,7 @@ try
                     getVRMovement
                     runInfo = getTrajectory(dbx, X, Y, Z, T, rigInfo, hwInfo, expInfo, runInfo);
                 end
+
                 
                 % Set background color to 'gray':
                 glClearColor(0.5,0.5,0.5,1);
@@ -273,7 +275,6 @@ try
                 glPushMatrix;
                 glPopMatrix;
                 glPopMatrix;
-               
             end %%% end of for loop of viewports
         end
                 

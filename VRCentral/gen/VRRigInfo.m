@@ -58,9 +58,9 @@ classdef VRRigInfo < handle
                 case 'SALEEM06'
                     % Local computer info (basic)
                     RigInfo.computerName = 'SALEEM06';
-                    RigInfo.screenNumber = 0;
+                    RigInfo.screenNumber = 2;
                     RigInfo.screenDist = 60; % in cm
-                    RigInfo.dialogueXYPosition = [440 150];
+                    RigInfo.dialogueXYPosition = [680 160];
                     
                     RigInfo.dirSave = ['C:\Home\Data\ball'];
                     RigInfo.dirCode = ['C:\Home\Code\SaleemLab-VR\VRCentral'];
@@ -71,7 +71,7 @@ classdef VRRigInfo < handle
                     RigInfo.ARDHistory = [0 0];
                     
                     RigInfo.screenType = '3SCREEN';
-                    RigInfo.numCameras = 3;
+                    RigInfo.numCameras = 2;
                     
                     RigInfo.DevType = 'ARDUINO';
                     RigInfo.ARDrotCountPos = 1;
@@ -90,8 +90,8 @@ classdef VRRigInfo < handle
                     % local
 %                     serverName    = 'zserver';
 %                     serverDataDir = [filesep filesep serverName filesep 'Data' filesep];
-                    RigInfo.dirSave = ['C:\Home\Data\ball'];
-                    RigInfo.dirCode = ['E:\Dropbox\Work\Code\VR code\SaleemLab-VR\VRCentral'];
+                    %RigInfo.dirSave = ['C:\Home\Data\ball'];
+                    %RigInfo.dirCode = ['E:\Dropbox\Work\Code\VR code\SaleemLab-VR\VRCentral'];
                     % Screen related info
                     RigInfo.screenCalibration = false;
                     RigInfo.dirScreenCalib = '';%'C:\Home\Code\VR-Stimulus-master\Linear Track Behav - 2pNew - Dev Version - Copy\'%'C:\Users\Aman\AppData\Roaming\Psychtoolbox\GeometryCalibration\';%'C:\Users\experimenter\AppData\Roaming\Psychtoolbox\GeometryCalibration\';
@@ -169,9 +169,9 @@ classdef VRRigInfo < handle
                     RigInfo.dialogueXYPosition = [440 150];
                     
                     RigInfo.screenType = 'DOME';
-                    RigInfo.numCameras = 7;
+                    RigInfo.numCameras = 3;
                     
-                    RigInfo.DevType = 'NI';
+                    RigInfo.DevType = 'ARDUINO';
                     RigInfo.ARDrotCountPos = 1;
                     RigInfo.ARDCOMPort = 3;
                     RigInfo.ARDHistory = [0 0];
