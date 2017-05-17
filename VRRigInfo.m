@@ -55,7 +55,64 @@ classdef VRRigInfo < handle
                     % Local computer info (basic)
                     %
                     %%
-                 case 'SALEEM01'
+                case 'SALEEM06'
+                    % Local computer info (basic)
+                    RigInfo.computerName = 'SALEEM06';
+                    RigInfo.screenNumber = 2;
+                    RigInfo.screenDist = 60; % in cm
+                    RigInfo.dialogueXYPosition = [680 560];
+                    
+                    RigInfo.dirSave = ['C:\Home\Data\ball'];
+                    RigInfo.dirCode = ['C:\Home\Code\SaleemLab-VR\VRCentral'];
+                    
+                    RigInfo.DevType = 'ARDUINO';
+                    RigInfo.ARDrotCountPos = 1;
+                    RigInfo.ARDCOMPort = 3;
+                    RigInfo.ARDHistory = [0 0];
+                    
+                    RigInfo.screenType = '3SCREEN';
+                    RigInfo.numCameras = 3;
+                    
+                    RigInfo.DevType = 'ARDUINO';
+                    RigInfo.ARDrotCountPos = 1;
+                    RigInfo.ARDCOMPort = 3;
+                    RigInfo.ARDHistory = [0 0];
+                    
+                    RigInfo.NIdevID = 'Dev1';
+                    RigInfo.NIsessRate = 10000;
+                    RigInfo.NIRotEnc = 'ctr0';
+                    RigInfo.NILicEnc = 'ctr1';
+                    RigInfo.NIRewVal = 'ao1';
+                    RigInfo.photodiodePos  = 'right';
+                    RigInfo.photodiodeSize = [75 75];
+                    RigInfo.rotEncPos = 'left';
+                    % Saving directories
+                    % local
+%                     serverName    = 'zserver';
+%                     serverDataDir = [filesep filesep serverName filesep 'Data' filesep];
+                    %RigInfo.dirSave = ['C:\Home\Data\ball'];
+                    %RigInfo.dirCode = ['E:\Dropbox\Work\Code\VR code\SaleemLab-VR\VRCentral'];
+                    % Screen related info
+                    RigInfo.screenCalibration = false;
+                    RigInfo.dirScreenCalib = '';%'C:\Home\Code\VR-Stimulus-master\Linear Track Behav - 2pNew - Dev Version - Copy\'%'C:\Users\Aman\AppData\Roaming\Psychtoolbox\GeometryCalibration\';%'C:\Users\experimenter\AppData\Roaming\Psychtoolbox\GeometryCalibration\';
+                    RigInfo.filenameScreenCalib =  '';%'geometricCorr_2.mat';%'test.mat';%'HalfCylinderCalibdata_2_2695_1024.mat';%'HalfCylinderCalibdata_1_2400_600.mat';
+                    % External computer connection info
+                    % (These are optinal)
+                    RigInfo.connectIPs{1} = []; % 'Zirkus'
+                    RigInfo.connectPCs{1} = [];
+%                     
+%                     RigInfo.connectIPs{2} = '144.82.135.51'; % 'Zankh'
+%                     RigInfo.connectPCs{2} = 'Zankh';
+%                     
+%                     RigInfo.connectIPs{3} = '144.82.135.117'; % 'Zankh'
+%                     RigInfo.connectPCs{3} = 'Zoo';
+                    
+                    RigInfo.numConnect = length(RigInfo.connectIPs);
+                    RigInfo.sendTTL = 0;
+                    RigInfo.TTLchannel = [];
+                    RigInfo.runTimeLine = 0;
+                    
+                case 'SALEEM01'
                     % Local computer info (basic)
                     RigInfo.computerName = 'SALEEM01';
                     RigInfo.screenNumber = 2;
@@ -83,7 +140,7 @@ classdef VRRigInfo < handle
 %                     serverName    = 'zserver';
 %                     serverDataDir = [filesep filesep serverName filesep 'Data' filesep];
                     RigInfo.dirSave = ['C:\Home\Data\ball'];
-                    RigInfo.dirCode = ['C:\Home\Code\VR-Stimulus-master\SaleemLab-VR\VRCentral'];
+                    RigInfo.dirCode = ['E:\Dropbox\Work\Code\VR code\SaleemLab-VR\VRCentral'];
                     % Screen related info
                     RigInfo.screenCalibration = false;
                     RigInfo.dirScreenCalib = 'C:\Home\Code\VR-Stimulus-master\Linear Track Behav - 2pNew - Dev Version - Copy\'%'C:\Users\Aman\AppData\Roaming\Psychtoolbox\GeometryCalibration\';%'C:\Users\experimenter\AppData\Roaming\Psychtoolbox\GeometryCalibration\';

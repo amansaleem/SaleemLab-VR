@@ -57,10 +57,10 @@ classdef VRRigInfo < handle
                     %%
                 case 'SALEEM06'
                     % Local computer info (basic)
-                    RigInfo.computerName = 'SALEEM01';
-                    RigInfo.screenNumber = 0;
+                    RigInfo.computerName = 'SALEEM06';
+                    RigInfo.screenNumber = 2;
                     RigInfo.screenDist = 60; % in cm
-                    RigInfo.dialogueXYPosition = [440 150];
+                    RigInfo.dialogueXYPosition = [680 160];
                     
                     RigInfo.dirSave = ['C:\Home\Data\ball'];
                     RigInfo.dirCode = ['C:\Home\Code\SaleemLab-VR\VRCentral'];
@@ -71,7 +71,7 @@ classdef VRRigInfo < handle
                     RigInfo.ARDHistory = [0 0];
                     
                     RigInfo.screenType = '3SCREEN';
-                    RigInfo.numCameras = 3;
+                    RigInfo.numCameras = 2;
                     
                     RigInfo.DevType = 'ARDUINO';
                     RigInfo.ARDrotCountPos = 1;
