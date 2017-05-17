@@ -153,14 +153,16 @@ classdef chooseAnimal < handle
         function animal_chosen(v)
             v.animal = v.animal_list{v.VRchoose.animalChoice.popup.Value};
             AnimalDir = fullfile(v.dataDir, v.animal);
-            exp = load([AnimalDir filesep 'EXP']);
-            for iStim = 1:length(exp.exp.StimVar)
-                if v.numCond<length(exp.exp.StimVar(iStim).trialVal)
-                    v.numCond=length(exp.exp.StimVar(iStim).trialVal);
-                end
-            end
-            v.VRchoose.animalChoice.editB.String = num2str(v.numCond);
+            if ~exist(AnimalDir); mkdir(AnimalDir); end
             set(v.VRchoose.animalChoice.button, 'Enable', 'on', 'BackgroundColor', [0.5 1 0.5]);
+%             exp = load([AnimalDir filesep 'EXP']);
+%             for iStim = 1:length(exp.exp.StimVar)
+%                 if v.numCond<length(exp.exp.StimVar(iStim).trialVal)
+%                     v.numCond=length(exp.exp.StimVar(iStim).trialVal);
+%                 end
+%             end
+%             v.VRchoose.animalChoice.editB.String = num2str(v.numCond);
+%             set(v.VRchoose.animalChoice.button, 'Enable', 'on', 'BackgroundColor', [0.5 1 0.5]);
             %         uiresume
         end
         function new_animal(v)
