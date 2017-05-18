@@ -73,11 +73,6 @@ classdef VRRigInfo < handle
                     RigInfo.screenType = '3SCREEN';
                     RigInfo.numCameras = 2;
                     
-                    RigInfo.DevType = 'ARDUINO';
-                    RigInfo.ARDrotCountPos = 1;
-                    RigInfo.ARDCOMPort = 3;
-                    RigInfo.ARDHistory = [0 0];
-                    
                     RigInfo.NIdevID = 'Dev1';
                     RigInfo.NIsessRate = 10000;
                     RigInfo.NIRotEnc = 'ctr0';
