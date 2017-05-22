@@ -59,7 +59,7 @@ classdef VRRigInfo < handle
                     % Local computer info (basic)
                     RigInfo.computerName = 'SALEEM06';
                     RigInfo.screenNumber = 2;
-                    RigInfo.screenDist = 60; % in cm
+                    RigInfo.screenDist = 13; % in cm
                     RigInfo.dialogueXYPosition = [680 160];
                     
                     RigInfo.dirSave = ['C:\Home\Data\ball'];
@@ -71,7 +71,7 @@ classdef VRRigInfo < handle
                     RigInfo.ARDHistory = [0 0];
                     
                     RigInfo.screenType = '3SCREEN';
-                    RigInfo.numCameras = 2;
+                    RigInfo.numCameras = 3;
                     
                     RigInfo.NIdevID = 'Dev1';
                     RigInfo.NIsessRate = 10000;
