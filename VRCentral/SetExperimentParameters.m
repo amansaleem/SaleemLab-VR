@@ -110,7 +110,7 @@ end
 
 uiwait(MainFig);
 
-% save([AnimalDir filesep 'EXP'], 'exp');
+save([AnimalDir filesep 'EXP'], 'exp');
 clear VRparameters VRchoose
 
     function startloop
