@@ -23,6 +23,7 @@ classdef VRRigInfo < handle
         % Saving directories
         dirSave = 'C:\Behaviour';
         dirCode = '\\zserver.cortexlab.net\Code\MouseRoom\VRCentral\';
+        dirSaveLocal = 'C:\Behaviour'; %'S:\Data\Behav';
         % Screen related info
         screenCalibration = true;
         dirScreenCalib;
@@ -83,8 +84,8 @@ classdef VRRigInfo < handle
                     RigInfo.rotEncPos = 'left';
                     % Saving directories
                     % local
-%                     serverName    = 'zserver';
-%                     serverDataDir = [filesep filesep serverName filesep 'Data' filesep];
+                    %                     serverName    = 'zserver';
+                    %                     serverDataDir = [filesep filesep serverName filesep 'Data' filesep];
                     %RigInfo.dirSave = ['C:\Home\Data\ball'];
                     %RigInfo.dirCode = ['E:\Dropbox\Work\Code\VR code\SaleemLab-VR\VRCentral'];
                     % Screen related info
@@ -95,12 +96,12 @@ classdef VRRigInfo < handle
                     % (These are optinal)
                     RigInfo.connectIPs{1} = []; % 'Zirkus'
                     RigInfo.connectPCs{1} = [];
-%                     
-%                     RigInfo.connectIPs{2} = '144.82.135.51'; % 'Zankh'
-%                     RigInfo.connectPCs{2} = 'Zankh';
-%                     
-%                     RigInfo.connectIPs{3} = '144.82.135.117'; % 'Zankh'
-%                     RigInfo.connectPCs{3} = 'Zoo';
+                    %
+                    %                     RigInfo.connectIPs{2} = '144.82.135.51'; % 'Zankh'
+                    %                     RigInfo.connectPCs{2} = 'Zankh';
+                    %
+                    %                     RigInfo.connectIPs{3} = '144.82.135.117'; % 'Zankh'
+                    %                     RigInfo.connectPCs{3} = 'Zoo';
                     
                     RigInfo.numConnect = length(RigInfo.connectIPs);
                     RigInfo.sendTTL = 0;
@@ -132,9 +133,10 @@ classdef VRRigInfo < handle
                     RigInfo.rotEncPos = 'left';
                     % Saving directories
                     % local
-%                     serverName    = 'zserver';
-%                     serverDataDir = [filesep filesep serverName filesep 'Data' filesep];
+                    %                     serverName    = 'zserver';
+                    %                     serverDataDir = [filesep filesep serverName filesep 'Data' filesep];
                     RigInfo.dirSave = ['C:\Home\Data\ball'];
+                    RigInfo.dirSaveRemote = ['S:\Data\Behav'];
                     RigInfo.dirCode = ['E:\Dropbox\Work\Code\VR code\SaleemLab-VR\VRCentral'];
                     % Screen related info
                     RigInfo.screenCalibration = false;
@@ -144,18 +146,18 @@ classdef VRRigInfo < handle
                     % (These are optinal)
                     RigInfo.connectIPs{1} = []; % 'Zirkus'
                     RigInfo.connectPCs{1} = [];
-%                     
-%                     RigInfo.connectIPs{2} = '144.82.135.51'; % 'Zankh'
-%                     RigInfo.connectPCs{2} = 'Zankh';
-%                     
-%                     RigInfo.connectIPs{3} = '144.82.135.117'; % 'Zankh'
-%                     RigInfo.connectPCs{3} = 'Zoo';
+                    %
+                    %                     RigInfo.connectIPs{2} = '144.82.135.51'; % 'Zankh'
+                    %                     RigInfo.connectPCs{2} = 'Zankh';
+                    %
+                    %                     RigInfo.connectIPs{3} = '144.82.135.117'; % 'Zankh'
+                    %                     RigInfo.connectPCs{3} = 'Zoo';
                     
                     RigInfo.numConnect = length(RigInfo.connectIPs);
                     RigInfo.sendTTL = 0;
                     RigInfo.TTLchannel = [];
                     RigInfo.runTimeLine = 0;
-                
+                    
                 case 'SALEEM04'
                     % Local computer info (basic)
                     RigInfo.computerName = 'SALEEM04';
@@ -181,23 +183,24 @@ classdef VRRigInfo < handle
                     RigInfo.rotEncPos = 'right';
                     % Saving directories
                     % local
-%                     serverName    = 'zserver';
-%                     serverDataDir = [filesep filesep serverName filesep 'Data' filesep];
-                    RigInfo.dirSave = ['C:\Home\Data\ball'];
+                    %                     serverName    = 'zserver';
+                    %                     serverDataDir = [filesep filesep serverName filesep 'Data' filesep];
+                    RigInfo.dirSave = ['S:\Data\Behav'];
+                    RigInfo.dirSaveLocal = ['C:\Home\Data\ball'];
                     RigInfo.dirCode = ['C:\Home\Code\VR-Stimulus-master\SaleemLab-VR\VRCentral'];
                     % Screen related info
                     RigInfo.dirScreenCalib = 'C:\Home\Code\VR-Stimulus-master\SaleemLab-VR\VRCentral\gen\' % same directory as current file
-                    RigInfo.filenameScreenCalib = 'MeshMapping_VR.mat'; % 
+                    RigInfo.filenameScreenCalib = 'MeshMapping_VR.mat'; %
                     % External computer connection info
                     % (These are optinal)
                     RigInfo.connectIPs{1} = []; % 'Zirkus'
                     RigInfo.connectPCs{1} = [];
-%                     
-%                     RigInfo.connectIPs{2} = '144.82.135.51'; % 'Zankh'
-%                     RigInfo.connectPCs{2} = 'Zankh';
-%                     
-%                     RigInfo.connectIPs{3} = '144.82.135.117'; % 'Zankh'
-%                     RigInfo.connectPCs{3} = 'Zoo';
+                    %
+                    %                     RigInfo.connectIPs{2} = '144.82.135.51'; % 'Zankh'
+                    %                     RigInfo.connectPCs{2} = 'Zankh';
+                    %
+                    %                     RigInfo.connectIPs{3} = '144.82.135.117'; % 'Zankh'
+                    %                     RigInfo.connectPCs{3} = 'Zoo';
                     
                     RigInfo.numConnect = length(RigInfo.connectIPs);
                     RigInfo.sendTTL = 0;
@@ -317,9 +320,9 @@ classdef VRRigInfo < handle
                     
                     RigInfo.connectIPs{2} = '144.82.135.100';
                     RigInfo.connectPCs{2} = 'ZIMAGE';
-%                     
-%                     RigInfo.connectIPs{3} = '144.82.135.103';
-%                     RigInfo.connectPCs{3} = 'ZI';
+                    %
+                    %                     RigInfo.connectIPs{3} = '144.82.135.103';
+                    %                     RigInfo.connectPCs{3} = 'ZI';
                     
                     RigInfo.numConnect = length(RigInfo.connectIPs);
                     RigInfo.sendTTL = 1;
