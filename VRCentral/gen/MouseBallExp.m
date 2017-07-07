@@ -324,9 +324,11 @@ if ~expInfo.OFFLINE
     VRmessage = ['ExpStart ' expInfo.animalName ' ' expInfo.dateStr ' ' expInfo.sessionName];
     rigInfo.sendUDPmessage(VRmessage);
     VRLogMessage(expInfo, VRmessage);
-%     rigInfo.comms.send('animalName',expInfo.animalName);
-%     rigInfo.comms.send('sessionNum',expInfo.dateStr);
-%     rigInfo.comms.send('expNum',expInfo.sessionName);
+    if ~isempty(rigInfo.comms)
+        rigInfo.comms.send('animalName',expInfo.animalName);
+        rigInfo.comms.send('sessionNum',expInfo.dateStr);
+        rigInfo.comms.send('expNum',expInfo.sessionName);
+    end
     pause(1)
 end
 display('Move to prepare trial')

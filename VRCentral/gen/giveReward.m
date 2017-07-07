@@ -33,23 +33,23 @@ if ~expInfo.OFFLINE
                 if expInfo.EXP.soundOn
                     play(runInfo.oBeepSTOP);
                 end
-            switch rigInfo.DevType
-                case 'NI'
-                    hwInfo.rewVal.deliverBackground(expInfo.EXP.BASEvalveTime);
-                case 'ARDUINO'
-                    fwrite(hwInfo.ardDev,20,'uint8');
-            end
-                    runInfo.REWARD.TYPE = [runInfo.REWARD.TYPE 0];
-                    runInfo.REWARD.TotalValveOpenTime = runInfo.REWARD.TotalValveOpenTime + expInfo.EXP.BASEvalveTime;
+                switch rigInfo.DevType
+                    case 'NI'
+                        hwInfo.rewVal.deliverBackground(expInfo.EXP.BASEvalveTime);
+                    case 'ARDUINO'
+                        fwrite(hwInfo.ardDev,20,'uint8');
+                end
+                runInfo.REWARD.TYPE = [runInfo.REWARD.TYPE 0];
+                runInfo.REWARD.TotalValveOpenTime = runInfo.REWARD.TotalValveOpenTime + expInfo.EXP.BASEvalveTime;
             case 'ACTIVE'
                 if expInfo.EXP.soundOn
                     play(runInfo.oBeepBASE);
                 end
                 switch rigInfo.DevType
-                case 'NI'
-                    hwInfo.rewVal.deliverBackground(expInfo.EXP.ACTVvalveTime);
-                case 'ARDUINO'
-                    fwrite(hwInfo.ardDev,20,'uint8');
+                    case 'NI'
+                        hwInfo.rewVal.deliverBackground(expInfo.EXP.ACTVvalveTime);
+                    case 'ARDUINO'
+                        fwrite(hwInfo.ardDev,20,'uint8');
                 end
                 runInfo.REWARD.TYPE = [runInfo.REWARD.TYPE 2];
                 runInfo.REWARD.TotalValveOpenTime = runInfo.REWARD.TotalValveOpenTime + expInfo.EXP.ACTVvalveTime;
@@ -58,10 +58,10 @@ if ~expInfo.OFFLINE
                     play(runInfo.oBeepBASE);
                 end
                 switch rigInfo.DevType
-                case 'NI'
-                    hwInfo.rewVal.deliverBackground(expInfo.EXP.PASSvalveTime);
-                case 'ARDUINO'
-                    fwrite(hwInfo.ardDev,20,'uint8');
+                    case 'NI'
+                        hwInfo.rewVal.deliverBackground(expInfo.EXP.PASSvalveTime);
+                    case 'ARDUINO'
+                        fwrite(hwInfo.ardDev,20,'uint8');
                 end
                 runInfo.REWARD.TYPE = [runInfo.REWARD.TYPE 1];
                 runInfo.REWARD.TotalValveOpenTime = runInfo.REWARD.TotalValveOpenTime + expInfo.EXP.PASSvalveTime;
@@ -70,10 +70,10 @@ if ~expInfo.OFFLINE
                     play(runInfo.oBeepBASE);
                 end
                 switch rigInfo.DevType
-                case 'NI'
-                    hwInfo.rewVal.deliverBackground(expInfo.EXP.BASEvalveTime);
-                case 'ARDUINO'
-                    fwrite(hwInfo.ardDev,20,'uint8');
+                    case 'NI'
+                        hwInfo.rewVal.deliverBackground(expInfo.EXP.BASEvalveTime);
+                    case 'ARDUINO'
+                        fwrite(hwInfo.ardDev,20,'uint8');
                 end
                 runInfo.REWARD.TYPE = [runInfo.REWARD.TYPE 1];
                 runInfo.REWARD.TotalValveOpenTime = runInfo.REWARD.TotalValveOpenTime + expInfo.EXP.BASEvalveTime;
@@ -82,15 +82,18 @@ if ~expInfo.OFFLINE
                     play(runInfo.oBeepBASE);
                 end
                 switch rigInfo.DevType
-                case 'NI'
-                    hwInfo.rewVal.deliverBackground(expInfo.EXP.BASEvalveTime);
-                case 'ARDUINO'
-                    fwrite(hwInfo.ardDev,20,'uint8');
+                    case 'NI'
+                        hwInfo.rewVal.deliverBackground(expInfo.EXP.BASEvalveTime);
+                    case 'ARDUINO'
+                        fwrite(hwInfo.ardDev,20,'uint8');
                 end
                 runInfo.REWARD.TYPE = [runInfo.REWARD.TYPE 0];
                 runInfo.REWARD.TotalValveOpenTime = runInfo.REWARD.TotalValveOpenTime + expInfo.EXP.BASEvalveTime;
             otherwise
                 display('!!!!!!!!!!!No such sound!!!!!!!!!!!!!')
+        end
+        if ~isempty(rigInfo.comms)
+            rigInfo.comms.send('reward',runInfo.REWARD.TotalValveOpenTime);
         end
     end
 end
