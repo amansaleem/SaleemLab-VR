@@ -110,7 +110,7 @@ classdef VRRigInfo < handle
                 case 'SALEEM10'
                     % Local computer info (basic)
                     RigInfo.computerName = 'SALEEM10';
-                    RigInfo.screenNumber = 1;
+                    RigInfo.screenNumber = 0;
                     RigInfo.screenDist = 13; % in cm
                     RigInfo.dialogueXYPosition = [680 160];
                                         
