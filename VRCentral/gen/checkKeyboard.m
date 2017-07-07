@@ -10,6 +10,7 @@ if keyIsDown
         keyType = 1;
     end
 end
+pause(1e-8);
 if ~isempty(rigInfo.comms)
     if rigInfo.comms.IsMessageAvailable
         [msgId, data, host] = rigInfo.comms.receive;
@@ -21,5 +22,6 @@ if ~isempty(rigInfo.comms)
             otherwise
                 display(['Recieved message from ' host ', says: ' msgId])
         end
+        display(['Recieved message from ' host ', says: ' msgId])
     end
 end
