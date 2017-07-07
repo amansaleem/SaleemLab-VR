@@ -178,7 +178,7 @@ classdef VRexpview < handle
                             'String', v.data, 'BackgroundColor','Green')
                         pause(.2)
                         set(v.figRef.currTrialNum,...
-                            'String', v.data, 'BackgroundColor','none')
+                             'BackgroundColor','gray')
                     case 'trialParam'
                         v.trialParam = v.data;
                         set(v.figRef.trialParamData ,'String', v.data);
@@ -189,7 +189,7 @@ classdef VRexpview < handle
                             'String', v.totalReward, 'BackgroundColor','Green')
                         pause(.2)
                         set(v.figRef.rewName,...
-                            'String', v.totalReward, 'BackgroundColor','none')
+                             'BackgroundColor','gray')
                     case 'Bye'
                         v.client.close;
                         v.isActive = 0;
