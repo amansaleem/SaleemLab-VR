@@ -328,6 +328,7 @@ if ~expInfo.OFFLINE
         rigInfo.comms.send('animalName',expInfo.animalName);
         rigInfo.comms.send('sessionNum',expInfo.dateStr);
         rigInfo.comms.send('expNum',expInfo.sessionName);
+        rigInfo.comms.send('server',rigInfo.computerName);
     end
     pause(1)
 end

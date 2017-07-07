@@ -2,6 +2,7 @@ classdef VRexpview < handle
     
     properties
         client;
+        serverid;
         isActive = 0;
         isMessageAvailable = 0;
         currentMessage = [];
@@ -29,11 +30,17 @@ classdef VRexpview < handle
             figRef.main = uiextras.VBox('Parent',figRef.mainPanel,'Spacing',10,'Padding',5);
             
             % 1. active bar
+            figRef.topBar = uiextras.HBox('Parent',figRef.main);
+            figRef.serverBar = uicontrol('Style','text',...
+                'String', ['Hello'],...
+                'fontsize', 14, 'BackgroundColor', [.5 1 .5],...
+                'HorizontalAlignment','right',...
+                'Parent',figRef.topBar);
             figRef.activeBar = uicontrol('Style','text',...
                 'String', 'ACTIVE',...
                 'fontsize', 14, 'BackgroundColor', [.5 1 .5],...
                 'HorizontalAlignment','right',...
-                'Parent',figRef.main);
+                'Parent',figRef.topBar);figRef.animalBar.Sizes = [-2 -1];
             
             % 2. Animal bar
             figRef.animalBar = uiextras.HBox('Parent',figRef.main,'Spacing',10,'Padding',5);
@@ -178,7 +185,7 @@ classdef VRexpview < handle
                             'String', v.data, 'BackgroundColor','Green')
                         pause(.2)
                         set(v.figRef.currTrialNum,...
-                             'BackgroundColor','gray')
+                             'BackgroundColor','white')
                     case 'trialParam'
                         v.trialParam = v.data;
                         set(v.figRef.trialParamData ,'String', v.data);
@@ -189,11 +196,15 @@ classdef VRexpview < handle
                             'String', v.totalReward, 'BackgroundColor','Green')
                         pause(.2)
                         set(v.figRef.rewName,...
-                             'BackgroundColor','gray')
+                             'BackgroundColor','white')
+                    case 'server'
+                        v.serverid = v.data;
+                        set(v.figRef.serverBar, 'String', v.data);
                     case 'Bye'
                         v.client.close;
                         v.isActive = 0;
                         set(v.figRef.activeBar, 'BackgroundColor',[1 .5 .5], 'String','Done');
+                        set(v.figRef.serverBar, 'BackgroundColor',[1 .5 .5]);
                 end
             end
         end
