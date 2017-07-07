@@ -296,7 +296,7 @@ try
         
         %         glFlush;
         % Show rendered image at next vertical retrace:
-        Screen('Flip', hwInfo.MYSCREEN.windowPtr(1));
+        Screen('Flip', hwInfo.MYSCREEN.windowPtr(1),0,1);
         
         %         %% TO comment out: It is to get screenshots of the
         %         environment
