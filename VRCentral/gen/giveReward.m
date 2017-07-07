@@ -1,23 +1,5 @@
 function runInfo = giveReward(count,tag, lastActiveBase, corner, expInfo, runInfo, hwInfo, rigInfo)
 
-% global rewardStartT;
-
-% global STOPrewardStopT;
-% global BASErewardStopT;
-% global PASSrewardStopT;
-% global ACTVrewardStopT;
-
-% global oBeepSTOP;
-% global oBeepBASE;
-% global REWARD;
-% global OFFLINE;
-% global EXP
-% global rewVal
-
-% playSound('correctResponse');
-% 'EXP.BASEvalveTime',1.5,...           % Reward for correct base
-%              'EXP.PASSvalveTime',2,...           % Reward for correct base
-%              'EXP.ACTVvalveTime',3,...           % Reward for correct base
 if ~expInfo.OFFLINE
     if(strcmp(runInfo.rewardStartT.Running, 'off') && strcmp(runInfo.STOPrewardStopT.Running,'off')...
             && strcmp(runInfo.BASErewardStopT.Running,'off'))
@@ -94,6 +76,7 @@ if ~expInfo.OFFLINE
         end
         if ~isempty(rigInfo.comms)
             rigInfo.comms.send('reward',runInfo.REWARD.TotalValveOpenTime);
+            pause(1e-8)
         end
     end
 end

@@ -17,8 +17,7 @@ classdef VRexpview < handle
         trialParam = [];
         
         totalReward = 0;
-        rewardTime = tic;
-        
+
         figRef;
     end
     
@@ -155,18 +154,13 @@ classdef VRexpview < handle
             v.client.send('Quit', 'Bye');
             v.client.close;
             v.isActive = 0;
+            set(v.figRef.serverBar, 'BackgroundColor',[1 .5 .5]);
             set(v.figRef.activeBar, 'BackgroundColor',[1 .5 .5], 'String','Done');
             set(v.figRef.quitExp, 'Enable','off');
             set(v.figRef.topUpRew, 'Enable','off');
         end
         
         function update(v)
-%             if toc(v.trialTime) > 1
-%                 set(v.figRef.currTrialNum ,'BackgroundColor','white')
-%             end
-%             if toc(v.rewardTime) > 1
-%                 set(v.figRef.rewName ,'BackgroundColor','white')
-%             end
             if v.isMessageAvailable
                 switch v.currentMessage
                     case 'animalName'
@@ -183,7 +177,7 @@ classdef VRexpview < handle
                         v.trialTime = tic;
                         set(v.figRef.currTrialNum,...
                             'String', v.data, 'BackgroundColor','Green')
-                        pause(.2)
+                        pause(.5)
                         set(v.figRef.currTrialNum,...
                              'BackgroundColor','white')
                     case 'trialParam'
@@ -191,20 +185,22 @@ classdef VRexpview < handle
                         set(v.figRef.trialParamData ,'String', v.data);
                     case 'reward'
                         v.totalReward = v.data;
-                        v.rewardTime = tic;
                         set(v.figRef.rewName,...
                             'String', v.totalReward, 'BackgroundColor','Green')
-                        pause(.2)
+                        v.isMessageAvailable = 0;
+                        pause(.5)
                         set(v.figRef.rewName,...
                              'BackgroundColor','white')
                     case 'server'
                         v.serverid = v.data;
                         set(v.figRef.serverBar, 'String', v.data);
                     case 'Bye'
+                        set(v.figRef.serverBar, 'BackgroundColor',[1 .5 .5]);
                         v.client.close;
                         v.isActive = 0;
                         set(v.figRef.activeBar, 'BackgroundColor',[1 .5 .5], 'String','Done');
-                        set(v.figRef.serverBar, 'BackgroundColor',[1 .5 .5]);
+                        set(v.figRef.quitExp, 'Enable','off');
+                        set(v.figRef.topUpRew, 'Enable','off');
                 end
             end
         end
