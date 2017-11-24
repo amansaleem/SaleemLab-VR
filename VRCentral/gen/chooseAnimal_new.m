@@ -1,7 +1,7 @@
 function [animal, numCond, VRType, VRchoose] = chooseAnimal_new(dataDir, codeDir, VRchoose)
 
 %% Get the list of animals
-dir_list = dir(dataDir);
+dir_list = dir(dataDir);  
 animal_list = [];
 dir_list(1) = [];
 dir_list(1) = [];
