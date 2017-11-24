@@ -1,6 +1,6 @@
 function [exp, exp_out] = SetExperimentParameters
 %(animalName, RigInfo)
-
+Screen('Preference', 'SkipSyncTests', 1)
 RigInfo = VRRigInfo;
 % if nargin>1
     dataDir = RigInfo.dirSave;
