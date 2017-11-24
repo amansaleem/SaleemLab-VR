@@ -15,11 +15,12 @@ if ~expInfo.EXP.randStart
     end
 else
     if strcmp(expInfo.EXP.trajDir,'cw')
-        runInfo.TRAJ = expInfo.EXP.l;
+        runInfo.TRAJ = 1;
     else
-        runInfo.TRAJ = expInfo.EXP.l - expInfo.EXP.l*rand(1)*expInfo.EXP.startRegion;
-    end
+        runInfo.TRAJ = expInfo.EXP.l- expInfo.EXP.l*rand(1)*expInfo.EXP.startRegion;
+    end        
 end
+
 TRIAL.trialStart(runInfo.currTrial) = runInfo.TRAJ;
 
 if expInfo.EXP.randContr
@@ -34,8 +35,8 @@ else
     end
     contrLevel = expInfo.EXP.contrLevels(idxc);
 end
-
 TRIAL.trialContr(runInfo.currTrial) = contrLevel;
+
 
 if strcmp(rigInfo.DevType,'NI')
     hwInfo.rotEnc.zero;
@@ -179,6 +180,10 @@ glMaterialfv(GL.FRONT_AND_BACK,GL.AMBIENT, [ 1 1 1 1 ]);
 % glMaterialfv(GL.FRONT_AND_BACK,GL.SPECULAR, [ .5 .5 .5 1 ]);
 load(expInfo.EXP.textureFile);
 
+setupTextures(textures)
+CreateOpenGLlist;
+%BuildLists();
+
 %% Set start position
 
 TRIAL.posdata(runInfo.currTrial,1,Z) = 0;            % starting at the corner 1: (or) expInfo.EXP.l
@@ -240,7 +245,14 @@ try
             % Camera showing 180 degrees of the VR world onto a screen
             % surface of same angular span
             %             glViewport((1280-1280/240*180)/2,0,(1280/240*180),800);
-            for icam = 1:rigInfo.numCameras
+            getVRMovement;
+            runInfo = getTrajectory(dbx, X, Y, Z, T, rigInfo, hwInfo, expInfo, runInfo);
+            for icam =1:rigInfo.numCameras
+%                 if icam==1
+%                     scan_ard_flag = true;
+%                 else
+%                     scan_ard_flag = false;
+%                 end
                 if ~runInfo.blank_screen
                     switch rigInfo.screenType
                         case 'DOME'
@@ -254,28 +266,45 @@ try
                             glFrustum( -sind((240/rigInfo.numCameras/2)*(1/3))*0.1, ...
                                         sind((240/rigInfo.numCameras/2)*(1/3))*0.1, ...
                                        -sind(30*(1/3))*0.1, sind(90*(1/3))*0.1, 0.1,expInfo.EXP.visibleDepth)
+                            glMatrixMode(GL.MODELVIEW);
+                            glLoadIdentity;
+                            glClear(GL.DEPTH_BUFFER_BIT);
+                            glRotated((-(240/2)+(240/2/rigInfo.numCameras)+((icam-1)*(240/rigInfo.numCameras)))*(1/3),0.0,1.0,0.0); % 0.333 is a parameter to get the desired rotation in degrees
+                            
                         case '3SCREEN'
                             glMatrixMode(GL.PROJECTION);
                             glLoadIdentity;
-                            gluPerspective(atan(hwInfo.MYSCREEN.MonitorHeight/(2*hwInfo.MYSCREEN.Dist))*360/pi,1/ar,0.1,expInfo.EXP.visibleDepth);
+                            [ww,hh]=Screen('WindowSize',rigInfo.screenNumber);
+                            glViewport(round(ww/rigInfo.numCameras)*(icam-1)+1,0,round(ww/rigInfo.numCameras),hh);
+                            glFrustum( -sind(180/2/rigInfo.numCameras*(1/3))*0.1, ...
+                                        sind(180/2/rigInfo.numCameras*(1/3))*0.1, ...
+                                       -sind(22*(1/3))*0.1, sind(67*(1/3))*0.1, 0.1,expInfo.EXP.visibleDepth)
+%                             gluPerspective(atan(hwInfo.MYSCREEN.MonitorHeight/(2*hwInfo.MYSCREEN.Dist))*360/pi,1/ar,0.1,expInfo.EXP.visibleDepth);
+                            glMatrixMode(GL.MODELVIEW);
+                            glLoadIdentity;
+                            glClear(GL.DEPTH_BUFFER_BIT);
+                            
+                            glRotated((-(180/2)+(180/2/rigInfo.numCameras)+((icam-1)*(180/rigInfo.numCameras)))*(1/3),0.0,1.0,0.0); % 0.333 is a parameter to get the desired rotation in degreesion in degrees
+                            glRotated (0,1,0,0); % to look a little bit downward
+                            %                     glRotated (TRIAL.posdata(runInfo.currTrial,runInfo.count,T)/pi*180,0,1,0);
+                            
                     end
-                    glMatrixMode(GL.MODELVIEW);
-                    glLoadIdentity;
+%                     glMatrixMode(GL.MODELVIEW);
+%                             glLoadIdentity;
                 end
-                glClear(GL.DEPTH_BUFFER_BIT);
-                if strcmp(rigInfo.screenType,'DOME')
-                    glRotated((-(240/2)+(240/2/rigInfo.numCameras)+((icam-1)*(240/rigInfo.numCameras)))*(1/3),0.0,1.0,0.0); % 0.333 is a parameter to get the desired rotation in degrees
-                else
-                    glRotated (0,1,0,0); % to look a little bit downward
-                    
-                    glRotated (TRIAL.posdata(runInfo.currTrial,runInfo.count,T)/pi*180,0,1,0);
-                end
+%                 glClear(GL.DEPTH_BUFFER_BIT);
+%                 if strcmp(rigInfo.screenType,'DOME')
+%                     glRotated((-(240/2)+(240/2/rigInfo.numCameras)+((icam-1)*(240/rigInfo.numCameras)))*(1/3),0.0,1.0,0.0); % 0.333 is a parameter to get the desired rotation in degrees
+%                 else
+%                     glRotated((-(180/2)+(180/2/rigInfo.numCameras)+((icam-1)*(180/rigInfo.numCameras)))*(1/3),0.0,1.0,0.0); % 0.333 is a parameter to get the desired rotation in degreesion in degrees
+%                     glRotated (0,1,0,0); % to look a little bit downward                  
+% %                     glRotated (TRIAL.posdata(runInfo.currTrial,runInfo.count,T)/pi*180,0,1,0);
+%                 end
                 
                 %% get movement and draw
-                %         if ~runInfo.blank_screen
-                getVRMovement
-                runInfo = getTrajectory(dbx, X, Y, Z, T, rigInfo, hwInfo, expInfo, runInfo);
-                
+                    %         if ~runInfo.blank_screen
+                %getVRMovement(icam)
+                %runInfo = getTrajectory(dbx, X, Y, Z, T, rigInfo, hwInfo, expInfo, runInfo);
                 % Set background color to 'gray':
                 glClearColor(0.5,0.5,0.5,1);
                 glLightfv(GL.LIGHT0,GL.AMBIENT, [ 0.5 0.5 0.5 1 ]);
@@ -284,14 +313,15 @@ try
                 glRotated (0,1,0,0); % to look a little bit downward
                 glRotated (TRIAL.posdata(runInfo.currTrial,runInfo.count,T)/pi*180,0,1,0);
                 glTranslated (-TRIAL.posdata(runInfo.currTrial,runInfo.count,X),-expInfo.EXP.c3,-TRIAL.posdata(runInfo.currTrial,runInfo.count,Z));
-                DrawTextures
+                glCallList(runInfo.List1);
+                %DrawTextures
                 glPushMatrix;
                 glPopMatrix;
                 glPopMatrix;
-                
-            end %%% end of for loop of viewports
+            end    
+            %runInfo = getTrajectory(dbx, X, Y, Z, T, rigInfo, hwInfo, expInfo, runInfo);
+             %%% end of for loop of viewports
 %         end 
-            
             % open loop
             if expInfo.REPLAY
                 endExpt = 0;
@@ -368,7 +398,7 @@ try
             %         glFlush;
             Screen('Flip', hwInfo.MYSCREEN.windowPtr(1));
             % Switch to OpenGL rendering again for drawing of next frame:
-            Screen('BeginOpenGL', hwInfo.MYSCREEN.windowPtr(1));
+             Screen('BeginOpenGL', hwInfo.MYSCREEN.windowPtr(1));
         if runInfo.blank_screen
             runInfo.blank_screen_count = runInfo.blank_screen_count + 1;
 %             display(num2str(runInfo.blank_screen_count));
@@ -544,7 +574,17 @@ try
             runInfo = giveReward(runInfo.count,'USER',runInfo.currTrial,1, expInfo, runInfo, hwInfo, rigInfo);
         end
         
-        
+%         % Finish OpenGL rendering into PTB window and check for OpenGL errors.
+%             Screen('EndOpenGL', hwInfo.MYSCREEN.windowPtr(1));
+%             % Show rendered image at next vertical retrace:
+%             % Show the sync square
+%             % alternate between black and white with every frame
+%             
+%             Screen('FillRect', hwInfo.MYSCREEN.windowPtr(1), mod(gcount,2)*255, rigInfo.photodiodeRect.rect);
+%             %         glFlush;
+%             Screen('Flip', hwInfo.MYSCREEN.windowPtr(1),0,2,1);
+%             % Switch to OpenGL rendering again for drawing of next frame:
+%             Screen('BeginOpenGL', hwInfo.MYSCREEN.windowPtr(1));
     end
     
 catch ME
@@ -577,6 +617,7 @@ if(heapFreeMemory < (heapTotalMemory*0.1))
     java.lang.Runtime.getRuntime.gc;
     fprintf('\n garbage collection \n');
 end
+
 %% Setup textures for all six sides of cube:
     function setupTextures(textures)
         
@@ -645,6 +686,7 @@ end
             glTexEnvfv(GL.TEXTURE_ENV,GL.TEXTURE_ENV_MODE,GL.MODULATE);
         end
     end
+
 %% Draw textures
     function DrawTextures
         for k=1:runInfo.ROOM.nOfWalls
@@ -721,9 +763,11 @@ end
             end
         end
     end
+
+%% Get VR movements
     function getVRMovement
         if ~expInfo.OFFLINE
-            switch expInfo.EXP.wheelType
+            switch expInfo.EXP .wheelType
                 case 'BALL'
                     [ballTime, dax, dbx, day, dby] = getBallDeltas(myPort);
                     TRIAL.balldata(runInfo.currTrial,runInfo.count,:) = [ballTime, dax, dbx, day, dby];
@@ -732,48 +776,56 @@ end
                     dbx = nansum([dbx 0]).*BALL_TO_ROOM.*feedback_gain;
                     
                 case 'WHEEL'
-                    ballTime = TRIAL.time(runInfo.currTrial,runInfo.count);
-                    dax = 0; day = 0; dby = 0;
-                    switch rigInfo.DevType
-                        case 'NI'
-                            scan_input = (hwInfo.rotEnc.readPosition);
-                            hwInfo.rotEnc.zero;
-                        case 'ARDUINO'
-                            scan_input = fscanf(hwInfo.ardDev, '%d\t%d');
-                            while length(scan_input)~=2
-                                scan_input = fscanf(hwInfo.ardDev, '%d\t%d');
-                            end
-                            %                             hwInfo.ardDev.zero
-                            % rotary encoder
-                            temp = scan_input(1) - rigInfo.ARDHistory(1);
-                            rigInfo.ARDHistory(1) = scan_input(1);
-                            scan_input(1) = temp;
-                            % lick detector
-                            temp = scan_input(2) - rigInfo.ARDHistory(2);
-                            rigInfo.ARDHistory(2) = scan_input(2);
-                            scan_input(2) = temp;
-                            %                             display(num2str(scan_input));
-                            flushinput(hwInfo.ardDev);
-                    end
-                    if ~strcmp(rigInfo.rotEncPos,'right')
-                        dbx = -scan_input(1);
-                    else
-                        dbx = scan_input(1);
-                    end
-                    % convert to cm
-                    dbx = dbx*((2*pi*expInfo.EXP.wheelRadius)./(1024*4)); % (cm)% because it is a 4 x 1024 unit encoder
-                    % dbx = 50*dbx; % to be removed when the room is better calibrated
-                    
-                    TRIAL.balldata(runInfo.currTrial,runInfo.count,:) = [ballTime, dax, dbx, day, dby];
-                    dbx = nansum([dbx 0]).*scaling_factor.*expInfo.EXP.wheelToVR;
-                    % Remove 'BALL_TO_ROOM' after this set of animals (28th
-                    % Feb)
-                    currLikStatus = scan_input(2);
-                    if currLikStatus
-                        TRIAL.lick(runInfo.currTrial,runInfo.count) = 1;
-                    else
-                        TRIAL.lick(runInfo.currTrial,runInfo.count) = 0;
-                    end
+                    %if scan_ard_flag
+                        ballTime = TRIAL.time(runInfo.currTrial,runInfo.count);
+                        dax = 0; day = 0; dby = 0;
+                        switch rigInfo.DevType
+                            case 'NI'
+                                scan_input = (hwInfo.rotEnc.readPosition);
+                                hwInfo.rotEnc.zero;
+                            case 'ARDUINO'
+                                
+                                flushinput(hwInfo.ardDev)
+                                ard_scan = fscanf(hwInfo.ardDev, '%d\t%d');
+                                while length(ard_scan)~=2
+                                    flushinput(hwInfo.ardDev)
+                                    ard_scan = fscanf(hwInfo.ardDev, '%d\t%d');
+                                end
+                                %                             hwInfo.ardDev.zero
+                                % rotary encoder
+                                temp1 = ard_scan(1) - rigInfo.ARDHistory(1);
+                                rigInfo.ARDHistory(1) = ard_scan(1);
+                                scan_input(1) = temp1;
+                                % lick detector
+                                temp2 = ard_scan(2) - rigInfo.ARDHistory(2);
+                                rigInfo.ARDHistory(2) = ard_scan(2);
+                                %display(scan_input(2));
+                                %                             display([num2str(ard_scan(2))]);
+                                scan_input(2) = temp2;
+                                flushinput(hwInfo.ardDev);
+                                
+                        end
+                        if ~strcmp(rigInfo.rotEncPos,'right')
+                            dbx = -scan_input(1);
+                        else
+                            dbx = scan_input(1);
+                        end
+                        % convert to cm
+                        dbx = dbx*((2*pi*expInfo.EXP.wheelRadius)./(1024*4)); % (cm)% because it is a 4 x 1024 unit encoder
+                        % dbx = 50*dbx; % to be removed when the room is better calibrated
+                        
+                        TRIAL.balldata(runInfo.currTrial,runInfo.count,:) = [ballTime, dax, dbx, day, dby];
+                        dbx = nansum([dbx 0]).*scaling_factor.*expInfo.EXP.wheelToVR;
+                        % Remove 'BALL_TO_ROOM' after this set of animals (28th
+                        % Feb)
+                        currLikStatus = scan_input(2);
+                        if currLikStatus
+                            TRIAL.lick(runInfo.currTrial,runInfo.count) = 1;
+                            display(['Lick Detected' '/t' num2str(currLikStatus)]);
+                        else
+                            TRIAL.lick(runInfo.currTrial,runInfo.count) = 0;
+                        end
+                    %end
                 case 'KEYBRD'
                     [KeyIsDown, secs, KeyCode] = KbCheck;
                     if keyIsDown
@@ -803,4 +855,87 @@ end
             dby = runInfo.MOUSEXY.dby;
         end
     end
+
+%% generate OpenGL list of drawings
+    function CreateOpenGLlist
+        runInfo.List1 = glGenLists(1);
+        glNewList(runInfo.List1,GL.COMPILE);
+         for k=1:runInfo.ROOM.nOfWalls
+            switch k
+                case 1
+                    wallface (runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texname(getTextureIndex(expInfo.EXP.farWallText)),runInfo.ROOM.wrap(k,:));
+                case 2
+                    wallface (runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texname(getTextureIndex(expInfo.EXP.nearWallText)),runInfo.ROOM.wrap(k,:));
+                case 3
+                    wallface (runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texname(getTextureIndex(expInfo.EXP.leftWallText)),runInfo.ROOM.wrap(k,:));
+                case 4
+                    wallface (runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texname(getTextureIndex(expInfo.EXP.rightWallText)),runInfo.ROOM.wrap(k,:));
+                case 5
+                    wallface (runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texname(getTextureIndex(expInfo.EXP.ceilingText)),runInfo.ROOM.wrap(k,:));
+                case 6
+                    wallface (runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texname(getTextureIndex(expInfo.EXP.floorText)),runInfo.ROOM.wrap(k,:));
+                    ... Texture 1
+                case 7
+                wallface (runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texname(getTextureIndex(expInfo.EXP.Leg1Text1)),runInfo.ROOM.wrap(k,:));
+                case 8
+                    wallface (runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texname(getTextureIndex(expInfo.EXP.Leg1Text2)),runInfo.ROOM.wrap(k,:));
+                case 9
+                    wallface (runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texname(getTextureIndex(expInfo.EXP.Leg1Text3)),runInfo.ROOM.wrap(k,:));
+                case 10
+                    wallface (runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texname(getTextureIndex(expInfo.EXP.Leg1Text4)),runInfo.ROOM.wrap(k,:));
+                    ... Texture 2
+                case 11
+                wallface (runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texname(getTextureIndex(expInfo.EXP.Leg2Text1)),runInfo.ROOM.wrap(k,:));
+                case 12
+                    wallface (runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texname(getTextureIndex(expInfo.EXP.Leg2Text2)),runInfo.ROOM.wrap(k,:));
+                case 13
+                    wallface (runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texname(getTextureIndex(expInfo.EXP.Leg2Text3)),runInfo.ROOM.wrap(k,:));
+                case 14
+                    wallface (runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texname(getTextureIndex(expInfo.EXP.Leg2Text4)),runInfo.ROOM.wrap(k,:));
+                    ... Texture 3
+                case 15
+                wallface (runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texname(getTextureIndex(expInfo.EXP.Leg3Text1)),runInfo.ROOM.wrap(k,:));
+                case 16
+                    wallface (runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texname(getTextureIndex(expInfo.EXP.Leg3Text2)),runInfo.ROOM.wrap(k,:));
+                case 17
+                    wallface (runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texname(getTextureIndex(expInfo.EXP.Leg3Text3)),runInfo.ROOM.wrap(k,:));
+                case 18
+                    wallface (runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texname(getTextureIndex(expInfo.EXP.Leg3Text4)),runInfo.ROOM.wrap(k,:));
+                    ... Texture 4
+                case 19
+                wallface (runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texname(getTextureIndex(expInfo.EXP.Leg4Text1)),runInfo.ROOM.wrap(k,:));
+                case 20
+                    wallface (runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texname(getTextureIndex(expInfo.EXP.Leg4Text2)),runInfo.ROOM.wrap(k,:));
+                case 21
+                    wallface (runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texname(getTextureIndex(expInfo.EXP.Leg4Text3)),runInfo.ROOM.wrap(k,:));
+                case 22
+                    wallface (runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texname(getTextureIndex(expInfo.EXP.Leg4Text4)),runInfo.ROOM.wrap(k,:));
+                    ... End Texture 1
+                case 19+4
+                wallface (runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texname(getTextureIndex(expInfo.EXP.End1Text1)),runInfo.ROOM.wrap(k,:));
+                case 20+4
+                    wallface (runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texname(getTextureIndex(expInfo.EXP.End1Text2)),runInfo.ROOM.wrap(k,:));
+                case 21+4
+                    wallface (runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texname(getTextureIndex(expInfo.EXP.End1Text3)),runInfo.ROOM.wrap(k,:));
+                case 22+4
+                    wallface (runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texname(getTextureIndex(expInfo.EXP.End1Text4)),runInfo.ROOM.wrap(k,:));
+                    ... End Texture 2
+                case 23+4
+                wallface (runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texname(getTextureIndex(expInfo.EXP.End2Text1)),runInfo.ROOM.wrap(k,:));
+                case 24+4
+                    wallface (runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texname(getTextureIndex(expInfo.EXP.End2Text2)),runInfo.ROOM.wrap(k,:));
+                case 25+4
+                    wallface (runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texname(getTextureIndex(expInfo.EXP.End2Text3)),runInfo.ROOM.wrap(k,:));
+                case 26+4
+                    wallface (runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texname(getTextureIndex(expInfo.EXP.End2Text4)),runInfo.ROOM.wrap(k,:));
+                    ...
+                otherwise
+                wallface (runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texname(getTextureIndex('WHITENOISE')),runInfo.ROOM.wrap(k,:));
+            end
+         end
+         
+        glEndList();
+    end
+
 end
+

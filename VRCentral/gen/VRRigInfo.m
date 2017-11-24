@@ -19,6 +19,7 @@ classdef VRRigInfo < handle
         ARDCOMPort = 7;
         ARDHistory = [0 0];
         % Other
+        RewardCal = []; % property for reward calibration
         rotEncPos = 'left';
         % Saving directories
         dirSave = 'C:\Behaviour';
@@ -110,7 +111,7 @@ classdef VRRigInfo < handle
                 case 'SALEEM10' %SWITCH
                     % Local computer info (basic)
                     RigInfo.computerName = 'SWITCH';
-                    RigInfo.screenNumber = 0;
+                    RigInfo.screenNumber = 1;
                     RigInfo.screenDist = 13; % in cm
                     RigInfo.dialogueXYPosition = [680 160];
                                         
@@ -155,6 +156,18 @@ classdef VRRigInfo < handle
                     RigInfo.sendTTL = 0;
                     RigInfo.TTLchannel = [];
                     RigInfo.runTimeLine = 0;
+                    % load reward calibration file
+                    list = dir([RigInfo.dirCode '\data\']);
+                    RigInfo.RewardCal = 0;
+                    try
+                        Temp = load([RigInfo.dirCode '\data\' list(strmatch('RewardCal',{list.name})).name]);
+                        varname = fieldnames(Temp);
+                        RigInfo.RewardCal = Temp.(varname{1})
+                        clear Temp varname;
+                    catch
+                        RigInfo.RewardCal = [linspace(1,300,100); linspace(1,10,100)]';
+                        display('No reward calibration file found. Using dummy values. Please calibrate your rig!');
+                    end
                 case 'SALEEM09' %TANK
                     % Local computer info (basic)
                     RigInfo.computerName = 'TANK';

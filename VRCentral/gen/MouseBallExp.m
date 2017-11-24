@@ -341,5 +341,5 @@ end
 if rigInfo.runTimeLine
     tl.stop()
 end
-fprintf(['TotalValveOpenTime = ' num2str(runInfo.REWARD.TotalValveOpenTime) ' ms\n']);
+fprintf(['Total reward given = ' num2str(runInfo.REWARD.TotalValveOpenTime) ' ul\n']);
 clear all; clear mex;
