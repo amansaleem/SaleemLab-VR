@@ -52,7 +52,7 @@ classdef VRRigInfo < handle
             fprintf('Host name is %s\n', hostname);
             
             switch upper(hostname)
-                %%
+                %%%
                 case 'ZUPERVISION'
                     % Local computer info (basic)
                     %
