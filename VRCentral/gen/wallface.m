@@ -1,4 +1,4 @@
-function wallface( v,order,n,tx,wrap )
+function wallface(v, order, n, tx, wrap )
 
 % We want to access OpenGL constants. They are defined in the global
 % variable GL. GLU constants and AGL constants are also available in the

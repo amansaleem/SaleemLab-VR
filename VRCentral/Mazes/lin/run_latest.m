@@ -233,9 +233,9 @@ end
 %% The main programme
 try
     while (~timeIsUp && ~TRIAL.info.abort)
-        if runInfo.reset_textures
-            setupTextures(textures);
-        end
+%         if runInfo.reset_textures
+%             setupTextures(textures);
+%         end
         Screen('EndOpenGL', hwInfo.MYSCREEN.windowPtr(1));
         % Show rendered image at next vertical retrace:
         %         Screen('Flip', hwInfo.MYSCREEN.windowPtr(1));
@@ -247,6 +247,7 @@ try
             %             glViewport((1280-1280/240*180)/2,0,(1280/240*180),800);
             getVRMovement;
             runInfo = getTrajectory(dbx, X, Y, Z, T, rigInfo, hwInfo, expInfo, runInfo);
+            
             for icam =1:rigInfo.numCameras
 %                 if icam==1
 %                     scan_ard_flag = true;
@@ -313,7 +314,8 @@ try
                 glRotated (0,1,0,0); % to look a little bit downward
                 glRotated (TRIAL.posdata(runInfo.currTrial,runInfo.count,T)/pi*180,0,1,0);
                 glTranslated (-TRIAL.posdata(runInfo.currTrial,runInfo.count,X),-expInfo.EXP.c3,-TRIAL.posdata(runInfo.currTrial,runInfo.count,Z));
-                glCallList(runInfo.List1);
+                glCallList(runInfo.List1); % texture landmarks
+                glCallList(runInfo.List2); % path integration task - PIT
                 %DrawTextures
                 glPushMatrix;
                 glPopMatrix;
@@ -647,7 +649,7 @@ end
         % Generate textures and store their handles in vecotr 'texname'
         texname=glGenTextures(length(textures));
         
-        for i=1:length(textures),
+        for i=1:length(textures)
             % Enable i'th texture by binding it:
             glBindTexture(GL.TEXTURE_2D,texname(i));
             
@@ -663,7 +665,7 @@ end
                 tx=repmat(flipdim(f',1),[ 1 1 3 ]);
             end
             
-            if i==9;
+            if i==9
                 tx(:,:,2:3) = 128;
             elseif i ==10
                 tx(:,:,1:2) = 128;
@@ -674,9 +676,9 @@ end
             %    glTexImage2D(GL.TEXTURE_2D,0,GL.ALPHA,256,256,1,GL.ALPHA,GL.UNSIGNED_BYTE,noisematrix);
             
             % Setup texture wrapping behaviour:
-            glTexParameterfv(GL.TEXTURE_2D,GL.TEXTURE_WRAP_S,GL.CLAMP);%GL.CLAMP_TO_EDGE);%GL.REPEAT);%
-            glTexParameterfv(GL.TEXTURE_2D,GL.TEXTURE_WRAP_T,GL.CLAMP);%GL.CLAMP_TO_EDGE);
-            glTexParameterfv(GL.TEXTURE_2D,GL.TEXTURE_WRAP_R,GL.CLAMP);%GL.CLAMP_TO_EDGE);
+            glTexParameterfv(GL.TEXTURE_2D,GL.TEXTURE_WRAP_S,GL.REPEAT);%GL.CLAMP_TO_EDGE);%GL.REPEAT);%
+            glTexParameterfv(GL.TEXTURE_2D,GL.TEXTURE_WRAP_T,GL.REPEAT);%GL.CLAMP_TO_EDGE);
+            glTexParameterfv(GL.TEXTURE_2D,GL.TEXTURE_WRAP_R,GL.REPEAT);%GL.CLAMP_TO_EDGE);
             
             %     % Setup filtering for the textures:
             glTexParameterfv(GL.TEXTURE_2D,GL.TEXTURE_MAG_FILTER,GL.NEAREST);
@@ -859,6 +861,9 @@ end
 %% generate OpenGL list of drawings
     function CreateOpenGLlist
         runInfo.List1 = glGenLists(1);
+        WLength = 1.0;
+        runInfo.List2 = glGenLists(1);
+        
         glNewList(runInfo.List1,GL.COMPILE);
          for k=1:runInfo.ROOM.nOfWalls
             switch k
@@ -933,7 +938,25 @@ end
                 wallface (runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texname(getTextureIndex('WHITENOISE')),runInfo.ROOM.wrap(k,:));
             end
          end
-         
+        glEndList();
+        
+        glNewList(runInfo.List2,GL.COMPILE);
+         for k=1:6%runInfo.ROOM.nOfWalls
+            switch k
+                case 1 
+                    wallface_PIT (expInfo.EXP.l,  runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texname(getTextureIndex(expInfo.EXP.farWallText)), WLength);
+                case 2
+                    wallface_PIT (expInfo.EXP.l,  runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texname(getTextureIndex(expInfo.EXP.nearWallText)), WLength);
+                case 3
+                    wallface_PIT (expInfo.EXP.l,  runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texname(getTextureIndex(expInfo.EXP.leftWallText)), WLength);
+                case 4
+                    wallface_PIT (expInfo.EXP.l,  runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texname(getTextureIndex(expInfo.EXP.rightWallText)), WLength);
+                case 5
+                    wallface_PIT (expInfo.EXP.l,  runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texname(getTextureIndex(expInfo.EXP.ceilingText)), WLength);
+                case 6
+                    wallface_PIT (expInfo.EXP.l,  runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texname(getTextureIndex(expInfo.EXP.floorText)), WLength);
+            end
+         end
         glEndList();
     end
 
