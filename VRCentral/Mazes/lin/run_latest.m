@@ -233,9 +233,9 @@ end
 %% The main programme
 try
     while (~timeIsUp && ~TRIAL.info.abort)
-%         if runInfo.reset_textures
-%             setupTextures(textures);
-%         end
+        if runInfo.reset_textures
+            setupTextures(textures);
+        end
         Screen('EndOpenGL', hwInfo.MYSCREEN.windowPtr(1));
         % Show rendered image at next vertical retrace:
         %         Screen('Flip', hwInfo.MYSCREEN.windowPtr(1));
@@ -866,7 +866,7 @@ end
 %% generate OpenGL list of drawings
     function CreateOpenGLlist
         runInfo.List1 = glGenLists(1);
-        WLength = 1.0;
+        WLength = 2.0;
         runInfo.List2 = glGenLists(1);
         
         glNewList(runInfo.List1,GL.COMPILE);

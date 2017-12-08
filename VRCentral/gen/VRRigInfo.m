@@ -61,7 +61,7 @@ classdef VRRigInfo < handle
                 case 'SALEEM03' %MORPHEUS
                     % Local computer info (basic)
                     RigInfo.computerName = 'SWITCH';
-                    RigInfo.screenNumber = 1;
+                    RigInfo.screenNumber = 2;
                     RigInfo.screenDist = 13; % in cm
                     RigInfo.dialogueXYPosition = [680 160];
                                         
@@ -85,7 +85,7 @@ classdef VRRigInfo < handle
                     % local
                     %                     serverName    = 'zserver';
                     %                     serverDataDir = [filesep filesep serverName filesep 'Data' filesep];
-                    RigInfo.dirSave = 'Y:\Data\Behav';%['C:\Home\Data\ball'];
+                    RigInfo.dirSave = 'S:\Data\Behav';%['C:\Home\Data\ball'];
                     RigInfo.dirCode = 'C:\Home\Code\SaleemLab-VR\VRCentral';%['E:\Dropbox\Work\Code\VR code\SaleemLab-VR\VRCentral'];
                     % Screen related info
                     RigInfo.screenCalibration = false;
