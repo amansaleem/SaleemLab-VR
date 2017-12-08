@@ -78,9 +78,9 @@ try
     if strcmp(VRtype,'linCirc')
         exp.CircularMaze = 1;
     else
+    else
         exp.CircularMaze = 0;
     end
-    
 catch
     display('No basic file, loading all the parameters from scratch...');
     display('!!!!! Check parameters carefully !!!!!');

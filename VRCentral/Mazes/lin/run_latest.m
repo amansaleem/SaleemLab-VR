@@ -314,8 +314,13 @@ try
                 glRotated (0,1,0,0); % to look a little bit downward
                 glRotated (TRIAL.posdata(runInfo.currTrial,runInfo.count,T)/pi*180,0,1,0);
                 glTranslated (-TRIAL.posdata(runInfo.currTrial,runInfo.count,X),-expInfo.EXP.c3,-TRIAL.posdata(runInfo.currTrial,runInfo.count,Z));
-                glCallList(runInfo.List1); % texture landmarks
-                glCallList(runInfo.List2); % path integration task - PIT
+
+                if strcmp(expInfo.EXP.VRType,'lin') % path integration task
+                    glCallList(runInfo.List1); % texture landmarks
+                elseif strcmp(expInfo.EXP.VRType,'PIT')
+                    glCallList(runInfo.List2); % path integration task - PIT
+                end
+                
                 %DrawTextures
                 glPushMatrix;
                 glPopMatrix;
