@@ -233,9 +233,9 @@ end
 %% The main programme
 try
     while (~timeIsUp && ~TRIAL.info.abort)
-%         if runInfo.reset_textures
-%             setupTextures(textures);
-%         end
+        if runInfo.reset_textures
+            setupTextures(textures);
+        end
         Screen('EndOpenGL', hwInfo.MYSCREEN.windowPtr(1));
         % Show rendered image at next vertical retrace:
         %         Screen('Flip', hwInfo.MYSCREEN.windowPtr(1));
