@@ -244,7 +244,7 @@ classdef VRRigInfo < handle
                 case 'SALEEM09' %TANK
                     % Local computer info (basic)
                     RigInfo.computerName = 'TANK';
-                    RigInfo.screenNumber = 1;
+                    RigInfo.screenNumber = 2;
                     RigInfo.screenDist = 13; % in cm
                     RigInfo.dialogueXYPosition = [680 160];
                                         
