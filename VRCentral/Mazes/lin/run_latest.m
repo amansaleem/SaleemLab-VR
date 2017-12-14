@@ -866,7 +866,11 @@ end
 %% generate OpenGL list of drawings
     function CreateOpenGLlist
         runInfo.List1 = glGenLists(1);
+<<<<<<< HEAD
         WLength = 1.0;
+=======
+        WLength = 0.5;
+>>>>>>> 1168a2a9d1edb673d5e3f5fb1bcb0ab85b6a5797
         runInfo.List2 = glGenLists(1);
         
         glNewList(runInfo.List1,GL.COMPILE);
