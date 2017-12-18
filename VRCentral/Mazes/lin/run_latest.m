@@ -264,9 +264,9 @@ try
                             end
                             glMatrixMode(GL.PROJECTION);
                             glLoadIdentity;
-                            glFrustum( -sind((240/rigInfo.numCameras/2)*(1/3))*0.1, ...
-                                        sind((240/rigInfo.numCameras/2)*(1/3))*0.1, ...
-                                       -sind(30*(1/3))*0.1, sind(90*(1/3))*0.1, 0.1,expInfo.EXP.visibleDepth)
+                            glFrustum( -sind((240/rigInfo.numCameras/2)*(1/3))*0.01, ...
+                                        sind((240/rigInfo.numCameras/2)*(1/3))*0.01, ...
+                                       -sind(30*(1/3))*0.01, sind(90*(1/3))*0.01, 0.01,expInfo.EXP.visibleDepth)
                             glMatrixMode(GL.MODELVIEW);
                             glLoadIdentity;
                             glClear(GL.DEPTH_BUFFER_BIT);
@@ -277,15 +277,16 @@ try
                             glLoadIdentity;
                             [ww,hh]=Screen('WindowSize',rigInfo.screenNumber);
                             glViewport(round(ww/rigInfo.numCameras)*(icam-1)+1,0,round(ww/rigInfo.numCameras),hh);
-                            glFrustum( -sind(180/2/rigInfo.numCameras*(1/3))*0.1, ...
-                                        sind(180/2/rigInfo.numCameras*(1/3))*0.1, ...
-                                       -sind(22*(1/3))*0.1, sind(67*(1/3))*0.1, 0.1,expInfo.EXP.visibleDepth)
+                            glFrustum( -sind(180/rigInfo.numCameras/2)*0.01, ...
+                                        sind(180/rigInfo.numCameras/2)*0.01, ...
+                                       -sind(22)*0.01, sind(67)*0.01, 0.01,expInfo.EXP.visibleDepth)
 %                             gluPerspective(atan(hwInfo.MYSCREEN.MonitorHeight/(2*hwInfo.MYSCREEN.Dist))*360/pi,1/ar,0.1,expInfo.EXP.visibleDepth);
                             glMatrixMode(GL.MODELVIEW);
                             glLoadIdentity;
                             glClear(GL.DEPTH_BUFFER_BIT);
                             
-                            glRotated((-(180/2)+(180/2/rigInfo.numCameras)+((icam-1)*(180/rigInfo.numCameras)))*(1/3),0.0,1.0,0.0); % 0.333 is a parameter to get the desired rotation in degreesion in degrees
+                            glRotated((-(180/2)+(180/2/rigInfo.numCameras)+((icam-1)*(180/rigInfo.numCameras))),0.0,1.0,0.0); % 0.333 is a parameter to get the desired rotation in degrees
+                            
                             glRotated (0,1,0,0); % to look a little bit downward
                             %                     glRotated (TRIAL.posdata(runInfo.currTrial,runInfo.count,T)/pi*180,0,1,0);
                             
