@@ -319,6 +319,8 @@ try
                     glCallList(runInfo.List1); % with texture landmarks
                 elseif strcmp(expInfo.EXP.VRType,'PIT')
                     glCallList(runInfo.List2); % path integration task - PIT
+                elseif strcmp(expInfo.EXP.VRType,'Ruler')
+                    glCallList(runInfo.ListRuler); % VR with square wave texture with period of 2 cm
                 end
                 
                 %DrawTextures
@@ -865,6 +867,9 @@ end
 
 %% generate OpenGL list of drawings
     function CreateOpenGLlist
+        
+        runInfo.ListRuler = glGenLists(1); % di`splay list to show the ruler-texture
+        
         runInfo.List1 = glGenLists(1);
         
         WLength = 0.5;
@@ -964,6 +969,26 @@ end
             end
          end
         glEndList();
+        
+        glNewList(runInfo.ListRuler,GL.COMPILE);
+         for k=1:6%runInfo.ROOM.nOfWalls
+            switch k
+                case 1 
+                    wallface_PIT (expInfo.EXP.l,  runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texname(getTextureIndex(expInfo.EXP.farWallText)), 1);
+                case 2
+                    wallface_PIT (expInfo.EXP.l,  runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texname(getTextureIndex(expInfo.EXP.nearWallText)), 1);
+                case 3
+                    wallface_PIT (expInfo.EXP.l,  runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texname(12), 1); % 12th texture is a square wave with 100 periods: i.e. a ruler with 1 virtual cm resolution
+                case 4
+                    wallface_PIT (expInfo.EXP.l,  runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texname(12), 1);
+                case 5
+                    wallface_PIT (expInfo.EXP.l,  runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texname(12), 1);
+                case 6
+                    wallface_PIT (expInfo.EXP.l,  runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texname(12), 1);
+            end
+         end
+        glEndList();
+        
     end
 
 end
