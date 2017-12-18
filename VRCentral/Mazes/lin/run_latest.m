@@ -247,7 +247,7 @@ try
             %             glViewport((1280-1280/240*180)/2,0,(1280/240*180),800);
             getVRMovement;
             runInfo = getTrajectory(dbx, X, Y, Z, T, rigInfo, hwInfo, expInfo, runInfo);
-            
+            runInfo.TRAJ
             for icam =1:rigInfo.numCameras
 %                 if icam==1
 %                     scan_ard_flag = true;
@@ -685,7 +685,7 @@ end
             % Setup texture wrapping behaviour:
             glTexParameterfv(GL.TEXTURE_2D,GL.TEXTURE_WRAP_S,GL.REPEAT);%GL.CLAMP_TO_EDGE);%GL.REPEAT);%
             glTexParameterfv(GL.TEXTURE_2D,GL.TEXTURE_WRAP_T,GL.REPEAT);%GL.CLAMP_TO_EDGE);
-            glTexParameterfv(GL.TEXTURE_2D,GL.TEXTURE_WRAP_R,GL.REPEAT);%GL.CLAMP_TO_EDGE);
+            %glTexParameterfv(GL.TEXTURE_2D,GL.TEXTURE_WRAP_R,GL.REPEAT);%GL.CLAMP_TO_EDGE);
             
             %     % Setup filtering for the textures:
             glTexParameterfv(GL.TEXTURE_2D,GL.TEXTURE_MAG_FILTER,GL.NEAREST);
@@ -830,7 +830,7 @@ end
                         currLikStatus = scan_input(2);
                         if currLikStatus
                             TRIAL.lick(runInfo.currTrial,runInfo.count) = 1;
-                            display(['Lick Detected' '/t' num2str(currLikStatus)]);
+                            display(['Lick Detected' '/t']);
                         else
                             TRIAL.lick(runInfo.currTrial,runInfo.count) = 0;
                         end
@@ -974,17 +974,17 @@ end
          for k=1:6%runInfo.ROOM.nOfWalls
             switch k
                 case 1 
-                    wallface_PIT (expInfo.EXP.l,  runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texname(getTextureIndex(expInfo.EXP.farWallText)), 1);
+                    wallface_PIT (expInfo.EXP.l,  runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texname(getTextureIndex(expInfo.EXP.farWallText)), 2);
                 case 2
-                    wallface_PIT (expInfo.EXP.l,  runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texname(getTextureIndex(expInfo.EXP.nearWallText)), 1);
+                    wallface_PIT (expInfo.EXP.l,  runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texname(getTextureIndex(expInfo.EXP.nearWallText)), 2);
                 case 3
-                    wallface_PIT (expInfo.EXP.l,  runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texname(12), 1); % 12th texture is a square wave with 100 periods: i.e. a ruler with 1 virtual cm resolution
+                    wallface_PIT (expInfo.EXP.l,  runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texname(12), 2); % 12th texture is a square wave with 100 periods: i.e. a ruler with 1 virtual cm resolution
                 case 4
-                    wallface_PIT (expInfo.EXP.l,  runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texname(12), 1);
+                    wallface_PIT (expInfo.EXP.l,  runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texname(12), 2);
                 case 5
-                    wallface_PIT (expInfo.EXP.l,  runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texname(12), 1);
+                    wallface_PIT (expInfo.EXP.l,  runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texname(12), 2);
                 case 6
-                    wallface_PIT (expInfo.EXP.l,  runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texname(12), 1);
+                    wallface_PIT (expInfo.EXP.l,  runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texname(12), 2);
             end
          end
         glEndList();
