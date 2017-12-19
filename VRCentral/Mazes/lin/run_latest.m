@@ -247,7 +247,7 @@ try
             %             glViewport((1280-1280/240*180)/2,0,(1280/240*180),800);
             getVRMovement;
             runInfo = getTrajectory(dbx, X, Y, Z, T, rigInfo, hwInfo, expInfo, runInfo);
-            runInfo.TRAJ
+            
             for icam =1:rigInfo.numCameras
 %                 if icam==1
 %                     scan_ard_flag = true;
