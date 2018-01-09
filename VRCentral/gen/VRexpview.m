@@ -98,7 +98,7 @@ classdef VRexpview < handle
             
             % 6. Plotting bar
             figRef.plotBar = uiextras.HBox('Parent',figRef.main,'Spacing',3,'Padding',5);
-            axes1 = axes( 'Parent', figRef.plotBar, ...
+            figRef.plotter = axes( 'Parent', figRef.plotBar, ...
                 'ActivePositionProperty', 'OuterPosition' );
             
             % 7.Current trial bar
@@ -112,7 +112,7 @@ classdef VRexpview < handle
                 'Background', 'white',...
                 'HorizontalAlignment','left',...
                 'Parent',figRef.currTrialBar);
-%             uiextras.Empty('Parent',figRef.currTrialBar);
+            %             uiextras.Empty('Parent',figRef.currTrialBar);
             figRef.currTrialBar.Sizes = [-1 -2];
             
             % 8.Trial param bar
@@ -182,10 +182,12 @@ classdef VRexpview < handle
                         set(v.figRef.expName ,'String', v.data);
                     case 'currentTrial'
                         v.currentTrial = v.data;
+                        v.licksCurr = [];
+                        v.rewCurr = [];
                         v.trialTime = tic;
                         set(v.figRef.currTrialNum,...
                             'String', v.data, 'BackgroundColor','Green')
-                        pause(.5)
+                        pause(.1)
                         set(v.figRef.currTrialNum,...
                             'BackgroundColor','white')
                     case 'trialParam'
@@ -193,24 +195,37 @@ classdef VRexpview < handle
                         set(v.figRef.trialParamData ,'String', v.data);
                     case 'position'
                         v.position = v.data;
-                        %                         set(v.figRef.serverBar, 'String', v.data);
-                        % draw something
+                        display(v.position);
+                        v.position = str2num(v.position);
+                        plot(v.figRef.plotter, [0 v.position], [0 0], 'k');
+                        hold(v.figRef.plotter, 'on');
+                        plot(v.figRef.plotter, v.position, 0, 'k.', 'MarkerSize', 25);
+                        if ~isempty(v.rewCurr)
+                            plot(v.figRef.plotter, v.rewCurr, 0, 'g.', 'MarkerSize', 20);
+                        end
+                        if ~isempty(v.licksCurr)
+                            plot(v.figRef.plotter, v.licksCurr, 0, 'rx');
+                        end
+                        set(v.figRef.plotter, 'Xlim', [0 100], 'ylim', [-1 1])
+                        line(v.figRef.plotter, [0 0], ylim, 'color', 'k');
+                        line(v.figRef.plotter, [20 20], ylim, 'color', 'k', 'linestyle','--');
+                        line(v.figRef.plotter, [40 40], ylim, 'color', 'k', 'linestyle','--');
+                        line(v.figRef.plotter, [60 60], ylim, 'color', 'k', 'linestyle','--');
+                        line(v.figRef.plotter, [80 80], ylim, 'color', 'k', 'linestyle','--');
+                        line(v.figRef.plotter, [100 100], ylim, 'color', 'k');
+                        axis(v.figRef.plotter, 'off');
+                        hold(v.figRef.plotter, 'off');
                     case 'licks'
-                        %                         position = v.data;
                         v.licksCurr = [v.licksCurr v.position];
-                        %                         set(v.figRef.serverBar, 'String', v.data);
-                        % draw something
                     case 'reward'
                         v.totalReward = v.data;
                         set(v.figRef.rewName,...
                             'String', v.totalReward, 'BackgroundColor','Green')
                         v.isMessageAvailable = 0;
-                        %                         v.rewCurr = [v.rewCurr position];
-                        % draw something
-                        pause(.5)
+                        v.rewCurr = [v.rewCurr v.position];
+                        pause(.1)
                         set(v.figRef.rewName,...
                             'BackgroundColor','white')
-                        
                     case 'server'
                         v.serverid = v.data;
                         set(v.figRef.serverBar, 'String', v.data);
@@ -224,5 +239,8 @@ classdef VRexpview < handle
                 end
             end
         end
+        
+        
     end
+    
 end
