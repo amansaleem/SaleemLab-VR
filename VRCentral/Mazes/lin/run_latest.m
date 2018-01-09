@@ -373,6 +373,13 @@ try
                 
                 if ~expInfo.REPLAY
                     TRIAL.traj(runInfo.currTrial,runInfo.count) = runInfo.TRAJ;
+                    if runInfo.count>1
+                        if TRIAL.traj(runInfo.currTrial,runInfo.count) ~= TRIAL.traj(runInfo.currTrial,runInfo.count-1)
+%                         temp_asdukg = tic;
+                        rigInfo.comms.send('position',num2str(runInfo.TRAJ));
+%                         display(num2str(toc(temp_asdukg)));
+                        end
+                    end
                     %                 disp(['Traj is ' num2str(runInfo.TRAJ*10)]);
                 end
                 
@@ -832,6 +839,7 @@ end
                         currLikStatus = scan_input(2);
                         if currLikStatus
                             TRIAL.lick(runInfo.currTrial,runInfo.count) = 1;
+                            rigInfo.comms.send('licks',num2str(1));
                             display(['Lick Detected' '/t']);
                         else
                             TRIAL.lick(runInfo.currTrial,runInfo.count) = 0;

@@ -110,6 +110,7 @@ if ~expInfo.OFFLINE
             otherwise
                 display('!!!!!!!!!!!No such sound!!!!!!!!!!!!!')
         end
+        rigInfo.comms.send('reward', runInfo.REWARD.TotalValveOpenTime);
     end
 end
 
