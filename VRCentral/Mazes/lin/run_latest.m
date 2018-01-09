@@ -373,13 +373,6 @@ try
                 
                 if ~expInfo.REPLAY
                     TRIAL.traj(runInfo.currTrial,runInfo.count) = runInfo.TRAJ;
-                    if runInfo.count>1
-                        if TRIAL.traj(runInfo.currTrial,runInfo.count) ~= TRIAL.traj(runInfo.currTrial,runInfo.count-1)
-%                         temp_asdukg = tic;
-                        rigInfo.comms.send('position',num2str(runInfo.TRAJ));
-%                         display(num2str(toc(temp_asdukg)));
-                        end
-                    end
                     %                 disp(['Traj is ' num2str(runInfo.TRAJ*10)]);
                 end
                 
