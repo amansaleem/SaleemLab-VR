@@ -871,7 +871,7 @@ end
 %% generate OpenGL list of drawings
     function CreateOpenGLlist
         
-        runInfo.ListRuler = glGenLists(1); % di`splay list to show the ruler-texture
+        runInfo.ListRuler = glGenLists(1); % display list to show the ruler-texture
         
         runInfo.List1 = glGenLists(1);
         
