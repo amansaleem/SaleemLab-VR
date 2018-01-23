@@ -277,11 +277,11 @@ try
                             glLoadIdentity;
                             [ww,hh]=Screen('WindowSize',rigInfo.screenNumber);
                             glViewport(round(ww/rigInfo.numCameras)*(icam-1)+1,0,round(ww/rigInfo.numCameras),hh);
-%                             glFrustum( -sind(180/rigInfo.numCameras/2)*0.01, ...
-%                                         sind(180/rigInfo.numCameras/2)*0.01, ...
-%                                        -sind(22)*0.01, sind(67)*0.01, 0.01,expInfo.EXP.visibleDepth)
-                            gluPerspective(90,1/ar,...
-                                           0.01,expInfo.EXP.visibleDepth);
+                            glFrustum( -sind(180/rigInfo.numCameras/2)*0.01, ...
+                                        sind(180/rigInfo.numCameras/2)*0.01, ...
+                                       -sind(22)*0.01, sind(67)*0.01, 0.01,expInfo.EXP.visibleDepth)
+%                             gluPerspective(90,round(ww/rigInfo.numCameras)/hh,...
+%                                            0.01,expInfo.EXP.visibleDepth);
                             glMatrixMode(GL.MODELVIEW);
                             glLoadIdentity;
                             glClear(GL.DEPTH_BUFFER_BIT);
@@ -797,10 +797,10 @@ end
                             case 'ARDUINO'
                                 
                                 flushinput(hwInfo.ardDev)
-                                ard_scan = fscanf(hwInfo.ardDev, '%d\t%d');
-                                while length(ard_scan)~=2
+                                ard_scan = fscanf(hwInfo.ardDev, '%d\t%d\t%d');
+                                while length(ard_scan)~=3
                                     flushinput(hwInfo.ardDev)
-                                    ard_scan = fscanf(hwInfo.ardDev, '%d\t%d');
+                                    ard_scan = fscanf(hwInfo.ardDev, '%d\t%d\t%d');
                                 end
                                 %                             hwInfo.ardDev.zero
                                 % rotary encoder
@@ -814,6 +814,8 @@ end
                                 %                             display([num2str(ard_scan(2))]);
                                 scan_input(2) = temp2;
                                 flushinput(hwInfo.ardDev);
+                                %sync signal
+                                
                                 
                         end
                         if ~strcmp(rigInfo.rotEncPos,'right')
@@ -832,6 +834,7 @@ end
                         currLikStatus = scan_input(2);
                         if currLikStatus
                             TRIAL.lick(runInfo.currTrial,runInfo.count) = 1;
+                            rigInfo.comms.send('licks',num2str(1));
                             display(['Lick Detected' '/t']);
                         else
                             TRIAL.lick(runInfo.currTrial,runInfo.count) = 0;
@@ -870,7 +873,7 @@ end
 %% generate OpenGL list of drawings
     function CreateOpenGLlist
         
-        runInfo.ListRuler = glGenLists(1); % di`splay list to show the ruler-texture
+        runInfo.ListRuler = glGenLists(1); % display list to show the ruler-texture
         
         runInfo.List1 = glGenLists(1);
         

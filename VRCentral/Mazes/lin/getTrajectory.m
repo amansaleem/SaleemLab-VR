@@ -13,6 +13,7 @@ elseif strcmp(expInfo.EXP.trajDir,'ccw')
     t_start = expInfo.EXP.l.*TRIAL.trialRL(runInfo.currTrial) - 2*expInfo.EXP.delta;
     t_end   = expInfo.EXP.delta;
 end
+t_length = expInfo.EXP.l.*TRIAL.trialRL(runInfo.currTrial);
 
 if expInfo.REPLAY
     
@@ -111,7 +112,14 @@ else
         otherwise
             runInfo.TRAJ = runInfo.TRAJ + dbx;
     end
-    
+
+    % This is code to send to controller and update occassionally
+    if runInfo.count>3
+        if floor(20*TRIAL.traj(runInfo.currTrial,runInfo.count-1)./t_length) ...
+                - floor(20*TRIAL.traj(runInfo.currTrial,runInfo.count-2)./t_length) > 0
+            rigInfo.comms.send('position', num2str(round(100*TRIAL.traj(runInfo.currTrial,runInfo.count-1)./t_length)));
+        end
+    end
     
     if strcmp(expInfo.EXP.trajDir,'cw')
         if runInfo.reward_active

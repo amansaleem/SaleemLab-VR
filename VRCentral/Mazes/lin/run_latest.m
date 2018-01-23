@@ -797,10 +797,10 @@ end
                             case 'ARDUINO'
                                 
                                 flushinput(hwInfo.ardDev)
-                                ard_scan = fscanf(hwInfo.ardDev, '%d\t%d');
-                                while length(ard_scan)~=2
+                                ard_scan = fscanf(hwInfo.ardDev, '%d\t%d\t%d');
+                                while length(ard_scan)~=3
                                     flushinput(hwInfo.ardDev)
-                                    ard_scan = fscanf(hwInfo.ardDev, '%d\t%d');
+                                    ard_scan = fscanf(hwInfo.ardDev, '%d\t%d\t%d');
                                 end
                                 %                             hwInfo.ardDev.zero
                                 % rotary encoder
@@ -814,6 +814,8 @@ end
                                 %                             display([num2str(ard_scan(2))]);
                                 scan_input(2) = temp2;
                                 flushinput(hwInfo.ardDev);
+                                %sync signal
+                                day = ard_scan(3); % this the interval between 0->1 transitions of the sync pulse signal
                                 
                         end
                         if ~strcmp(rigInfo.rotEncPos,'right')
@@ -832,7 +834,8 @@ end
                         currLikStatus = scan_input(2);
                         if currLikStatus
                             TRIAL.lick(runInfo.currTrial,runInfo.count) = 1;
-                            display(['Lick Detected' '/t']);
+                            rigInfo.comms.send('licks',num2str(1));
+                            display(['Lick Detected']);
                         else
                             TRIAL.lick(runInfo.currTrial,runInfo.count) = 0;
                         end
@@ -870,7 +873,7 @@ end
 %% generate OpenGL list of drawings
     function CreateOpenGLlist
         
-        runInfo.ListRuler = glGenLists(1); % di`splay list to show the ruler-texture
+        runInfo.ListRuler = glGenLists(1); % display list to show the ruler-texture
         
         runInfo.List1 = glGenLists(1);
 <<<<<<< HEAD

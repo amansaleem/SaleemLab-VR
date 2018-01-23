@@ -15,15 +15,18 @@ classdef VRexpview < handle
         currentTrial = 0;
         trialTime = tic;
         trialParam = [];
+        position = 0;
+        licksCurr = [];
+        rewCurr = [];
         
         totalReward = 0;
-
+        
         figRef;
     end
     
     methods
         function createUI(v,f) %,figRef)
-%             f = figure;
+            %             f = figure;
             v.isActive = 1;
             figRef.mainPanel = uiextras.Panel('Parent',f);
             figRef.main = uiextras.VBox('Parent',figRef.mainPanel,'Spacing',10,'Padding',5);
@@ -51,7 +54,7 @@ classdef VRexpview < handle
                 'String', v.animalName,...
                 'HorizontalAlignment','left',...
                 'Parent',figRef.animalBar);
-%             uiextras.Empty('Parent',figRef.animalBar);
+            %             uiextras.Empty('Parent',figRef.animalBar);
             figRef.animalBar.Sizes = [-1 -2];
             
             % 3.Session bar
@@ -64,7 +67,7 @@ classdef VRexpview < handle
                 'String', v.sessionNum,...
                 'HorizontalAlignment','left',...
                 'Parent',figRef.sessionBar);
-%             uiextras.Empty('Parent',figRef.sessionBar);
+            %             uiextras.Empty('Parent',figRef.sessionBar);
             figRef.expBar.Sizes = [-1 -2];
             
             % 4.Exp bar
@@ -77,37 +80,10 @@ classdef VRexpview < handle
                 'String', v.expNum,...
                 'HorizontalAlignment','left',...
                 'Parent',figRef.expBar);
-%             uiextras.Empty('Parent',figRef.expBar);
+            %             uiextras.Empty('Parent',figRef.expBar);
             figRef.expBar.Sizes = [-1 -2];
             
-            % 5.Current trial bar
-            figRef.currTrialBar = uiextras.HBox('Parent',figRef.main,'Spacing',10,'Padding',5);
-            figRef.currTrialTxt = uicontrol('Style','text',...
-                'String', 'Current trial: ',...
-                'HorizontalAlignment','left',...
-                'Parent',figRef.currTrialBar);
-            figRef.currTrialNum = uicontrol('Style','text',...
-                'String', v.currentTrial,...
-                'Background', 'white',...
-                'HorizontalAlignment','left',...
-                'Parent',figRef.currTrialBar);
-%             uiextras.Empty('Parent',figRef.currTrialBar);
-            figRef.currTrialBar.Sizes = [-1 -2];
-            
-            % 6.Trial param bar
-            figRef.trialParamBar = uiextras.HBox('Parent',figRef.main,'Spacing',10,'Padding',5);
-            figRef.trialParamTxt = uicontrol('Style','text',...
-                'String', 'Trial parameters: ',...
-                'HorizontalAlignment','left',...
-                'Parent',figRef.trialParamBar);
-            figRef.trialParamData = uicontrol('Style','text',...
-                'String', v.trialParam,...
-                'HorizontalAlignment','left',...
-                'Parent',figRef.trialParamBar);
-%             uiextras.Empty('Parent',figRef.trialParamBar);
-            figRef.trialParamBar.Sizes = [-1 -2];
-            
-            % 7.Reward bar
+            % 5.Reward bar
             figRef.rewBar = uiextras.HBox('Parent',figRef.main,'Spacing',10,'Padding',5);
             figRef.rewTxt = uicontrol('Style','text',...
                 'String', 'Reward so far: ',...
@@ -117,10 +93,42 @@ classdef VRexpview < handle
                 'String', v.totalReward,...
                 'HorizontalAlignment','left',...
                 'Parent',figRef.rewBar);
-%             uiextras.Empty('Parent',figRef.rewBar);
+            %             uiextras.Empty('Parent',figRef.rewBar);
             figRef.rewBar.Sizes = [-1 -2];
             
-            % 8.Button bar
+            % 6. Plotting bar
+            figRef.plotBar = uiextras.HBox('Parent',figRef.main,'Spacing',3,'Padding',5);
+            figRef.plotter = axes( 'Parent', figRef.plotBar, ...
+                'ActivePositionProperty', 'OuterPosition' );
+            
+            % 7.Current trial bar
+            figRef.currTrialBar = uiextras.HBox('Parent',figRef.main,'Spacing',3,'Padding',5);
+            figRef.currTrialTxt = uicontrol('Style','text',...
+                'String', 'Current trial: ',...
+                'HorizontalAlignment','left',...
+                'Parent',figRef.currTrialBar);
+            figRef.currTrialNum = uicontrol('Style','text',...
+                'String', v.currentTrial,...
+                'Background', 'white',...
+                'HorizontalAlignment','left',...
+                'Parent',figRef.currTrialBar);
+            %             uiextras.Empty('Parent',figRef.currTrialBar);
+            figRef.currTrialBar.Sizes = [-1 -2];
+            
+            % 8.Trial param bar
+            figRef.trialParamBar = uiextras.HBox('Parent',figRef.main,'Spacing',10,'Padding',5);
+            figRef.trialParamTxt = uicontrol('Style','text',...
+                'String', 'Trial parameters: ',...
+                'HorizontalAlignment','left',...
+                'Parent',figRef.trialParamBar);
+            figRef.trialParamData = uicontrol('Style','text',...
+                'String', v.trialParam,...
+                'HorizontalAlignment','left',...
+                'Parent',figRef.trialParamBar);
+            %             uiextras.Empty('Parent',figRef.trialParamBar);
+            figRef.trialParamBar.Sizes = [-1 -2];
+            
+            % 9.Button bar
             figRef.buttonBar = uiextras.HBox('Parent',figRef.main,'Spacing',10,'Padding',5);
             figRef.topUpRew = uicontrol('Style','pushbutton',...
                 'String', 'Top up reward',...
@@ -131,8 +139,8 @@ classdef VRexpview < handle
                 ...'HorizontalAlignment','center',...
                 'Parent',figRef.buttonBar, 'Enable','on', 'Callback', @(~,~) quitExp(v));
             figRef.buttonBar.Sizes = [-1 -1];
-           
-            figRef.main.Sizes = [-1 -3 -3 -3 -3 -3 -3 -6];
+            
+            figRef.main.Sizes = [-1 -1 -1 -1 -1 -6 -1 -2 -3];
             
             v.figRef = figRef;
         end
@@ -174,23 +182,50 @@ classdef VRexpview < handle
                         set(v.figRef.expName ,'String', v.data);
                     case 'currentTrial'
                         v.currentTrial = v.data;
+                        v.licksCurr = [];
+                        v.rewCurr = [];
                         v.trialTime = tic;
                         set(v.figRef.currTrialNum,...
                             'String', v.data, 'BackgroundColor','Green')
-                        pause(.5)
+                        pause(.1)
                         set(v.figRef.currTrialNum,...
-                             'BackgroundColor','white')
+                            'BackgroundColor','white')
                     case 'trialParam'
                         v.trialParam = v.data;
                         set(v.figRef.trialParamData ,'String', v.data);
+                    case 'position'
+                        v.position = v.data;
+                        display(v.position);
+                        v.position = str2num(v.position);
+                        plot(v.figRef.plotter, [0 v.position], [0 0], 'k');
+                        hold(v.figRef.plotter, 'on');
+                        plot(v.figRef.plotter, v.position, 0, 'k.', 'MarkerSize', 25);
+                        if ~isempty(v.rewCurr)
+                            plot(v.figRef.plotter, v.rewCurr, 0, 'g.', 'MarkerSize', 20);
+                        end
+                        if ~isempty(v.licksCurr)
+                            plot(v.figRef.plotter, v.licksCurr, 0, 'rx');
+                        end
+                        set(v.figRef.plotter, 'Xlim', [0 100], 'ylim', [-1 1])
+                        line(v.figRef.plotter, [0 0], ylim, 'color', 'k');
+                        line(v.figRef.plotter, [20 20], ylim, 'color', 'k', 'linestyle','--');
+                        line(v.figRef.plotter, [40 40], ylim, 'color', 'k', 'linestyle','--');
+                        line(v.figRef.plotter, [60 60], ylim, 'color', 'k', 'linestyle','--');
+                        line(v.figRef.plotter, [80 80], ylim, 'color', 'k', 'linestyle','--');
+                        line(v.figRef.plotter, [100 100], ylim, 'color', 'k');
+                        axis(v.figRef.plotter, 'off');
+                        hold(v.figRef.plotter, 'off');
+                    case 'licks'
+                        v.licksCurr = [v.licksCurr v.position];
                     case 'reward'
                         v.totalReward = v.data;
                         set(v.figRef.rewName,...
                             'String', v.totalReward, 'BackgroundColor','Green')
                         v.isMessageAvailable = 0;
-                        pause(.5)
+                        v.rewCurr = [v.rewCurr v.position];
+                        pause(.1)
                         set(v.figRef.rewName,...
-                             'BackgroundColor','white')
+                            'BackgroundColor','white')
                     case 'server'
                         v.serverid = v.data;
                         set(v.figRef.serverBar, 'String', v.data);
@@ -204,5 +239,8 @@ classdef VRexpview < handle
                 end
             end
         end
+        
+        
     end
+    
 end
