@@ -797,10 +797,10 @@ end
                             case 'ARDUINO'
                                 
                                 flushinput(hwInfo.ardDev)
-                                ard_scan = fscanf(hwInfo.ardDev, '%d\t%d');
-                                while length(ard_scan)~=2
+                                ard_scan = fscanf(hwInfo.ardDev, '%d\t%d\t%d');
+                                while length(ard_scan)~=3
                                     flushinput(hwInfo.ardDev)
-                                    ard_scan = fscanf(hwInfo.ardDev, '%d\t%d');
+                                    ard_scan = fscanf(hwInfo.ardDev, '%d\t%d\t%d');
                                 end
                                 %                             hwInfo.ardDev.zero
                                 % rotary encoder
@@ -814,6 +814,8 @@ end
                                 %                             display([num2str(ard_scan(2))]);
                                 scan_input(2) = temp2;
                                 flushinput(hwInfo.ardDev);
+                                %sync signal
+                                day = ard_scan(3); % this the interval between 0->1 transitions of the sync pulse signal
                                 
                         end
                         if ~strcmp(rigInfo.rotEncPos,'right')
@@ -833,7 +835,7 @@ end
                         if currLikStatus
                             TRIAL.lick(runInfo.currTrial,runInfo.count) = 1;
                             rigInfo.comms.send('licks',num2str(1));
-                            display(['Lick Detected' '/t']);
+                            display(['Lick Detected']);
                         else
                             TRIAL.lick(runInfo.currTrial,runInfo.count) = 0;
                         end
