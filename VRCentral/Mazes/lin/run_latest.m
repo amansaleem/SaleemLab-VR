@@ -834,7 +834,9 @@ end
                         currLikStatus = scan_input(2);
                         if currLikStatus
                             TRIAL.lick(runInfo.currTrial,runInfo.count) = 1;
-                            rigInfo.comms.send('licks',num2str(1));
+                            if ~isempty(rigInfo.comms)
+                                rigInfo.comms.send('licks',num2str(1));
+                            end
                             display(['Lick Detected']);
                         else
                             TRIAL.lick(runInfo.currTrial,runInfo.count) = 0;

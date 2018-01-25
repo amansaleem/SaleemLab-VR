@@ -114,10 +114,12 @@ else
     end
 
     % This is code to send to controller and update occassionally
-    if runInfo.count>3
+    if ~isempty(rigInfo.comms)
+        if runInfo.count>3
         if floor(20*TRIAL.traj(runInfo.currTrial,runInfo.count-1)./t_length) ...
                 - floor(20*TRIAL.traj(runInfo.currTrial,runInfo.count-2)./t_length) > 0
             rigInfo.comms.send('position', num2str(round(100*TRIAL.traj(runInfo.currTrial,runInfo.count-1)./t_length)));
+        end
         end
     end
     
