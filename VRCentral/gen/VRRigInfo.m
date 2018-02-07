@@ -112,7 +112,19 @@ classdef VRRigInfo < handle
                     RigInfo.numConnect = length(RigInfo.connectIPs);
                     RigInfo.sendTTL = 0;
                     RigInfo.TTLchannel = [];
-                    RigInfo.runTimeLine = 0;    
+                    RigInfo.runTimeLine = 0;
+                    % load reward calibration file
+                    list = dir([RigInfo.dirCode '\data\']);
+                    RigInfo.RewardCal = 0;
+                    try
+                        Temp = load([RigInfo.dirCode '\data\' list(strcmp(['RewardCal_' hostname '.mat'],{list.name})).name]);
+                        varname = fieldnames(Temp);
+                        RigInfo.RewardCal = Temp.(varname{1})
+                        clear Temp varname;
+                    catch
+                        RigInfo.RewardCal = [linspace(1,300,100); linspace(1,10,100)]';
+                        display('No reward calibration file found. Using dummy values. Please calibrate your rig!');
+                    end
                 %%%%%%%%%%%%%%%%%%%%%%%%%%
                 case 'SALEEM03' %MORPHEUS
                     % Local computer info (basic)
