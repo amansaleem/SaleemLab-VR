@@ -834,7 +834,9 @@ end
                         currLikStatus = scan_input(2);
                         if currLikStatus
                             TRIAL.lick(runInfo.currTrial,runInfo.count) = 1;
-                            rigInfo.comms.send('licks',num2str(1));
+                            if ~isempty(rigInfo.comms)
+                                rigInfo.comms.send('licks',num2str(1));
+                            end
                             display(['Lick Detected']);
                         else
                             TRIAL.lick(runInfo.currTrial,runInfo.count) = 0;
@@ -983,17 +985,17 @@ end
          for k=1:6%runInfo.ROOM.nOfWalls
             switch k
                 case 1 
-                    wallface_PIT (expInfo.EXP.l,  runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texname(getTextureIndex(expInfo.EXP.farWallText)), 2);
+                    wallface_PIT (expInfo.EXP.l,  runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texname(getTextureIndex(expInfo.EXP.farWallText)), WLength);
                 case 2
-                    wallface_PIT (expInfo.EXP.l,  runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texname(getTextureIndex(expInfo.EXP.nearWallText)), 2);
+                    wallface_PIT (expInfo.EXP.l,  runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texname(getTextureIndex(expInfo.EXP.nearWallText)), WLength);
                 case 3
-                    wallface_PIT (expInfo.EXP.l,  runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texname(12), 2); % 12th texture is a square wave with 100 periods: i.e. a ruler with 1 virtual cm resolution
+                    wallface_PIT (expInfo.EXP.l,  runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texname(12), WLength); % 12th texture is a square wave with 100 periods: i.e. a ruler with 1 virtual cm resolution
                 case 4
-                    wallface_PIT (expInfo.EXP.l,  runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texname(12), 2);
+                    wallface_PIT (expInfo.EXP.l,  runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texname(12), WLength);
                 case 5
-                    wallface_PIT (expInfo.EXP.l,  runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texname(12), 2);
+                    wallface_PIT (expInfo.EXP.l,  runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texname(12), WLength);
                 case 6
-                    wallface_PIT (expInfo.EXP.l,  runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texname(12), 2);
+                    wallface_PIT (expInfo.EXP.l,  runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texname(12), WLength);
             end
          end
         glEndList();
