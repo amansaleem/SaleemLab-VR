@@ -878,12 +878,9 @@ end
         runInfo.ListRuler = glGenLists(1); % display list to show the ruler-texture
         
         runInfo.List1 = glGenLists(1);
-<<<<<<< HEAD
         WLength = 2.0;
-=======
         
-        WLength = 1.0;
->>>>>>> a1589f7e4904da38a8871f9cd5a7bf1c6570bf43
+        WLength = 0.5;
         runInfo.List2 = glGenLists(1);
         
         glNewList(runInfo.List1,GL.COMPILE);
