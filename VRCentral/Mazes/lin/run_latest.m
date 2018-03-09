@@ -879,7 +879,7 @@ end
         
         runInfo.List1 = glGenLists(1);
 
-        WLength = 0.5;
+        WLength = 0.75;
         runInfo.List2 = glGenLists(1);
         
         glNewList(runInfo.List1,GL.COMPILE);
