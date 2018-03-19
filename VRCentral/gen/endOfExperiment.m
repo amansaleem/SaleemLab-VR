@@ -19,6 +19,10 @@ if ~expInfo.OFFLINE
     VRLogMessage(expInfo);
     VRLogMessage(expInfo);
     
+    if ~isempty(rigInfo.comms) %send message again in case there was an error
+        rigInfo.comms.send('Bye','Bye');
+    end
+    
     rigInfo.closeUDPports;
 end
 
