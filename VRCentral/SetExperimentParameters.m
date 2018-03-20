@@ -595,7 +595,8 @@ clear VRparameters VRchoose
             'speckleNoise', 0,...           % Add speckle noise
             'speckleSize', 20,...            % (centre +- speckleSize) will be coloured
             'speckleLevel', 5,...           % fraction of pixels in with speckle noise
-            'speckleType', 'RAND'...       % 'GRAY' give gray squares, 'RAND' gives rand grayscale
+            'speckleType', 'RAND', ...       % 'GRAY' give gray squares, 'RAND' gives rand grayscale
+            'SF', 0 ...                      % spatial frequency for texture wrapping, in periods/cm
             ...
             );
         

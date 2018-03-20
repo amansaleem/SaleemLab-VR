@@ -860,8 +860,12 @@ end
         
         runInfo.ListRuler = glGenLists(1); % display list to show the ruler-texture
         runInfo.List1 = glGenLists(1);
-        
-        WLength = 2;
+
+        if isfield(expInfo.EXP, 'SF')
+            WLength = expInfo.EXP.SF;
+        else
+            WLength = 1;
+        end
         runInfo.List2 = glGenLists(1);
         
         glNewList(runInfo.List1,GL.COMPILE);
