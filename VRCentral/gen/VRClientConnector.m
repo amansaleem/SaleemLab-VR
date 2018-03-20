@@ -64,7 +64,9 @@ classdef VRClientConnector < handle %(VRchoose, VRparameters)
             serverID = v.VRchoose.clientUI.popup.Value;
             if ~strcmp(v.list_servers(serverID), 'LOCAL')
                 v.local = false;
-                v.client{v.currExp}.connect(serverID);
+                try % AS added to have because there was an error inspite to working - possibly temp solution
+                    v.client{v.currExp}.connect(serverID);
+                catch; end; 
                 pause(1e-2)
                 v.status
                 set(v.VRchoose.clientUI.StatusButton,'Enable','on')
@@ -74,7 +76,7 @@ classdef VRClientConnector < handle %(VRchoose, VRparameters)
                 v.client{v.currExp}.local = true;
                 set(v.VRchoose.clientUI.textB, 'String','LOCAL!',...
                     'BackgroundColor',[0.5 1 0.5]);
-%                 set(v.VRchoose.clientUI.popup,'Enable','off')
+                set(v.VRchoose.clientUI.popup,'Enable','off')
                 v.status
             end    
         end
