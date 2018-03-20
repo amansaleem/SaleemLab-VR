@@ -201,7 +201,7 @@ classdef VRexpview < handle
                         hold(v.figRef.plotter, 'on');
                         plot(v.figRef.plotter, v.position, 0, 'k.', 'MarkerSize', 25);
                         if ~isempty(v.rewCurr)
-                            plot(v.figRef.plotter, v.rewCurr, 0, 'g.', 'MarkerSize', 20);
+                            plot(v.figRef.plotter, v.rewCurr, 0, '.', 'MarkerSize', 20, 'Color', [.5 .5 .5]);
                         end
                         if ~isempty(v.licksCurr)
                             plot(v.figRef.plotter, v.licksCurr, 0, 'rx');
