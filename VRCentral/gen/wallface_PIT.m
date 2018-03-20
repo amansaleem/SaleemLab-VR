@@ -16,7 +16,7 @@ glNormal3dv(n);
 glTexCoord2dv([ 0 0 ]);
 glVertex3dv(v(:,order(1)));
 
-glTexCoord2dv([ 0.0, WLength*(mazelength/100) ]);
+glTexCoord2dv([ 0.0, WLength*(mazelength/100) ]); 
 glVertex3dv(v(:,order(2)));
 
 glTexCoord2dv([ WLength*(mazelength/100), WLength*(mazelength/100) ]);
