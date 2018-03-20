@@ -76,7 +76,7 @@ classdef VRClientConnector < handle %(VRchoose, VRparameters)
                 v.client{v.currExp}.local = true;
                 set(v.VRchoose.clientUI.textB, 'String','LOCAL!',...
                     'BackgroundColor',[0.5 1 0.5]);
-                set(v.VRchoose.clientUI.popup,'Enable','off')
+%                 set(v.VRchoose.clientUI.popup,'Enable','off')
                 v.status
             end    
         end
