@@ -11,9 +11,9 @@ switch str
         index = 4;
     case 'V_SQUARE_5cm_w'
         index = 5;
-    case 'H_COS_GRA_5cm_w' 
+    case 'V_COS_GRA_5cm_w' 
         index = 6;
-    case 'V_COS_GRA_5cm_w'
+    case 'H_COS_GRA_5cm_w'
         index = 7;
     case 'COS_Plaid_5cm_w'
         index = 8;
@@ -23,13 +23,13 @@ switch str
         index = 10;
     case 'Circ_COS_GRA'
         index = 11;
-    case 'H_SQUARE_5cm_b'
+    case 'V_SQUARE_5cm_b'
         index = 12;
-    case 'V_SQUARE_5cm_b' 
-        index = 13;
-    case 'H_COS_GRA_5cm_b'
-        index = 14;
+    case 'H_SQUARE_5cm_b' 
+        index = 13;     
     case 'V_COS_GRA_5cm_b'
+        index = 14;
+    case 'H_COS_GRA_5cm_b'
         index = 15;
     case 'COS_Plaid_5cm_b'
         index = 16;
