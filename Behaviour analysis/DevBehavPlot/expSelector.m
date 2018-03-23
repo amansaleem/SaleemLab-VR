@@ -16,6 +16,9 @@ classdef expSelector < handle
     end
     
     methods
+        function obj = expSelector
+            obj.createUI;
+        end
         function createUI(obj)
             obj.figHandle.MainFig = figure('Name', 'Experiment Selector',...
                 'MenuBar', 'none', ...

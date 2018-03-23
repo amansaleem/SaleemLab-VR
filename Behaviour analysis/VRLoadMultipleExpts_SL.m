@@ -15,13 +15,16 @@ end
 
 switch type
     case 'BEHAV_ONLY';
-        [~, ~, es] = VRWheelLoad_SL(animal, iseries, expt_list(1));
+        [VR, ~, es] = VRWheelLoad_SL(animal, iseries, expt_list(1));
+        VRreward = VR.REWARD.TotalValveOpenTime;
         if length(expt_list>1)
             for iexp = 2:length(expt_list)
-                [~, ~, esX] = VRWheelLoad_SL(animal, iseries, expt_list(iexp));
+                [VR, ~, esX] = VRWheelLoad_SL(animal, iseries, expt_list(iexp));
+                VRreward = VRreward + VR.REWARD.TotalValveOpenTime;
                 es = combineTwoVRexpts(es, esX);
             end
         end
+        es.totalReward = VRreward;
     case 'BEHAV_LFP'
         es = VR_LFP_power_safe_new(animal,iseries,expt_list(1),1,channels(1), channels(2));
         if length(expt_list>1)
