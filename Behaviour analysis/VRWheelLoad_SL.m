@@ -18,6 +18,8 @@ try
     switch b
         case 'saleem01'
             DIRS.ball = 'Y:\Saleem Lab\Data\Behav';
+        case 'saleem05'
+            DIRS.ball = 'Y:\Saleem Lab\Data\Behav';
         case 'saleem12'
             DIRS.ball = 'Y:\Saleem Lab\Data\Behav';
         case 'saleem02'

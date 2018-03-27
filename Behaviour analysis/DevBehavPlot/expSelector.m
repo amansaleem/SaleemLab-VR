@@ -220,7 +220,7 @@ classdef expSelector < handle
         
         function triggerPlots(obj)
             set(obj.figHandle.goButton, 'Enable','off','Background','r');
-            plotxyz(obj.expObject);
+            %plotxyz(obj.expObject);
         end
     end
 end
