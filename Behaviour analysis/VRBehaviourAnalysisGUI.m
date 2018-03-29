@@ -28,7 +28,9 @@ global DIRS
 global EXPORT
 
 try
-    switch hostname
+    [~,b] = system('hostname');
+    b = b(1:end-1);
+    switch b
         case 'saleem01' 
             DIRS.ball = 'Y:\Saleem Lab\Data\Behav';
         case 'saleem12'
