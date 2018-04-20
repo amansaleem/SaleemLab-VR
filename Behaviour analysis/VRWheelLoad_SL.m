@@ -70,7 +70,7 @@ VRdata.TRIAL.time(~goodTimes)       = NaN;
 VRdata.TRIAL.traj(~goodTimes)       = NaN;
 VRdata.TRIAL.trialIdx(~goodTimes)   = NaN;
 VRdata.TRIAL.time(:,1)              = NaN;
-VRdata.TRIAL.time       = VRdata.TRIAL.time - VRdata.TRIAL.time(1,2); %repmat(VRdata.TRIAL.time(:,2),1,size(VRdata.TRIAL.time(2,:),2));
+VRdata.TRIAL.time       = VRdata.TRIAL.time - min(VRdata.TRIAL.time(:)); % % AS change in 04/2018  % VRdata.TRIAL.time(1,2); %repmat(VRdata.TRIAL.time(:,2),1,size(VRdata.TRIAL.time(2,:),2));
 VRdata.TRIAL.currTime   = VRdata.TRIAL.time - repmat(VRdata.TRIAL.time(:,2),1,size(VRdata.TRIAL.time,2));
 
 VRdata.TRIAL.reward  = NaN*ones(size(VRdata.TRIAL.traj));

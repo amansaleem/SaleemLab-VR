@@ -242,7 +242,7 @@ list_entries = get(handles.popupmenu1,'String');
 index_selected = get(handles.popupmenu1,'Value');
 iexp = str2num(list_entries(index_selected,:));
 
-[VRdata_all, VRdata_o] = VRWheelLoad(animal, iseries, iexp);
+[VRdata_all, VRdata_o] = VRWheelLoad_SL(animal, iseries, iexp);
 
 ltexist = isfield(VRdata_all.TRIAL,'trialRL');
 rewOexist = isfield(VRdata_all.TRIAL,'trialOutcome');
