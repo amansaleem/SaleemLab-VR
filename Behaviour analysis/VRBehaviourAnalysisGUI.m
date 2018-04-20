@@ -37,6 +37,8 @@ try
             DIRS.ball = 'Y:\Saleem Lab\Data\Behav';
         case 'saleem02'
             DIRS.ball = 'S:\Data\Behav';
+        case 'saleem08'
+            DIRS.ball = 'S:\Data\Behav';
     end
 catch
     DIRS.ball = 'S:\Data\Behav';

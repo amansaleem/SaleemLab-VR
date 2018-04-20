@@ -87,7 +87,7 @@ classdef VRRigInfo < handle
                     RigInfo.NIRewVal = 'ao1';
                     RigInfo.photodiodePos  = 'right';
                     RigInfo.photodiodeSize = [75 75];
-                    RigInfo.rotEncPos = 'left';
+                    RigInfo.rotEncPos = 'right';
                     % Saving directories
                     % local
 %                     serverName    = 'zserver';
