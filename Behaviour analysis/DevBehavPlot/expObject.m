@@ -8,6 +8,11 @@ classdef expObject < handle
     end
     
     methods
+        function obj = expObject(a, s, e)
+            obj.animal = a;
+            obj.iseries = s;
+            obj.exp_list = e;
+        end
         function [es, totalReward] = loadBehav(obj)
             [VR, ~, es] = VRWheelLoad_SL(obj.animal, obj.iseries, obj.expt_list(1));
             totalReward = VR.REWARD.TotalValveOpenTime;
