@@ -255,7 +255,7 @@ classdef VRRigInfo < handle
                 case 'SALEEM10' %SWITCH
                     % Local computer info (basic)
                     RigInfo.computerName = 'SWITCH';
-                    RigInfo.screenNumber = 1;
+                    RigInfo.screenNumber = 2;
                     RigInfo.screenDist = 13; % in cm
                     RigInfo.dialogueXYPosition = [680 160];
                                         

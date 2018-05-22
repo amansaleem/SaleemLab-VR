@@ -279,7 +279,7 @@ try
                             glViewport(round(ww/rigInfo.numCameras)*(icam-1)+1,0,round(ww/rigInfo.numCameras),hh);
                             glFrustum( -sind(180/rigInfo.numCameras/2)*0.01, ...
                                         sind(180/rigInfo.numCameras/2)*0.01, ...
-                                       -sind(22)*0.01, sind(67)*0.01, 0.01,expInfo.EXP.visibleDepth)
+                                       -sind(22)*0.01, sind(67)*0.01, rigInfo.screenDist,expInfo.EXP.visibleDepth)
 %                             gluPerspective(90,round(ww/rigInfo.numCameras)/hh,...
 %                                            0.01,expInfo.EXP.visibleDepth);
                             glMatrixMode(GL.MODELVIEW);
@@ -807,7 +807,7 @@ end
                             dbx = scan_input(1);
                         end
                         % convert to cm
-                        dbx = dbx*((2*pi*expInfo.EXP.wheelRadius)./(1024*4)); % (cm)% because it is a 4 x 1024 unit encoder
+                        dbx = dbx*((2*pi*expInfo.EXP.wheelRadius)./(1024)); % (cm)% because it is a 4 x 1024 unit encoder
                         % dbx = 50*dbx; % to be removed when the room is better calibrated
                         
                         TRIAL.balldata(runInfo.currTrial,runInfo.count,:) = [ballTime, dax, dbx, day, dby];
