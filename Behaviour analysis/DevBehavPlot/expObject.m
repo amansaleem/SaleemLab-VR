@@ -13,9 +13,9 @@ classdef expObject < handle
 
             totalReward = VR.REWARD.TotalValveOpenTime;
             if length(obj.iexp>1)
-                for iexp = 2:length(obj.iexp)
-                    [~, ~, esX] = VRWheelLoad_SL(obj.animal, obj.iseries, obj.exp_list(iexp));
-                    VR = combineTwoVRexpts(es, esX);
+                for nexp = 2:length(obj.iexp)
+                    [VR, ~, esX] = VRWheelLoad_SL(obj.animal, obj.iseries, obj.iexp(nexp));
+                    es = combineTwoVRexpts(es, esX);
                     totalReward = totalReward + VR.REWARD.TotalValveOpenTime;
                 end
             end
