@@ -47,9 +47,7 @@ classdef behavPlotter < handle
             obj.figHandle.PSTHLicks     = axes('Parent',obj.figHandle.Bottom);
             obj.figHandle.PSTHSpeed = axes('Parent',obj.figHandle.Bottom);
             obj.figHandle.Bottom.Sizes  = [-1 -1 -1];
-        end
-        
-        function doAllPlots(obj)
+            
             [obj.es, obj.totalReward obj.VR] = obj.expObject.loadBehav;
             obj.esLoaded = true;
             

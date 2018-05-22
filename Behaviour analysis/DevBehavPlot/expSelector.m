@@ -13,21 +13,27 @@ classdef expSelector < handle
         
         expObject
         figHandle
+        embeddedObj = false;
     end
     
     methods
-        function obj = expSelector
-            obj.createUI;
+        function obj = expSelector(fromGUI)
+            if nargin<1
+                obj.createUI;
+            end
             obj.expObject = expObject;
         end
-        function createUI(obj)
-            obj.figHandle.MainFig = figure('Name', 'Experiment Selector',...
-                'MenuBar', 'none', ...
-                'Toolbar', 'none',...
-                'NumberTitle', 'off',...
-                'Units', 'normalized',...
-                'OuterPosition', [0.1 0.1 0.2 0.3]);%...
-            
+        function createUI(obj, figInput)
+            if nargin~=1
+                obj.figHandle.MainFig = figInput;
+            else
+                obj.figHandle.MainFig = figure('Name', 'Experiment Selector',...
+                    'MenuBar', 'none', ...
+                    'Toolbar', 'none',...
+                    'NumberTitle', 'off',...
+                    'Units', 'normalized',...
+                    'OuterPosition', [0.1 0.1 0.2 0.3]);%...
+            end
             obj.figHandle.Full = uiextras.VBox('Parent',obj.figHandle.MainFig,'Spacing',10,'Padding',5);
             
             %Splitting to top and bottom sections
@@ -228,6 +234,7 @@ classdef expSelector < handle
             bp.expObject = obj.expObject;
             bp.AnimalObject = obj;
             bp.createUI;
+            bp.doAllPlots;
         end
     end
 end
