@@ -3,7 +3,7 @@ classdef behavPlotter < handle
     properties
         expObject
         AnimalObject
-        
+                
         figHandle
         es
         VR
@@ -48,6 +48,8 @@ classdef behavPlotter < handle
             obj.figHandle.PSTHSpeed = axes('Parent',obj.figHandle.Bottom);
             obj.figHandle.Bottom.Sizes  = [-1 -1 -1];
             
+            [obj.es, obj.totalReward obj.VR] = obj.expObject.loadBehav;
+            obj.esLoaded = true;
             
             % Animal Info Panel
             AnimalSessionInfo = GetSessionInfo(obj);

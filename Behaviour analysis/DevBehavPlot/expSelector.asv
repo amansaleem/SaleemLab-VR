@@ -18,7 +18,6 @@ classdef expSelector < handle
     methods
         function obj = expSelector
             obj.createUI;
-            obj.expObject = expObject;
         end
         function createUI(obj)
             obj.figHandle.MainFig = figure('Name', 'Experiment Selector',...
@@ -224,10 +223,8 @@ classdef expSelector < handle
         
         function triggerPlots(obj)
             set(obj.figHandle.goButton, 'Enable','off','Background','r');
-            bp = behavPlotter;
-            bp.expObject = obj.expObject;
-            bp.AnimalObject = obj;
-            bp.createUI;
+            obj.expObject.loadBehav;
+            bp = behavP
         end
     end
 end
