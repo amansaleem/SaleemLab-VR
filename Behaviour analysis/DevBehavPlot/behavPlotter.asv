@@ -2,9 +2,11 @@ classdef behavPlotter < handle
     
     properties
         expObject
+        AnimalObject
         
         figHandle
         es
+        VR
         esLoaded = false;
         totalReward = [];
         trialStart = [];
@@ -19,25 +21,54 @@ classdef behavPlotter < handle
                 'Units', 'normalized',...
                 'OuterPosition', [0.1 0.1 0.5 0.7]);%...
             
-            obj.figHandle.Full = uiextras.VBox('Parent',obj.figHandle.MainFig,'Spacing',10,'Padding',5);
+            obj.figHandle.Full = uiextras.VBox('Parent',obj.figHandle.MainFig,'Spacing',5,'Padding',2);
             
             %Splitting to top and bottom sections
-            obj.figHandle.Top = uiextras.HBox('Parent',obj.figHandle.Full,'Spacing',10,'Padding',5);
-            obj.figHandle.Middle = uiextras.HBox('Parent',obj.figHandle.Full,'Spacing',10,'Padding',5);
-            obj.figHandle.Full.Sizes = [-1 -1];
+            obj.figHandle.Top = uiextras.HBox('Parent',obj.figHandle.Full,'Spacing',5,'Padding',2);
+            obj.figHandle.Middle = uiextras.HBox('Parent',obj.figHandle.Full,'Spacing',5,'Padding',2);
+            obj.figHandle.Bottom = uiextras.HBox('Parent',obj.figHandle.Full,'Spacing',5,'Padding',2);
             
             %Spliting the top
-            obj.figHandle.animalInfoPanel = uiextras.VBox('Parent',obj.figHandle.Top,'Spacing',10,'Padding',5);
+            obj.figHandle.animalInfoPanel = uiextras.VBox('Parent',obj.figHandle.Top,'Spacing',5,'Padding',2);
             obj.figHandle.PositionTimePlot = axes('Parent',obj.figHandle.Top);
-            obj.figHandle.Top.Sizes = [-1 -5];
+            obj.figHandle.Top.Widths = [-1 -5];
             
-            % Splitting the bottom
-            obj.figHandle.expPanelA = uiextras.VBox('Parent',obj.figHandle.Middle,'Spacing',10,'Padding',5);
-            obj.figHandle.expPanelB = uiextras.VBox('Parent',obj.figHandle.Middle,'Spacing',10,'Padding',5);
-            obj.figHandle.runPanel  = uiextras.VBox('Parent',obj.figHandle.Middle,'Spacing',10,'Padding',5);
-            obj.figHandle.expPanelB = uiextras.VBox('Parent',obj.figHandle.Middle,'Spacing',10,'Padding',5);
-            obj.figHandle.runPanel  = uiextras.VBox('Parent',obj.figHandle.Middle,'Spacing',10,'Padding',5);
-            obj.figHandle.Middle.Sizes = [-1 -1 -1];
+            % Splitting the Middle
+            obj.figHandle.detailsPanel  = uiextras.VBox('Parent',obj.figHandle.Middle,'Spacing',5,'Padding',2);
+            obj.figHandle.HistPosPlot   = axes('Parent',obj.figHandle.Middle);
+            obj.figHandle.VRPosPlot     = axes('Parent',obj.figHandle.Middle);
+            obj.figHandle.SpdProfilePlot = axes('Parent',obj.figHandle.Middle);
+            obj.figHandle.HistSpdPlot   = axes('Parent',obj.figHandle.Middle);
+            obj.figHandle.HistLickPlot   = axes('Parent',obj.figHandle.Middle);
+            obj.figHandle.Middle.Sizes  = [-1 -1 -1 -1 -1 -1];
+            
+            % Animal Info Panel
+            AnimalSessionInfo = GetSessionInfo(obj);
+            DisplayInfoPanel(obj, AnimalSessionInfo);
+            
+            % Position VS Time
+            axes(obj.figHandle.PositionTimePlot);
+            PositionVSTime(obj, AnimalSessionInfo);
+            obj.figHandle.Top.Widths = [-1 -5];
+            
+            % Position Probability Distribution
+            axes(obj.figHandle.HistPosPlot);
+            PositionDistribution(obj, AnimalSessionInfo);
+            obj.figHandle.Middle.Sizes  = [-2 -2 -2 -2 -2 -2];
+            
+            % Mean Speed Distribution
+            axes(obj.figHandle.SpdProfilePlot);
+            SpeedDistribution(obj, AnimalSessionInfo);
+            obj.figHandle.Middle.Sizes  = [-2 -2 -2 -2 -2 -2];
+            
+            % Lick Count Distribution
+            axes(obj.figHandle.HistLickPlot);
+            LicksDistribution(obj, AnimalSessionInfo);
+            obj.figHandle.Middle.Sizes  = [-2 -2 -2 -2 -2 -2];
+            
+            
+            LicksTemporalDistribution(PlotObject, AnimalSessionInfo)
+            
         end
         
         function load(obj)

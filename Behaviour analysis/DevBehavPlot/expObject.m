@@ -8,12 +8,12 @@ classdef expObject < handle
     end
     
     methods
-        function [es, totalReward] = loadBehav(obj)
-            [VR, ~, es] = VRWheelLoad_SL(obj.animal, obj.iseries, obj.expt_list(1));
+        function [VR, es, totalReward] = loadBehav(obj)
+            [VR, ~, es] = VRWheelLoad_SL(obj.animal, obj.iseries, obj.exp_list(1));
             totalReward = VR.REWARD.TotalValveOpenTime;
-            if length(obj.expt_list>1)
-                for iexp = 2:length(obj.expt_list)
-                    [~, ~, esX] = VRWheelLoad_SL(obj.animal, obj.iseries, obj.expt_list(iexp));
+            if length(obj.exp_list>1)
+                for iexp = 2:length(obj.exp_list)
+                    [~, ~, esX] = VRWheelLoad_SL(obj.animal, obj.iseries, obj.exp_list(iexp));
                     VR = combineTwoVRexpts(es, esX);
                     totalReward = totalReward + VR.REWARD.TotalValveOpenTime;
                 end

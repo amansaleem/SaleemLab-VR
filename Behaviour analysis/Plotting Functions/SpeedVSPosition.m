@@ -4,11 +4,14 @@
 
 %% premble useful as not using the expSelector correctly
 % Select session
-es = expSelector;
-createUI(es);
+% Select session
+obj = expSelector;
+r = expObject;
+r.animal = AnimalObject.expObject.animal;
+r.iseries = AnimalObject.expObject.iseries;
+r.exp_list = AnimalObject.expObject.iexp;
 % load experiment
-obj = es.expObject
-[VR, ~, es] = VRWheelLoad_SL(obj.animal, obj.iseries, obj.iexp);
+[VR, es, totalReward] = loadBehav(r);
 % select trials from first
 Tr_s = unique(es.iexp);
 
@@ -28,7 +31,8 @@ for i = 1:length(Tr_s)
     figure
     %% plot speed vs time
     c1=1; c2=1;
-    for j = 1:size(VR.trajspeed,1)
+    TrackLength  = round(max(es.traj(find(es.iexp==Tr_s(i)))));
+    for j = 1:size(es.trajspeed,1)
         % save segment with info of a single trial
         [max_v,max_i] = max(es.traj(min(find(es.trialID==j))+60:max(find(es.trialID==j)))); % added 60 frames rejection criterion at the beginning to avoid false maxima
         [min_v,min_i] = min(es.traj(min(find(es.trialID==j))+60:max(find(es.trialID==j))));
@@ -39,13 +43,13 @@ for i = 1:length(Tr_s)
         Time = TrialTime(2:end)-min(TrialTime(2:end));
         TimeDiff = diff(TrialTime); % in seconds
         % save the instantenous speed of the ball and of the VR
-        Inst_Wheel_speed = es.ballspeed(find(es.traj(find(es.trialID==j))==min_v)+min(find(es.trialID==j))+60:find(es.traj(find(es.trialID==j))==max_v)+min(find(es.trialID==j)))*VR.EXP.wheelToVR;
-        Inst_VR_speed = es.trajspeed(find(es.traj(find(es.trialID==j))==min_v)+min(find(es.trialID==j))+60:find(es.traj(find(es.trialID==j))==max_v)+min(find(es.trialID==j)))*VR.EXP.wheelToVR;        
+        Inst_Wheel_speed = es.ballspeed(find(es.traj(find(es.trialID==j))==min_v)+min(find(es.trialID==j))+60:find(es.traj(find(es.trialID==j))==max_v)+min(find(es.trialID==j)))*4;
+        Inst_VR_speed = es.trajspeed(find(es.traj(find(es.trialID==j))==min_v)+min(find(es.trialID==j))+60:find(es.traj(find(es.trialID==j))==max_v)+min(find(es.trialID==j)))*4;        
         %figure
         %plot(Time/max(Time), smooth(Inst_Wheel_speed(2:end),30))
         %plot(TrialTime,Y_pos)
         % find whether the mouse run to the end of the corridor or not        
-        if max(Y_pos) < VR.EXP.l*0.99 % incomplete trials
+        if max(Y_pos) < TrackLength*0.99 % incomplete trials
             subplot(2,1,2)
             hold on
             if c1==1

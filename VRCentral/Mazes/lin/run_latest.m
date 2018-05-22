@@ -798,7 +798,7 @@ end
                                 scan_input(2) = temp2;
                                 flushinput(hwInfo.ardDev);
                                 %sync signal
-                                day = ard_scan(3); % this the interval between 0->1 transitions of the sync pulse signal
+                                day = ard_scan(3); % this the interval between 0->3500 transitions of the sync pulse signal
                                 
                         end
                         if ~strcmp(rigInfo.rotEncPos,'right')
