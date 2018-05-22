@@ -135,7 +135,7 @@ if ~expInfo.REPLAY
     expInfo.EXP = param;
     %     [~, expInfo.EXP] = SetExperimentParameters(expInfo.animalName, rigInfo);
     expInfo.EXP.w = (expInfo.EXP.b)*2; % should be the same as Ex..b2 - EXP.b1/2
-    expInfo.EXP.b = expInfo.EXP.b; % This is because of the geometric correction made
+    expInfo.EXP.b = expInfo.EXP.b/2; % This is because of the geometric correction made
     expInfo.EXP.h = expInfo.EXP.h/2;
     expInfo.EXP.tw = expInfo.EXP.tw/2;
     expInfo.EXP.c3 = expInfo.EXP.vh-expInfo.EXP.h;
