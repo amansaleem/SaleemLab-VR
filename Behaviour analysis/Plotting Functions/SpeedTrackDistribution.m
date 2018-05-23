@@ -1,11 +1,11 @@
-%% TM - UCL - 18/05/2018
+%% TM - UCL - 23/05/2018
 
 % Histogram of speed distrubution along the track
 
 %% plot info from only one session
 % select trials from first
 
-function SpeedDistribution(PlotObject, AnimalSessionInfo)
+function SpeedTrackDistribution(PlotObject, AnimalSessionInfo)
 
 Tr_s = unique(PlotObject.es.iexp);
 % actual plotting function
@@ -29,7 +29,7 @@ for i = 1:length(Tr_s)
     plot([PlotObject.VR.EXP.rew_pos-PlotObject.VR.EXP.rew_tol PlotObject.VR.EXP.rew_pos-PlotObject.VR.EXP.rew_tol],[-(min(Speed(:,1))+max(Speed(:,2))) max(Speed(:,1))+max(Speed(:,2))],'k--')
     plot([PlotObject.VR.EXP.rew_pos+PlotObject.VR.EXP.rew_tol PlotObject.VR.EXP.rew_pos+PlotObject.VR.EXP.rew_tol],[-(min(Speed(:,1))+max(Speed(:,2))) max(Speed(:,1))+max(Speed(:,2))],'k--')
     
-    axis([0 TrackLength min(Speed(:,1))/2 max(Speed(:,1))+min(Speed(:,1))/2]) 
+    axis([0 TrackLength -(min(Speed(:,1))+max(Speed(:,2))) max(Speed(:,1))+max(Speed(:,2))]) 
     set(gca,'box','off','TickDir','out');
     xlabel('VR track position (cm)'); ylabel('mean speed (cm/s)');
 end

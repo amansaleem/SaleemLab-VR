@@ -36,16 +36,16 @@ classdef behavPlotter < handle
             % Splitting the Middle
             obj.figHandle.animalInfoPanel  = uiextras.VBox('Parent',obj.figHandle.Middle);
             obj.figHandle.HistPosPlot   = uipanel('Parent',obj.figHandle.Middle,'BorderType','none');
-            obj.figHandle.VRPosPlot     = uipanel('Parent',obj.figHandle.Middle,'BorderType','none');
+            %obj.figHandle.VRPosPlot     = uipanel('Parent',obj.figHandle.Middle,'BorderType','none');
             obj.figHandle.SpdProfilePlot = uipanel('Parent',obj.figHandle.Middle,'BorderType','none');
-            %obj.figHandle.HistSpdPlot   = uipanel('Parent',obj.figHandle.Middle,'BorderType','none');
+            obj.figHandle.HistSpdPlot   = uipanel('Parent',obj.figHandle.Middle,'BorderType','none');
             obj.figHandle.HistLickPlot   = uipanel('Parent',obj.figHandle.Middle,'BorderType','none');
-            obj.figHandle.Middle.Sizes  = [-1 -1 -1 -1 -1];
+            obj.figHandle.Middle.Sizes  = [-1 -1 -1 -1 -1 ];
             
             % Splitting the bottom
             obj.figHandle.BeahvEventsTime   = uipanel('Parent',obj.figHandle.Bottom,'BorderType','none');
-            obj.figHandle.PSTHLicks     = axes('Parent',obj.figHandle.Bottom);
-            obj.figHandle.PSTHSpeed = axes('Parent',obj.figHandle.Bottom);
+            obj.figHandle.PSTHLicksSpeed    = uipanel('Parent',obj.figHandle.Bottom,'BorderType','none');
+            obj.figHandle.SomethingElse = uipanel('Parent',obj.figHandle.Bottom,'BorderType','none');
             obj.figHandle.Bottom.Sizes  = [-1 -1 -1];
         end
         
@@ -79,7 +79,7 @@ classdef behavPlotter < handle
             
             % Mean Speed Distribution
             axes(obj.figHandle.SpdProfilePlot);
-            SpeedDistribution(obj, AnimalSessionInfo);
+            SpeedTrackDistribution(obj, AnimalSessionInfo);
             obj.figHandle.Middle.Sizes  = [-1 -1 -1 -1 -1];
             
             % Lick Count Distribution
@@ -87,11 +87,20 @@ classdef behavPlotter < handle
             LicksDistribution(obj, AnimalSessionInfo);
             obj.figHandle.Middle.Sizes  = [-1 -1 -1 -1 -1];
             
+            % Speed his plot
+            axes(obj.figHandle.HistSpdPlot)
+            SpeedProfileHist(obj, AnimalSessionInfo);
+            obj.figHandle.Middle.Sizes  = [-1 -1 -1 -1 -1];
+            
             %% BOTTOM
             % Lick temporal Distribution
             axes(obj.figHandle.BeahvEventsTime);
             BehavParamTemporalDistribution(obj, AnimalSessionInfo);
             %obj.figHandle.Bottom.Widths  = [-1 -1 -1];
+            
+            % PSTH of of speed and licking before rewards
+            axes(obj.figHandle.PSTHLicksSpeed);
+            PSTHLicksSpeed(obj, AnimalSessionInfo);
             
 %             axes(obj.figHandle.BeahvEventsTime);
 %             cla reset;

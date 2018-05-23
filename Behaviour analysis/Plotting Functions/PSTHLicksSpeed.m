@@ -1,35 +1,26 @@
+%% TM - UCL - 23/05/2018
 
+% PSTH of licks and speed around reward releases
 
-AnimalObject = expSelector;
-r = expObject;
-r.animal = AnimalObject.expObject.animal;
-r.iseries = AnimalObject.expObject.iseries;
-r.exp_list = AnimalObject.expObject.iexp;
-% load experiment
-[es, totalReward, VR] = loadBehav(AnimalObject.expObject);
+%% plot info from only one session
+% select trials from first
 
-PlotObject = behavPlotter;
-AnimalObject = AnimalObject;
-expObject = r;
-es = es;
-VR = VR;
+function PSTHLicksSpeed(PlotObject, AnimalSessionInfo)
 
-createUI(PlotObject)
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-figure
-Tr_s = unique(es.iexp);
-framerate = str2num(es.sampleRate(1:2)); % Hz
+Tr_s = unique(PlotObject.es.iexp);
+% actual plotting function
+framerate = str2num(PlotObject.es.sampleRate(1:2)); % Hz
 for i = 1:length(Tr_s)
+    
     PSTH_interval = 5;    
-    RewardIndexes = find((~isnan(es.reward)));
-    RewardType = es.reward(RewardIndexes);
+    RewardIndexes = find((~isnan(PlotObject.es.reward)));
+    RewardType = PlotObject.es.reward(RewardIndexes);
     j = 1;
     clear LickVector SpeedVector LickVector500ms
     for i=1:length(RewardIndexes)
-        if es.traj(RewardIndexes(i))>(VR.EXP.rew_pos-VR.EXP.rew_tol) && es.traj(RewardIndexes(i))<(VR.EXP.rew_pos+VR.EXP.rew_tol)
-            LickVector(j,:) = es.lick(RewardIndexes(i)-framerate*PSTH_interval:RewardIndexes(i)+framerate*PSTH_interval)';
-            SpeedVector(j,:) = es.ballspeed(RewardIndexes(i)-framerate*PSTH_interval:RewardIndexes(i)+framerate*PSTH_interval);
+        if PlotObject.es.traj(RewardIndexes(i))>(PlotObject.VR.EXP.rew_pos-PlotObject.VR.EXP.rew_tol) && PlotObject.es.traj(RewardIndexes(i))<(PlotObject.VR.EXP.rew_pos+PlotObject.VR.EXP.rew_tol)
+            LickVector(j,:) = PlotObject.es.lick(RewardIndexes(i)-framerate*PSTH_interval:RewardIndexes(i)+framerate*PSTH_interval)';
+            SpeedVector(j,:) = PlotObject.es.ballspeed(RewardIndexes(i)-framerate*PSTH_interval:RewardIndexes(i)+framerate*PSTH_interval);
             j = j + 1;
         end
     end
@@ -45,10 +36,9 @@ for i = 1:length(Tr_s)
     MeanSpeed = mean(SpeedVector,1);
     SEMSpeed = std(SpeedVector,1)/sqrt(size(SpeedVector,1));
     
-    figure
     % plot PSTH of licks
     hb1 = subtightplot(10,1,1:4,[0.01 0.01],[0.01 0.01],[0.1 0.02]);
-    %set(hb1,'Parent',PlotObject.figHandle.BeahvEventsTime);
+    set(hb1,'Parent',PlotObject.figHandle.PSTHLicksSpeed);
     plot(linspace(-PSTH_interval,PSTH_interval,HalfSecondintervals), sum(LickVector500ms,1))
     hold on
     plot([0 0], [0 max(sum(LickVector500ms,1))],'--k','LineWidth',2)
@@ -57,10 +47,10 @@ for i = 1:length(Tr_s)
             'YTickLabel',[5:5:max(5,max(sum(LickVector500ms,1)))]);
     ylabel('Licks');
     ylim([0 max(sum(LickVector500ms,1))]);
-    text(-3,max(5,max(sum(LickVector500ms,1))),'Reward Release');
+    text(-3,max(5,max(sum(LickVector500ms,1)))-1,'Reward Release');
     % plot mean of speed
     hb2 = subtightplot(10,1,5:10,[0.15 0.01],[0.15 0.01],[0.1 0.02])
-    %set(hb2,'Parent',PlotObject.figHandle.BeahvEventsTime);
+    set(hb2,'Parent',PlotObject.figHandle.PSTHLicksSpeed);
     shadedErrorBar(-PSTH_interval:1/framerate:PSTH_interval,MeanSpeed,SEMSpeed)
     set(gca,'box','off','TickDir','out', 'XTick',-PSTH_interval:1:PSTH_interval, ...
                                     'XTickLabel',-PSTH_interval:1:PSTH_interval);
@@ -70,32 +60,4 @@ for i = 1:length(Tr_s)
     
 end
 
-
-a = axes();
-a = subplot(2,2,1);
-a = subplot(2,2,2);
-
-p = plot(1:10); %returns a handle to a line object
-a = get(p,'Parent');
-
-clear f a f2
-f = figure('Position', [-1000 100 500 500])
-a = subplot(2,2,1)
-plot(1:10,'k.')
-pause
-f2 = figure('Position', [-400 100 300 300]);
-ahandle = axes('Parent', f2);
-set(a,'Parent', ahandle);
-plot(1:10,'.')
-
-
-
-
-
-
-
-
-
-
-
-
+end
