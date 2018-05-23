@@ -279,7 +279,8 @@ try
                             glViewport(round(ww/rigInfo.numCameras)*(icam-1)+1,0,round(ww/rigInfo.numCameras),hh);
                             glFrustum( -sind(180/rigInfo.numCameras/2)*0.01, ...
                                         sind(180/rigInfo.numCameras/2)*0.01, ...
-                                       -sind(22)*0.01, sind(67)*0.01, rigInfo.screenDist,expInfo.EXP.visibleDepth)
+                                       ...-sind(22)*0.01, sind(67)*0.01, rigInfo.screenDist,expInfo.EXP.visibleDepth)
+                                       -sind(22)*0.01, sind(67)*0.01, 0.01,expInfo.EXP.visibleDepth)
 %                             gluPerspective(90,round(ww/rigInfo.numCameras)/hh,...
 %                                            0.01,expInfo.EXP.visibleDepth);
                             glMatrixMode(GL.MODELVIEW);
