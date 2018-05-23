@@ -16,6 +16,8 @@ for i = 1:length(Tr_s)
     
     TrackLength  = PlotObject.VR.EXP.l;
     Edges = 0:3.33:TrackLength;
+%     h = subtightplot(1,1,1,[0.1 0.01],[0.2 0.1],[0.2 0.2])
+%     set(h,'Parent',PlotObject.figHandle.HistPosPlot);
     h = histogram(PlotObject.es.traj,Edges,'Normalization','probability');
     hold on
     plot([PlotObject.VR.EXP.rew_pos PlotObject.VR.EXP.rew_pos],[0 1],'k')
@@ -23,7 +25,7 @@ for i = 1:length(Tr_s)
     plot([PlotObject.VR.EXP.rew_pos+PlotObject.VR.EXP.rew_tol PlotObject.VR.EXP.rew_pos+PlotObject.VR.EXP.rew_tol],[0 1],'k--')
     axis([0 TrackLength 0 max(h.BinCounts)/length(h.Data)+0.1*max(h.BinCounts)/length(h.Data)]) 
     set(gca,'box','off','TickDir','out');
-    xlabel('VR track position (cm)'); ylabel('probability');
+    xlabel('VR track position (cm)'); ylabel('Pos Prob');
    
 end
 

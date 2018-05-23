@@ -56,7 +56,7 @@ AvgTrial_nc = mean(TrialDuration_nc);
 % mean moving speed
 speedWheel = obj.es.ballspeed*obj.VR.EXP.wheelToVR;
 speedWheel(isnan(speedWheel)) = 0;
-speed_smoothed = smooth(speedWheel,30);
+speed_smoothed = smooth(speedWheel,3);
 SpeedMovingAvg = mean(speed_smoothed(abs(speed_smoothed)>2));
 % max speed
 SpeedMax = max(speed_smoothed);
