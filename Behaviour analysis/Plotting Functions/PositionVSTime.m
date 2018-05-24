@@ -22,8 +22,13 @@ for i = 1:length(Tr_s)
     for j = 1:Trial_NR
         [max_v,max_i] = max(PlotObject.es.traj(min(find(PlotObject.es.trialID==j))+60:max(find(PlotObject.es.trialID==j)))); % added 60 frames rejection criterion at the beginning to avoid false maxima
         [min_v,min_i] = min(PlotObject.es.traj(min(find(PlotObject.es.trialID==j))+60:max(find(PlotObject.es.trialID==j))));
-        Y_pos = PlotObject.es.traj(find(PlotObject.es.traj(find(PlotObject.es.trialID==j))==min_v)+min(find(PlotObject.es.trialID==j))+framerate*1:find(PlotObject.es.traj(find(PlotObject.es.trialID==j))==max_v)+min(find(PlotObject.es.trialID==j)));
-        TrialTime = PlotObject.es.sampleTimes(find(PlotObject.es.traj(find(PlotObject.es.trialID==j))==min_v)+min(find(PlotObject.es.trialID==j))+framerate*1:find(PlotObject.es.traj(find(PlotObject.es.trialID==j))==max_v)+min(find(PlotObject.es.trialID==j)));
+        if find(PlotObject.es.traj(find(PlotObject.es.trialID==j))==max_v)+min(find(PlotObject.es.trialID==j))<length(PlotObject.es.traj)
+            Y_pos = PlotObject.es.traj(find(PlotObject.es.traj(find(PlotObject.es.trialID==j))==min_v)+min(find(PlotObject.es.trialID==j))+framerate*1:find(PlotObject.es.traj(find(PlotObject.es.trialID==j))==max_v)+min(find(PlotObject.es.trialID==j)));
+            TrialTime = PlotObject.es.sampleTimes(find(PlotObject.es.traj(find(PlotObject.es.trialID==j))==min_v)+min(find(PlotObject.es.trialID==j))+framerate*1:find(PlotObject.es.traj(find(PlotObject.es.trialID==j))==max_v)+min(find(PlotObject.es.trialID==j)));
+        else
+            Y_pos = PlotObject.es.traj(find(PlotObject.es.traj(find(PlotObject.es.trialID==j))==min_v)+min(find(PlotObject.es.trialID==j))+framerate*1:end);
+            TrialTime = PlotObject.es.sampleTimes(find(PlotObject.es.traj(find(PlotObject.es.trialID==j))==min_v)+min(find(PlotObject.es.trialID==j))+framerate*1:end);
+        end
         if max(Y_pos)< TrackLength*0.99
             if c1==1
                 h(1) = plot(TrialTime,Y_pos,'color',[0.7 0.7 0.7],'LineWidth', 1.5);
@@ -50,8 +55,9 @@ for i = 1:length(Tr_s)
     %% plot reward releases   
     c1=1; c2=1; c3=1; c4=1;
     hold on
-    h(3) = plot(PlotObject.es.sampleTimes(find(PlotObject.es.reward==0)),PlotObject.es.traj(find(PlotObject.es.reward==0)),'s','color',[0.5 0.5 0.5],'lineWidth',1); % user rewards
-    h(4) = plot(PlotObject.es.sampleTimes(find(PlotObject.es.reward==1)),PlotObject.es.traj(find(PlotObject.es.reward==1)),'o','color',[0.5 0.5 0.5],'lineWidth',1); % passive rewards
+    if 
+    h(3) = plot(PlotObject.es.sampleTimes(find(PlotObject.es.reward==0)),PlotObject.es.traj(find(PlotObject.es.reward==0)),'s','color','Yellow','lineWidth',1); % user rewards
+    h(4) = plot(PlotObject.es.sampleTimes(find(PlotObject.es.reward==1)),PlotObject.es.traj(find(PlotObject.es.reward==1)),'o','color',[0.5 0.5 0.5],'lineWidth',1.5); % passive rewards
     h(5) = plot(PlotObject.es.sampleTimes(find(PlotObject.es.reward==2)),PlotObject.es.traj(find(PlotObject.es.reward==2)),'o','color','k','lineWidth',1.5); % active rewards
     
     %% plot lick events

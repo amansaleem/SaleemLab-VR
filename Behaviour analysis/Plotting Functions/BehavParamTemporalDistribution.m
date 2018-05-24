@@ -44,7 +44,7 @@ for i = 1:length(Tr_s)
         else
             if ~isempty(TrialsID)
                 TrialInfo(i,1) = length(TrialsID); % nr. of trials completed in this time window
-                TrialInfo(i,2) = mean(([TrialsID(1)+length(indexes)-LastTemp; diff(TrialsID)]-unique(PlotObject.es.blanks(TrialsID)))./framerate); % avg. trial duration
+                TrialInfo(i,2) = mean(([TrialsID(1)+length(indexes)-LastTemp; diff(TrialsID)]-(PlotObject.es.blanks(TrialsID)))./framerate); % avg. trial duration
                 LastTemp = TrialsID(end);
             else
                 TrialInfo(i,1) = 0; % nr. of trials completed in this time window
@@ -66,7 +66,8 @@ for i = 1:length(Tr_s)
     xlim([0 round(DurationSession)]) ;
     set(gca,'XTick',[Edges(2:end-1) round(DurationSession)],'XTickLabel',[]);
     set(gca,'YTick',[ceil(max(LickCount)/10)*10/3:ceil(max(LickCount)/10)*10/3:ceil(max(LickCount)/10)*10],...
-       'YTickLabel',[ceil(max(LickCount)/10)*10/3:ceil(max(LickCount)/10)*10/3:ceil(max(LickCount)/10)*10]);
+       'YTickLabel',[round(ceil(max(LickCount)/10)*10/3):round(ceil(max(LickCount)/10)*10/3):ceil(max(LickCount)/10)*10]);
+    ylim([0 max(LickCount)])
     set(gca,'box','off','TickDir','out');
     ylabel('Lick count');
     %%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -78,8 +79,7 @@ for i = 1:length(Tr_s)
     end
     xlim([0 round(DurationSession)]) ;
     set(gca,'XTick',[Edges(2:end-1) round(DurationSession)],'XTickLabel',[]);
-    set(gca,'YTick',[1 max(TrialInfo(:,1))],...
-            'YTickLabel',[1 max(TrialInfo(:,1))]);
+    ''''
     set(gca,'box','off','TickDir','out');
     ylabel('Trials');
     %%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -93,6 +93,7 @@ for i = 1:length(Tr_s)
     set(gca,'XTick',[Edges(2:end-1) round(DurationSession)],'XTickLabel',[Edges(2:end-1)/framerate round(DurationSession/framerate)]);
     set(gca,'YTick',[5:5:ceil(max(RunningInfo(:,1)))],...
             'YTickLabel',[5:5:ceil(max(RunningInfo(:,1)))]);
+    ylim([0 ceil(max(RunningInfo(:,1)))]);
     set(gca,'box','off','TickDir','out');
     xlabel('minutes'); 
     ylabel('% run time');

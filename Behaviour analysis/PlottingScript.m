@@ -4,7 +4,7 @@ AnimalObject = expSelector;
 r = expObject;
 r.animal = AnimalObject.expObject.animal;
 r.iseries = AnimalObject.expObject.iseries;
-r.exp_list = AnimalObject.expObject.iexp;
+r.iexp = AnimalObject.expObject.iexp;
 % load experiment
 [es, totalReward, VR] = loadBehav(AnimalObject.expObject);
 

@@ -51,8 +51,18 @@ for i = 1:length(unique(obj.es.trialID))
         i2 = i2+1;
     end
 end
-AvgTrial_fc = mean(TrialDuration_fc);
-AvgTrial_nc = mean(TrialDuration_nc);
+if exist('TrialDuration_fc','var')
+    AvgTrial_fc = mean(TrialDuration_fc);
+else
+    AvgTrial_fc = 000;
+    TrialDuration_fc = 000;
+end
+if exist('TrialDuration_nc','var')
+    AvgTrial_nc = mean(TrialDuration_nc);
+else
+    AvgTrial_nc = 000;
+    TrialDuration_nc = 000;
+end
 % mean moving speed
 speedWheel = obj.es.ballspeed*obj.VR.EXP.wheelToVR;
 speedWheel(isnan(speedWheel)) = 0;

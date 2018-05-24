@@ -16,13 +16,15 @@ for i = 1:length(Tr_s)
     
     TrackLength  = PlotObject.VR.EXP.l;
     Edges = 0:3.33:TrackLength;
-    for i = 1:length(Edges)-1
-        indexes = find(PlotObject.es.traj(~isnan(PlotObject.es.traj))>=Edges(i) & PlotObject.es.traj(~isnan(PlotObject.es.traj))<Edges(i+1));
-        temp = PlotObject.es.ballspeed(indexes)
-        Speed(i,1) = mean(temp(~isnan(temp)))*PlotObject.VR.EXP.wheelToVR;
-        Speed(i,2) = std(temp(~isnan(temp)))*PlotObject.VR.EXP.wheelToVR;
+    for j = 1:length(Edges)-1
+        indexes = find(PlotObject.es.traj(~isnan(PlotObject.es.traj))>=Edges(j) & PlotObject.es.traj(~isnan(PlotObject.es.traj))<Edges(j+1));
+        temp = PlotObject.es.ballspeed(indexes);
+        temp(abs(temp)>100) = 0;
+        Speed(j,1) = mean(temp(~isnan(temp)))*PlotObject.VR.EXP.wheelToVR;
+        Speed(j,2) = std(temp(~isnan(temp)))*PlotObject.VR.EXP.wheelToVR;
         clear indexes
     end
+    Speed(Speed(:,2)>20,2)=0;
     errorbar(0+mean(diff(Edges))/2:mean(diff(Edges)):max(Edges), Speed(:,1), Speed(:,2))
     hold on
     plot([PlotObject.VR.EXP.rew_pos PlotObject.VR.EXP.rew_pos],[-(min(Speed(:,1))+max(Speed(:,2))) max(Speed(:,1))+max(Speed(:,2))],'k')

@@ -19,9 +19,11 @@ for i = 1:length(Tr_s)
     clear LickVector SpeedVector LickVector500ms
     for i=1:length(RewardIndexes)
         if PlotObject.es.traj(RewardIndexes(i))>(PlotObject.VR.EXP.rew_pos-PlotObject.VR.EXP.rew_tol) && PlotObject.es.traj(RewardIndexes(i))<(PlotObject.VR.EXP.rew_pos+PlotObject.VR.EXP.rew_tol)
-            LickVector(j,:) = PlotObject.es.lick(RewardIndexes(i)-framerate*PSTH_interval:RewardIndexes(i)+framerate*PSTH_interval)';
-            SpeedVector(j,:) = PlotObject.es.ballspeed(RewardIndexes(i)-framerate*PSTH_interval:RewardIndexes(i)+framerate*PSTH_interval);
-            j = j + 1;
+            if RewardIndexes(i)-framerate*PSTH_interval>0 && RewardIndexes(i)+framerate*PSTH_interval<length(PlotObject.es.lick)
+                LickVector(j,:) = PlotObject.es.lick(RewardIndexes(i)-framerate*PSTH_interval:RewardIndexes(i)+framerate*PSTH_interval)';
+                SpeedVector(j,:) = PlotObject.es.ballspeed(RewardIndexes(i)-framerate*PSTH_interval:RewardIndexes(i)+framerate*PSTH_interval);
+                j = j + 1;
+            end
         end
     end
     LickVector(isnan(LickVector)) = 0;
@@ -43,8 +45,13 @@ for i = 1:length(Tr_s)
     hold on
     plot([0 0], [0 max(sum(LickVector500ms,1))],'--k','LineWidth',2)
     set(gca,'box','off','TickDir','out', 'XTick',-PSTH_interval:1:PSTH_interval, 'XTickLabel',[]);
-    set(gca,'YTick',[5:5:max(5,max(sum(LickVector500ms,1)))],...
-            'YTickLabel',[5:5:max(5,max(sum(LickVector500ms,1)))]);
+    if max(sum(LickVector500ms,1))<20
+        set(gca,'YTick',[5:5:max(5,max(sum(LickVector500ms,1)))],...
+                'YTickLabel',[5:5:max(5,max(sum(LickVector500ms,1)))]);
+    else
+        set(gca,'YTick',[10:10:max(5,max(sum(LickVector500ms,1)))],...
+                'YTickLabel',[10:10:max(5,max(sum(LickVector500ms,1)))]);
+    end
     ylabel('Licks');
     ylim([0 max(sum(LickVector500ms,1))]);
     text(-3,max(5,max(sum(LickVector500ms,1)))-1,'Reward Release');
@@ -54,8 +61,15 @@ for i = 1:length(Tr_s)
     shadedErrorBar(-PSTH_interval:1/framerate:PSTH_interval,MeanSpeed,SEMSpeed)
     set(gca,'box','off','TickDir','out', 'XTick',-PSTH_interval:1:PSTH_interval, ...
                                     'XTickLabel',-PSTH_interval:1:PSTH_interval);
-    set(gca,'YTick',5:5:max(5,max(MeanSpeed)),...
-       'YTickLabel',5:5:max(5,max(MeanSpeed)));
+    if max(MeanSpeed)<5
+         set(gca,'YTick',1:1:5,...
+        'YTickLabel',1:1:5);
+        ylim([0 max(MeanSpeed)]);
+    else
+         set(gca,'YTick',5:5:max(5,max(MeanSpeed)),...
+        'YTickLabel',5:5:max(5,max(MeanSpeed)));
+        ylim([0 max(5,max(MeanSpeed))]);
+    end
     xlabel('seconds'); ylabel('speed');
     
 end
