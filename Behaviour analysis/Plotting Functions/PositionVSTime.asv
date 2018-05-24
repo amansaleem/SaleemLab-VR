@@ -6,24 +6,29 @@
 %% plot info from only one session
 % select trials from first
 
-function PositionVSTime(obj, AnimalSessionInfo);
+function PositionVSTime(PlotObject, AnimalSessionInfo);
 
-Tr_s = unique(obj.es.iexp);
+Tr_s = unique(PlotObject.es.iexp);
 % actual plotting function
-framerate = str2num(obj.es.sampleRate(1:2)); % Hz
+framerate = str2num(PlotObject.es.sampleRate(1:2)); % Hz
 for i = 1:length(Tr_s)
          
-    Trial_NR = max(obj.es.trialID(find(obj.es.iexp==Tr_s(i))));
+    Trial_NR = max(PlotObject.es.trialID(find(PlotObject.es.iexp==Tr_s(i))));
     %% plot trial trajectories, in gray unfinished trials
     %figure
     hold on
     c1=1; c2=1;
-    TrackLength  = obj.VR.EXP.l;
+    TrackLength  = PlotObject.VR.EXP.l;
     for j = 1:Trial_NR
-        [max_v,max_i] = max(obj.es.traj(min(find(obj.es.trialID==j))+60:max(find(obj.es.trialID==j)))); % added 60 frames rejection criterion at the beginning to avoid false maxima
-        [min_v,min_i] = min(obj.es.traj(min(find(obj.es.trialID==j))+60:max(find(obj.es.trialID==j))));
-        Y_pos = obj.es.traj(find(obj.es.traj(find(obj.es.trialID==j))==min_v)+min(find(obj.es.trialID==j))+framerate*1:find(obj.es.traj(find(obj.es.trialID==j))==max_v)+min(find(obj.es.trialID==j)));
-        TrialTime = obj.es.sampleTimes(find(obj.es.traj(find(obj.es.trialID==j))==min_v)+min(find(obj.es.trialID==j))+framerate*1:find(obj.es.traj(find(obj.es.trialID==j))==max_v)+min(find(obj.es.trialID==j)));
+        [max_v,max_i] = max(PlotObject.es.traj(min(find(PlotObject.es.trialID==j))+60:max(find(PlotObject.es.trialID==j)))); % added 60 frames rejection criterion at the beginning to avoid false maxima
+        [min_v,min_i] = min(PlotObject.es.traj(min(find(PlotObject.es.trialID==j))+60:max(find(PlotObject.es.trialID==j))));
+        if find(PlotObject.es.traj(find(PlotObject.es.trialID==j))==max_v)+min(find(PlotObject.es.trialID==j))<length(PlotObject.es.traj)
+            Y_pos = PlotObject.es.traj(find(PlotObject.es.traj(find(PlotObject.es.trialID==j))==min_v)+min(find(PlotObject.es.trialID==j))+framerate*1:find(PlotObject.es.traj(find(PlotObject.es.trialID==j))==max_v)+min(find(PlotObject.es.trialID==j)));
+            TrialTime = PlotObject.es.sampleTimes(find(PlotObject.es.traj(find(PlotObject.es.trialID==j))==min_v)+min(find(PlotObject.es.trialID==j))+framerate*1:find(PlotObject.es.traj(find(PlotObject.es.trialID==j))==max_v)+min(find(PlotObject.es.trialID==j)));
+        else
+            Y_pos = PlotObject.es.traj(find(PlotObject.es.traj(find(PlotObject.es.trialID==j))==min_v)+min(find(PlotObject.es.trialID==j))+framerate*1:end);
+            TrialTime = PlotObject.es.sampleTimes(find(PlotObject.es.traj(find(PlotObject.es.trialID==j))==min_v)+min(find(PlotObject.es.trialID==j))+framerate*1:end);
+        end
         if max(Y_pos)< TrackLength*0.99
             if c1==1
                 h(1) = plot(TrialTime,Y_pos,'color',[0.7 0.7 0.7],'LineWidth', 1.5);
@@ -43,19 +48,23 @@ for i = 1:length(Tr_s)
     end
     xlabel('minutes'); ylabel('cm');
     set(gca,'TickDir','out','box','off')
-    set(gca,'XTick',0:300:ceil(max(obj.es.sampleTimes)),'xTickLabel',0:5:ceil((max(obj.es.sampleTimes)/60)/5)*5)
+    set(gca,'XTick',0:300:ceil(max(PlotObject.es.sampleTimes)),'xTickLabel',0:5:ceil((max(PlotObject.es.sampleTimes)/60)/5)*5)
     set(gca,'YTick',0:TrackLength/5:TrackLength,'yTickLabel',0:TrackLength/5:TrackLength)
-    xlim([0 ceil(max(obj.es.sampleTimes))]);
+    xlim([0 ceil(max(PlotObject.es.sampleTimes))]);
     hold on
     %% plot reward releases   
     c1=1; c2=1; c3=1; c4=1;
     hold on
-    h(3) = plot(obj.es.sampleTimes(find(obj.es.reward==0)),obj.es.traj(find(obj.es.reward==0)),'s','color',[0.5 0.5 0.5],'lineWidth',1); % user rewards
-    h(4) = plot(obj.es.sampleTimes(find(obj.es.reward==1)),obj.es.traj(find(obj.es.reward==1)),'o','color',[0.5 0.5 0.5],'lineWidth',1); % passive rewards
-    h(5) = plot(obj.es.sampleTimes(find(obj.es.reward==2)),obj.es.traj(find(obj.es.reward==2)),'o','color','k','lineWidth',1.5); % active rewards
-    
+    if ~length(isnan(PlotObject.es.reward))==length(PlotObject.es.reward)
+        if find(PlotObject.es.reward==0)
+        h(3) = plot(PlotObject.es.sampleTimes(find(PlotObject.es.reward==0)),PlotObject.es.traj(find(PlotObject.es.reward==0)),'s','color','Yellow','lineWidth',1); % user rewards
+        find(PlotObject.es.reward==0)
+        h(4) = plot(PlotObject.es.sampleTimes(find(PlotObject.es.reward==1)),PlotObject.es.traj(find(PlotObject.es.reward==1)),'o','color',[0.5 0.5 0.5],'lineWidth',1.5); % passive rewards
+        find(PlotObject.es.reward==0)
+        h(5) = plot(PlotObject.es.sampleTimes(find(PlotObject.es.reward==2)),PlotObject.es.traj(find(PlotObject.es.reward==2)),'o','color','k','lineWidth',1.5); % active rewards
+    end
     %% plot lick events
-    h(6) = plot(obj.es.sampleTimes(find(obj.es.lick==1)),obj.es.traj(find(obj.es.lick==1)),'+','color','b','lineWidth',1);
+    h(6) = plot(PlotObject.es.sampleTimes(find(PlotObject.es.lick==1)),PlotObject.es.traj(find(PlotObject.es.lick==1)),'+','color','b','lineWidth',1);
        
 %     
     LegendItems = { 'position in interrupted trials', ... 

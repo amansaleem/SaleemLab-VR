@@ -55,11 +55,17 @@ for i = 1:length(Tr_s)
     %% plot reward releases   
     c1=1; c2=1; c3=1; c4=1;
     hold on
-    if 
-    h(3) = plot(PlotObject.es.sampleTimes(find(PlotObject.es.reward==0)),PlotObject.es.traj(find(PlotObject.es.reward==0)),'s','color','Yellow','lineWidth',1); % user rewards
-    h(4) = plot(PlotObject.es.sampleTimes(find(PlotObject.es.reward==1)),PlotObject.es.traj(find(PlotObject.es.reward==1)),'o','color',[0.5 0.5 0.5],'lineWidth',1.5); % passive rewards
-    h(5) = plot(PlotObject.es.sampleTimes(find(PlotObject.es.reward==2)),PlotObject.es.traj(find(PlotObject.es.reward==2)),'o','color','k','lineWidth',1.5); % active rewards
-    
+    if ~length(isnan(PlotObject.es.reward))==length(PlotObject.es.reward)
+        if ~isempty(find(PlotObject.es.reward==0))
+            h(3) = plot(PlotObject.es.sampleTimes(find(PlotObject.es.reward==0)),PlotObject.es.traj(find(PlotObject.es.reward==0)),'s','color','Yellow','lineWidth',1); % user rewards
+        end
+        if ~isempty(find(PlotObject.es.reward==0))
+            h(4) = plot(PlotObject.es.sampleTimes(find(PlotObject.es.reward==1)),PlotObject.es.traj(find(PlotObject.es.reward==1)),'o','color',[0.5 0.5 0.5],'lineWidth',1.5); % passive rewards
+        end
+        if ~isempty(find(PlotObject.es.reward==0))
+            h(5) = plot(PlotObject.es.sampleTimes(find(PlotObject.es.reward==2)),PlotObject.es.traj(find(PlotObject.es.reward==2)),'o','color','k','lineWidth',1.5); % active rewards
+        end
+    end
     %% plot lick events
     h(6) = plot(PlotObject.es.sampleTimes(find(PlotObject.es.lick==1)),PlotObject.es.traj(find(PlotObject.es.lick==1)),'+','color','b','lineWidth',1);
        
