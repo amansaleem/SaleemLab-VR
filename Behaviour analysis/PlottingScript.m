@@ -8,6 +8,9 @@ r.iexp = AnimalObject.expObject.iexp;
 % load experiment
 [es, totalReward, VR] = loadBehav(AnimalObject.expObject);
 
+PlotOBject.es = es
+PlotOBject.VR = VR
+
 PlotObject = behavPlotter;
 AnimalObject = AnimalObject;
 expObject = r;

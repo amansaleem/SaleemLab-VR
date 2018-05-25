@@ -18,36 +18,41 @@ classdef behavPlotter < handle
             obj.figHandle.MainFig = figure('Name', 'Behaviour PLotter',...
                 'Toolbar', 'none',...
                 'NumberTitle', 'off',...
-                'Units', 'normalized',...
-                'OuterPosition', [0.1 0.1 0.5 0.7]);%...
+                'Units', 'pixels',...
+                'OuterPosition', get(0, 'Screensize'), ...
+                'Color', [0 0 0]);%...
             
             obj.figHandle.Full = uiextras.VBox('Parent',obj.figHandle.MainFig,'Spacing',5,'Padding',2);
             
-            %Splitting to top and bottom sections
+            VerSplit = -1/8;
+            
+            %Splitting to three rows of plots
             obj.figHandle.Top = uiextras.HBox('Parent',obj.figHandle.Full,'Spacing',5,'Padding',2);
             obj.figHandle.Middle = uiextras.HBox('Parent',obj.figHandle.Full,'Spacing',5,'Padding',2);
             obj.figHandle.Bottom = uiextras.HBox('Parent',obj.figHandle.Full,'Spacing',5,'Padding',2);
             
             %Spliting the top
-            obj.figHandle.expSelectorPanel = uiextras.VBox('Parent',obj.figHandle.Top,'Spacing',5,'Padding',2);
-            obj.figHandle.PositionTimePlot = axes('Parent',obj.figHandle.Top);
-            obj.figHandle.Top.Widths = [-1 -5];
+            obj.figHandle.expSelectorPanel = uipanel('Parent',obj.figHandle.Top);
+            obj.figHandle.PositionTimePlot = uipanel('Parent',obj.figHandle.Top,'BorderType','none');
+            obj.figHandle.Top.Widths = [2*VerSplit 6*VerSplit];
             
             % Splitting the Middle
-            obj.figHandle.animalInfoPanel  = uiextras.VBox('Parent',obj.figHandle.Middle,'Spacing',1,'Padding',1);
-            obj.figHandle.HistPosPlot   = axes('Parent',obj.figHandle.Middle);
-            obj.figHandle.VRPosPlot     = axes('Parent',obj.figHandle.Middle);
-            obj.figHandle.SpdProfilePlot = axes('Parent',obj.figHandle.Middle);
-            obj.figHandle.HistSpdPlot   = axes('Parent',obj.figHandle.Middle);
-            obj.figHandle.HistLickPlot   = axes('Parent',obj.figHandle.Middle);
-            obj.figHandle.Middle.Sizes  = [-1 -1 -1 -1 -1 -1];
+            obj.figHandle.animalInfoPanel  = uipanel('Parent',obj.figHandle.Middle);
+            obj.figHandle.HistSpdPlot   = uipanel('Parent',obj.figHandle.Middle,'BorderType','none');
+            obj.figHandle.HistPosPlot   = uipanel('Parent',obj.figHandle.Middle,'BorderType','none');
+            %obj.figHandle.VRPosPlot     = uipanel('Parent',obj.figHandle.Middle,'BorderType','none');
+            obj.figHandle.SpdProfilePlot = uipanel('Parent',obj.figHandle.Middle,'BorderType','none');
+            obj.figHandle.HistLickPlot   = uipanel('Parent',obj.figHandle.Middle,'BorderType','none');
+            obj.figHandle.Middle.Sizes  = [ 2*VerSplit 6/4*VerSplit 6/4*VerSplit 6/4*VerSplit 6/4*VerSplit ];
             
             % Splitting the bottom
-            obj.figHandle.BeahvEventsTime   = axes('Parent',obj.figHandle.Bottom);
-            obj.figHandle.PSTHLicks     = axes('Parent',obj.figHandle.Bottom);
-            obj.figHandle.PSTHSpeed = axes('Parent',obj.figHandle.Bottom);
-            obj.figHandle.Bottom.Sizes  = [-1 -1 -1];
-            
+            obj.figHandle.SomethingElse = uipanel('Parent',obj.figHandle.Bottom,'BorderType','none');
+            obj.figHandle.BeahvEventsTime   = uipanel('Parent',obj.figHandle.Bottom,'BorderType','none');
+            obj.figHandle.PSTHLicksSpeed    = uipanel('Parent',obj.figHandle.Bottom,'BorderType','none');
+            obj.figHandle.Bottom.Sizes  = [2*VerSplit 6/2*VerSplit 6/2*VerSplit];
+        end
+        
+        function doAllPlots(obj)
             [obj.es, obj.totalReward obj.VR] = obj.expObject.loadBehav;
             obj.esLoaded = true;
             
@@ -56,35 +61,42 @@ classdef behavPlotter < handle
             end
             obj.AnimalObject.createUI(obj.figHandle.expSelectorPanel);
             obj.AnimalObject.embeddedObj = true;
-            
-            % Animal Info Panel
+ 
             AnimalSessionInfo = GetSessionInfo(obj);
-            DisplayInfoPanel(obj, AnimalSessionInfo);
-            
+
+            %% TOP            
             % Position VS Time
             axes(obj.figHandle.PositionTimePlot);
             PositionVSTime(obj, AnimalSessionInfo);
-            obj.figHandle.Top.Widths = [-1 -5];
+            
+            %% MIDDLE
+            % Animal Info Panel
+            DisplayInfoPanel(obj, AnimalSessionInfo);
             
             % Position Probability Distribution
             axes(obj.figHandle.HistPosPlot);
             PositionDistribution(obj, AnimalSessionInfo);
-            obj.figHandle.Middle.Sizes  = [-1 -1 -1 -1 -1 -1];
             
             % Mean Speed Distribution
             axes(obj.figHandle.SpdProfilePlot);
-            SpeedDistribution(obj, AnimalSessionInfo);
-            obj.figHandle.Middle.Sizes  = [-1 -1 -1 -1 -1 -1];
+            SpeedTrackDistribution(obj, AnimalSessionInfo);
             
             % Lick Count Distribution
             axes(obj.figHandle.HistLickPlot);
             LicksDistribution(obj, AnimalSessionInfo);
-            obj.figHandle.Middle.Sizes  = [-1 -1 -1 -1 -1 -1];
             
+            % Speed his plot
+            axes(obj.figHandle.HistSpdPlot)
+            SpeedProfileHist(obj, AnimalSessionInfo);
+            
+            %% BOTTOM
             % Lick temporal Distribution
             axes(obj.figHandle.BeahvEventsTime);
             BehavParamTemporalDistribution(obj, AnimalSessionInfo);
-            obj.figHandle.Bottom.Sizes  = [-1 -1 -1];
+            
+            % PSTH of of speed and licking before rewards
+            axes(obj.figHandle.PSTHLicksSpeed);
+            PSTHLicksSpeed(obj, AnimalSessionInfo);
             
         end
         
@@ -112,5 +124,88 @@ classdef behavPlotter < handle
             obj.load;
             obj.createUI;
         end
+        
+        function DisplayInfoPanel(obj, AnimalSessionInfo)
+                        
+            InfoType = {'MOUSE: ';...
+                        'Session: '; ...
+                        'Training day nr: '; ...
+                        'Duration: '; ...
+                        'Total nr of trials: '; ...
+                        'Total nr of trials: '; ...
+                        'VR type: '; ...
+                        'Avg. trial duration: '; ...
+                        'Avg. moving speed: '; ...
+                        'Max moving speed: '; ...
+                        'Time spent moving (>2cm/s): '; ...
+                        'Rewards released (tot): '; ...
+                        'Licks per trial: '; ...
+                        'Licks before/after reward location (total): '
+                        };
+            MapInfo2Animal = [1 5 3 6 7 10];   
+            
+            NrRows = length(InfoType);
+            for kk = 1:NrRows
+                obj.figHandle.animalText = uicontrol('Style','text',...
+                    'Parent',obj.figHandle.animalInfoPanel,...
+                    'fontweight','bold', ...
+                    'Units','normalized', ...
+                    'Position', [0.05 1-1/NrRows*i 0.4 1/NrRows], ...
+                    'String', InfoType{i} ,...  %AnimalSessionInfo{1}
+                    'HorizontalAlignment','right');
+                obj.figHandle.animalText1 = uicontrol('Style','text',...
+                    'Parent',obj.figHandle.animalInfoPanel,...
+                    'Units','normalized', ...
+                    'Position', [0.5 1-1/NrRows*i 0.4 1/NrRows], ...
+                    'String', AnimalSessionInfo{MapInfo2Animal(i)},...
+                    'HorizontalAlignment','left');
+            end
+        
+
+
+
+%             obj.figHandle.trials = uicontrol('Style','text',...
+%                 'Parent',obj.figHandle.animalInfoPanel,...
+%                 'String', ['Total nr of trials: ' num2str(AnimalSessionInfo{7}) ', of which ' num2str(length(AnimalSessionInfo{10})) ' completed'],...
+%                 'HorizontalAlignment','left');
+%             obj.figHandle.VR = uicontrol('Style','text',...
+%                 'Parent',obj.figHandle.animalInfoPanel,...
+%                 'String', ['VR type: ' AnimalSessionInfo{8}],...
+%                 'HorizontalAlignment','left');
+%             obj.figHandle.trialduration = uicontrol('Style','text',...
+%                 'Parent',obj.figHandle.animalInfoPanel,...
+%                 'String', ['Avg. trial duration: ' num2str(AnimalSessionInfo{11}) ' seconds'],...
+%                 'HorizontalAlignment','left');
+%             obj.figHandle.avgspeed = uicontrol('Style','text',...
+%                 'Parent',obj.figHandle.animalInfoPanel,...
+%                 'String', ['Avg. moving speed: ' num2str(AnimalSessionInfo{13}) ' cm/s'],...
+%                 'HorizontalAlignment','left');
+%             obj.figHandle.maxspeed = uicontrol('Style','text',...
+%                 'Parent',obj.figHandle.animalInfoPanel,...
+%                 'String', ['Max moving speed: ' num2str(AnimalSessionInfo{14}) ' cm/s'],...
+%                 'HorizontalAlignment','left');
+%             obj.figHandle.moving = uicontrol('Style','text',...
+%                 'Parent',obj.figHandle.animalInfoPanel,...
+%                 'String', ['Time spent moving (>2cm/s): ' num2str(AnimalSessionInfo{15}) ' %'],...
+%                 'HorizontalAlignment','left');
+%             obj.figHandle.Rewards = uicontrol('Style','text',...
+%                 'Parent',obj.figHandle.animalInfoPanel,...
+%                 'String', ['Rewards released: ' num2str(AnimalSessionInfo{16}) ' by user, ' num2str(AnimalSessionInfo{17}) ' passive, ' num2str(AnimalSessionInfo{18}) ' active'],...
+%                 'HorizontalAlignment','left');
+%             obj.figHandle.lickstrial = uicontrol('Style','text',...
+%                 'Parent',obj.figHandle.animalInfoPanel,...
+%                 'String', ['Licks per trial: ' num2str(AnimalSessionInfo{19})],...
+%                 'HorizontalAlignment','left');
+%             obj.figHandle.LicksPosition = uicontrol('Style','text',...
+%                 'Parent',obj.figHandle.animalInfoPanel,...
+%                 'String', ['Licks before-after reward relase: ' num2str(AnimalSessionInfo{20}) '-' num2str(AnimalSessionInfo{21})],...
+%                 'HorizontalAlignment','left');
+            
+            % to add spatial frequency info of the textures for DIT task
+            
+        end
+
+        
+        
     end
 end

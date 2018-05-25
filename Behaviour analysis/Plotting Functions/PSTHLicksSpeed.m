@@ -11,7 +11,7 @@ Tr_s = unique(PlotObject.es.iexp);
 % actual plotting function
 framerate = str2num(PlotObject.es.sampleRate(1:2)); % Hz
 for i = 1:length(Tr_s)
-    if ~length(isnan(PlotObject.es.reward))==length(PlotObject.es.reward)
+    if ~(sum(isnan(PlotObject.es.reward))==length(PlotObject.es.reward))
         PSTH_interval = 5;
         RewardIndexes = find((~isnan(PlotObject.es.reward)));
         RewardType = PlotObject.es.reward(RewardIndexes);

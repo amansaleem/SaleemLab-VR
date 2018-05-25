@@ -19,6 +19,8 @@ for i = 1:length(Tr_s)
     hold on
     c1=1; c2=1;
     TrackLength  = PlotObject.VR.EXP.l;
+    hb1 = subtightplot(1,1,1,[0.01 0.01],[0.17 0.01],[0.05 0.02])
+    set(hb1,'Parent',PlotObject.figHandle.PositionTimePlot);
     for j = 1:Trial_NR
         [max_v,max_i] = max(PlotObject.es.traj(min(find(PlotObject.es.trialID==j))+60:max(find(PlotObject.es.trialID==j)))); % added 60 frames rejection criterion at the beginning to avoid false maxima
         [min_v,min_i] = min(PlotObject.es.traj(min(find(PlotObject.es.trialID==j))+60:max(find(PlotObject.es.trialID==j))));
@@ -55,7 +57,7 @@ for i = 1:length(Tr_s)
     %% plot reward releases   
     c1=1; c2=1; c3=1; c4=1;
     hold on
-    if ~length(isnan(PlotObject.es.reward))==length(PlotObject.es.reward)
+    if ~(sum(isnan(PlotObject.es.reward))==length(PlotObject.es.reward))
         if ~isempty(find(PlotObject.es.reward==0))
             h(3) = plot(PlotObject.es.sampleTimes(find(PlotObject.es.reward==0)),PlotObject.es.traj(find(PlotObject.es.reward==0)),'s','color','Yellow','lineWidth',1); % user rewards
         end

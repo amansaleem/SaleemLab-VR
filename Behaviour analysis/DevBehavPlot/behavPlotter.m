@@ -18,10 +18,13 @@ classdef behavPlotter < handle
             obj.figHandle.MainFig = figure('Name', 'Behaviour PLotter',...
                 'Toolbar', 'none',...
                 'NumberTitle', 'off',...
-                'Units', 'normalized',...
-                'OuterPosition', [0.1 0.1 0.5 0.7]);%...
+                'Units', 'pixels',...
+                'OuterPosition', get(0, 'Screensize'), ...
+                'Color', [0 0 0]);%...
             
             obj.figHandle.Full = uiextras.VBox('Parent',obj.figHandle.MainFig,'Spacing',5,'Padding',2);
+            
+            VerSplit = -1/8;
             
             %Splitting to three rows of plots
             obj.figHandle.Top = uiextras.HBox('Parent',obj.figHandle.Full,'Spacing',5,'Padding',2);
@@ -31,22 +34,22 @@ classdef behavPlotter < handle
             %Spliting the top
             obj.figHandle.expSelectorPanel = uipanel('Parent',obj.figHandle.Top);
             obj.figHandle.PositionTimePlot = uipanel('Parent',obj.figHandle.Top,'BorderType','none');
-            obj.figHandle.Top.Widths = [-1 -5];
+            obj.figHandle.Top.Widths = [2*VerSplit 6*VerSplit];
             
             % Splitting the Middle
-            obj.figHandle.animalInfoPanel  = uiextras.VBox('Parent',obj.figHandle.Middle);
+            obj.figHandle.animalInfoPanel  = uipanel('Parent',obj.figHandle.Middle);
+            obj.figHandle.HistSpdPlot   = uipanel('Parent',obj.figHandle.Middle,'BorderType','none');
             obj.figHandle.HistPosPlot   = uipanel('Parent',obj.figHandle.Middle,'BorderType','none');
             %obj.figHandle.VRPosPlot     = uipanel('Parent',obj.figHandle.Middle,'BorderType','none');
             obj.figHandle.SpdProfilePlot = uipanel('Parent',obj.figHandle.Middle,'BorderType','none');
-            obj.figHandle.HistSpdPlot   = uipanel('Parent',obj.figHandle.Middle,'BorderType','none');
             obj.figHandle.HistLickPlot   = uipanel('Parent',obj.figHandle.Middle,'BorderType','none');
-            obj.figHandle.Middle.Sizes  = [-1 -1 -1 -1 -1 ];
+            obj.figHandle.Middle.Sizes  = [ 2*VerSplit 6/4*VerSplit 6/4*VerSplit 6/4*VerSplit 6/4*VerSplit ];
             
             % Splitting the bottom
+            obj.figHandle.SomethingElse = uipanel('Parent',obj.figHandle.Bottom,'BorderType','none');
             obj.figHandle.BeahvEventsTime   = uipanel('Parent',obj.figHandle.Bottom,'BorderType','none');
             obj.figHandle.PSTHLicksSpeed    = uipanel('Parent',obj.figHandle.Bottom,'BorderType','none');
-            obj.figHandle.SomethingElse = uipanel('Parent',obj.figHandle.Bottom,'BorderType','none');
-            obj.figHandle.Bottom.Sizes  = [-1 -1 -1];
+            obj.figHandle.Bottom.Sizes  = [2*VerSplit 6/2*VerSplit 6/2*VerSplit];
         end
         
         function doAllPlots(obj)
@@ -65,47 +68,36 @@ classdef behavPlotter < handle
             % Position VS Time
             axes(obj.figHandle.PositionTimePlot);
             PositionVSTime(obj, AnimalSessionInfo);
-            obj.figHandle.Top.Widths = [-1 -5];
             
             %% MIDDLE
             % Animal Info Panel
             DisplayInfoPanel(obj, AnimalSessionInfo);
-            obj.figHandle.Middle.Sizes  = [-1 -1 -1 -1 -1];
             
             % Position Probability Distribution
             axes(obj.figHandle.HistPosPlot);
             PositionDistribution(obj, AnimalSessionInfo);
-            obj.figHandle.Middle.Sizes  = [-1 -1 -1 -1 -1];
             
             % Mean Speed Distribution
             axes(obj.figHandle.SpdProfilePlot);
             SpeedTrackDistribution(obj, AnimalSessionInfo);
-            obj.figHandle.Middle.Sizes  = [-1 -1 -1 -1 -1];
             
             % Lick Count Distribution
             axes(obj.figHandle.HistLickPlot);
             LicksDistribution(obj, AnimalSessionInfo);
-            obj.figHandle.Middle.Sizes  = [-1 -1 -1 -1 -1];
             
             % Speed his plot
             axes(obj.figHandle.HistSpdPlot)
             SpeedProfileHist(obj, AnimalSessionInfo);
-            obj.figHandle.Middle.Sizes  = [-1 -1 -1 -1 -1];
             
             %% BOTTOM
             % Lick temporal Distribution
             axes(obj.figHandle.BeahvEventsTime);
             BehavParamTemporalDistribution(obj, AnimalSessionInfo);
-            %obj.figHandle.Bottom.Widths  = [-1 -1 -1];
             
             % PSTH of of speed and licking before rewards
             axes(obj.figHandle.PSTHLicksSpeed);
             PSTHLicksSpeed(obj, AnimalSessionInfo);
             
-%             axes(obj.figHandle.BeahvEventsTime);
-%             cla reset;
-%             axes(obj.figHandle.BeahvEventsTime);
-%             cla reset;
         end
         
         function load(obj)
@@ -132,5 +124,61 @@ classdef behavPlotter < handle
             obj.load;
             obj.createUI;
         end
+        
+        function DisplayInfoPanel(obj, AnimalSessionInfo)
+                        
+            InfoType = {'MOUSE: ';...
+                        'Session: '; ...
+                        'Training day nr: '; ...
+                        'Duration: '; ...
+                        'Total nr of trials: '; ...
+                        'Nr of trials completed: '; ...
+                        'VR type: '; ...
+                        'Avg. trial duration (seconds): '; ...
+                        'Avg. moving speed (cm/s): '; ...
+                        'Max moving speed (cm/s): '; ...
+                        'Percent time spent moving (>2cm/s): '; ...
+                        'Rewards released by user: '; ...
+                        'Rewards released passive: '; ...
+                        'Rewards released active: '; ...
+                        'Licks per trial: '; ...
+                        'Licks before reward location: '
+                        'Licks after reward location: '
+                        };
+            MapInfo2Animal = [1 5 3 6 7 10 8 11 13 14 15 16 17 18 19 20 21];   
+            
+            NrRows = length(InfoType);
+            for kk = 1:NrRows
+                obj.figHandle.animalText = uicontrol('Style','text',...
+                    'Parent',obj.figHandle.animalInfoPanel,...
+                    'fontweight','bold', ...
+                    'Units','normalized', ...
+                    'Position', [0.05 1-1/NrRows*kk 0.4 1/NrRows], ...
+                    'String', InfoType{kk} ,...  %AnimalSessionInfo{1}
+                    'HorizontalAlignment','right');
+                if isstr(AnimalSessionInfo{MapInfo2Animal(kk)})
+                    obj.figHandle.animalText1 = uicontrol('Style','text',...
+                        'Parent',obj.figHandle.animalInfoPanel,...
+                        'Units','normalized', ...
+                        'Position', [0.5 1-1/NrRows*kk 0.4 1/NrRows], ...
+                        'String', AnimalSessionInfo{MapInfo2Animal(kk)},...
+                        'HorizontalAlignment','left');
+                else
+                    obj.figHandle.animalText1 = uicontrol('Style','text',...
+                    'Parent',obj.figHandle.animalInfoPanel,...
+                    'Units','normalized', ...
+                    'Position', [0.5 1-1/NrRows*kk 0.4 1/NrRows], ...
+                    'String', num2str(AnimalSessionInfo{MapInfo2Animal(kk)}),...
+                    'HorizontalAlignment','left');
+                end
+            end
+                    
+            % to add spatial frequency info of the textures for DIT task or
+            % other task specific details
+            
+        end
+
+        
+        
     end
 end
