@@ -37,6 +37,7 @@ set(obj,'BaudRate',250000);
 
 if isLive
     while isLive
+        rigInfo.comms = [];
         keyType = checkKeyboard(rigInfo);
         if keyType == 1
             isLive = false;
