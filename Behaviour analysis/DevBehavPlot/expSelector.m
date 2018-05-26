@@ -14,14 +14,16 @@ classdef expSelector < handle
         expObject
         figHandle
         embeddedObj = false;
+        behavGuiObj = [];
     end
     
     methods
-        function obj = expSelector(fromGUI)
+        function obj = expSelector(fromGUIobj)
             if nargin<1
                 obj.createUI;
             end
             obj.expObject = expObject;
+            obj.behavGuiObj = fromGUIobj;
         end
         function createUI(obj, figInput)
             if nargin~=1
@@ -230,11 +232,17 @@ classdef expSelector < handle
         
         function triggerPlots(obj)
             set(obj.figHandle.goButton, 'Enable','off','Background','r');
-            bp = behavPlotter;
-            bp.expObject = obj.expObject;
-            bp.AnimalObject = obj;
-            bp.createUI;
-            bp.doAllPlots;
+            
+            if ~obj.embeddedObj
+                bp = behavPlotter;
+                bp.expObject = obj.expObject;
+                bp.AnimalObject = obj;
+                bp.createUI;
+                bp.doAllPlots;
+            else
+                obj.behavGuiObj.doAllPlots;
+            end
+            
         end
     end
 end

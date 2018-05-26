@@ -14,6 +14,10 @@ classdef behavPlotter < handle
     end
     
     methods
+        function obj = behavPlotter
+            obj.createUI;
+        end
+        
         function createUI(obj)
             obj.figHandle.MainFig = figure('Name', 'Behaviour PLotter',...
                 'Toolbar', 'none',...
@@ -50,18 +54,24 @@ classdef behavPlotter < handle
             obj.figHandle.BeahvEventsTime   = uipanel('Parent',obj.figHandle.Bottom,'BorderType','none');
             obj.figHandle.PSTHLicksSpeed    = uipanel('Parent',obj.figHandle.Bottom,'BorderType','none');
             obj.figHandle.Bottom.Sizes  = [2*VerSplit 6/2*VerSplit 6/2*VerSplit];
+            
+            obj.getAnimalObj;
+        end
+        
+        function getAnimalObj(obj)
+            if isempty(obj.AnimalObject)
+                obj.AnimalObject = expSelector(obj);
+            end
+            obj.AnimalObject.embeddedObj = true;
+            obj.AnimalObject.createUI(obj.figHandle.expSelectorPanel);
+            
         end
         
         function doAllPlots(obj)
+            obj.expObject = obj.AnimalObject.expObject;
             [obj.es, obj.totalReward obj.VR] = obj.expObject.loadBehav;
             obj.esLoaded = true;
             
-            if isempty(obj.AnimalObject)
-                obj.AnimalObject = expSelector(1);
-            end
-            obj.AnimalObject.createUI(obj.figHandle.expSelectorPanel);
-            obj.AnimalObject.embeddedObj = true;
- 
             AnimalSessionInfo = GetSessionInfo(obj);
 
             %% TOP            
@@ -178,7 +188,5 @@ classdef behavPlotter < handle
             
         end
 
-        
-        
     end
 end
