@@ -28,12 +28,16 @@ global DIRS
 global EXPORT
 
 try
-    switch hostname
+    [~,b] = system('hostname');
+    b = b(1:end-1);
+    switch b
         case 'saleem01' 
             DIRS.ball = 'Y:\Saleem Lab\Data\Behav';
         case 'saleem12'
             DIRS.ball = 'Y:\Saleem Lab\Data\Behav';
         case 'saleem02'
+            DIRS.ball = 'S:\Data\Behav';
+        case 'saleem08'
             DIRS.ball = 'S:\Data\Behav';
     end
 catch
@@ -238,7 +242,7 @@ list_entries = get(handles.popupmenu1,'String');
 index_selected = get(handles.popupmenu1,'Value');
 iexp = str2num(list_entries(index_selected,:));
 
-[VRdata_all, VRdata_o] = VRWheelLoad(animal, iseries, iexp);
+[VRdata_all, VRdata_o] = VRWheelLoad_SL(animal, iseries, iexp);
 
 ltexist = isfield(VRdata_all.TRIAL,'trialRL');
 rewOexist = isfield(VRdata_all.TRIAL,'trialOutcome');

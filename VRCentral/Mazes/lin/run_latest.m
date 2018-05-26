@@ -349,6 +349,8 @@ try
                 TRIAL.currTime(runInfo.currTrial,runInfo.count) = GetSecs;
             else
                 TRIAL.time(runInfo.currTrial,runInfo.count) = GetSecs;
+                %display(['Trial: ' num2str(runInfo.currTrial) ', count: ' num2str(runInfo.count) ...
+                 %   ', Time: ' num2str(TRIAL.time(runInfo.currTrial,runInfo.count))]);
             end
             TRIAL.info.epoch = runInfo.count;
             
@@ -867,6 +869,7 @@ end
         else
             WLength = 1;
         end
+
         runInfo.List2 = glGenLists(1);
         
         glNewList(runInfo.List1,GL.COMPILE);
