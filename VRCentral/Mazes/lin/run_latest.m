@@ -279,6 +279,7 @@ try
                             glViewport(round(ww/rigInfo.numCameras)*(icam-1)+1,0,round(ww/rigInfo.numCameras),hh);
                             glFrustum( -sind(180/rigInfo.numCameras/2)*0.01, ...
                                         sind(180/rigInfo.numCameras/2)*0.01, ...
+                                       ...-sind(22)*0.01, sind(67)*0.01, rigInfo.screenDist,expInfo.EXP.visibleDepth)
                                        -sind(22)*0.01, sind(67)*0.01, 0.01,expInfo.EXP.visibleDepth)
 %                             gluPerspective(90,round(ww/rigInfo.numCameras)/hh,...
 %                                            0.01,expInfo.EXP.visibleDepth);
@@ -288,26 +289,9 @@ try
                             
                             glRotated((-(180/2)+(180/2/rigInfo.numCameras)+((icam-1)*(180/rigInfo.numCameras))),0.0,1.0,0.0); % 0.333 is a parameter to get the desired rotation in degrees
                             
-                            glRotated (0,1,0,0); % to look a little bit downward
-                            %                     glRotated (TRIAL.posdata(runInfo.currTrial,runInfo.count,T)/pi*180,0,1,0);
-                            
+                            glRotated (0,1,0,0); % to look a little bit downward                            
                     end
-%                     glMatrixMode(GL.MODELVIEW);
-%                             glLoadIdentity;
                 end
-%                 glClear(GL.DEPTH_BUFFER_BIT);
-%                 if strcmp(rigInfo.screenType,'DOME')
-%                     glRotated((-(240/2)+(240/2/rigInfo.numCameras)+((icam-1)*(240/rigInfo.numCameras)))*(1/3),0.0,1.0,0.0); % 0.333 is a parameter to get the desired rotation in degrees
-%                 else
-%                     glRotated((-(180/2)+(180/2/rigInfo.numCameras)+((icam-1)*(180/rigInfo.numCameras)))*(1/3),0.0,1.0,0.0); % 0.333 is a parameter to get the desired rotation in degreesion in degrees
-%                     glRotated (0,1,0,0); % to look a little bit downward                  
-% %                     glRotated (TRIAL.posdata(runInfo.currTrial,runInfo.count,T)/pi*180,0,1,0);
-%                 end
-                
-                %% get movement and draw
-                    %         if ~runInfo.blank_screen
-                %getVRMovement(icam)
-                %runInfo = getTrajectory(dbx, X, Y, Z, T, rigInfo, hwInfo, expInfo, runInfo);
                 % Set background color to 'gray':
                 glClearColor(0.5,0.5,0.5,1);
                 glLightfv(GL.LIGHT0,GL.AMBIENT, [ 0.5 0.5 0.5 1 ]);
@@ -687,9 +671,9 @@ end
             %    glTexImage2D(GL.TEXTURE_2D,0,GL.ALPHA,256,256,1,GL.ALPHA,GL.UNSIGNED_BYTE,noisematrix);
             
             % Setup texture wrapping behaviour:
-            glTexParameterfv(GL.TEXTURE_2D,GL.TEXTURE_WRAP_S,GL.REPEAT);%GL.CLAMP_TO_EDGE);%GL.REPEAT);%
-            glTexParameterfv(GL.TEXTURE_2D,GL.TEXTURE_WRAP_T,GL.REPEAT);%GL.CLAMP_TO_EDGE);
-            %glTexParameterfv(GL.TEXTURE_2D,GL.TEXTURE_WRAP_R,GL.REPEAT);%GL.CLAMP_TO_EDGE);
+            glTexParameteri(GL.TEXTURE_2D,GL.TEXTURE_WRAP_S,GL.REPEAT);%GL.CLAMP_TO_EDGE);%GL.REPEAT);%
+            glTexParameteri(GL.TEXTURE_2D,GL.TEXTURE_WRAP_T,GL.REPEAT);%GL.CLAMP_TO_EDGE);
+            %glTexParameteri(GL.TEXTURE_2D,GL.TEXTURE_WRAP_R,GL.CLAMP);%GL.CLAMP_TO_EDGE);
             
             %     % Setup filtering for the textures:
             glTexParameterfv(GL.TEXTURE_2D,GL.TEXTURE_MAG_FILTER,GL.NEAREST);
@@ -817,7 +801,7 @@ end
                                 scan_input(2) = temp2;
                                 flushinput(hwInfo.ardDev);
                                 %sync signal
-                                day = ard_scan(3); % this the interval between 0->1 transitions of the sync pulse signal
+                                day = ard_scan(3); % this the interval between 0->3500 transitions of the sync pulse signal
                                 
                         end
                         if ~strcmp(rigInfo.rotEncPos,'right')
@@ -826,7 +810,7 @@ end
                             dbx = scan_input(1);
                         end
                         % convert to cm
-                        dbx = dbx*((2*pi*expInfo.EXP.wheelRadius)./(1024*4)); % (cm)% because it is a 4 x 1024 unit encoder
+                        dbx = dbx*((2*pi*expInfo.EXP.wheelRadius)./(1024)); % (cm)% because it is a 4 x 1024 unit encoder
                         % dbx = 50*dbx; % to be removed when the room is better calibrated
                         
                         TRIAL.balldata(runInfo.currTrial,runInfo.count,:) = [ballTime, dax, dbx, day, dby];
@@ -878,10 +862,13 @@ end
     function CreateOpenGLlist
         
         runInfo.ListRuler = glGenLists(1); % display list to show the ruler-texture
-        
         runInfo.List1 = glGenLists(1);
-       
-        WLength = 0.75;
+
+        if isfield(expInfo.EXP, 'SF')
+            WLength = expInfo.EXP.SF;
+        else
+            WLength = 1;
+        end
 
         runInfo.List2 = glGenLists(1);
         
@@ -961,41 +948,43 @@ end
          end
         glEndList();
         
-        glNewList(runInfo.List2,GL.COMPILE);
-         for k=1:6%runInfo.ROOM.nOfWalls
-            switch k
-                case 1 
-                    wallface_PIT (expInfo.EXP.l,  runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texname(getTextureIndex(expInfo.EXP.farWallText)), WLength);
-                case 2
-                    wallface_PIT (expInfo.EXP.l,  runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texname(getTextureIndex(expInfo.EXP.nearWallText)), WLength);
-                case 3
-                    wallface_PIT (expInfo.EXP.l,  runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texname(getTextureIndex(expInfo.EXP.leftWallText)), WLength);
-                case 4
-                    wallface_PIT (expInfo.EXP.l,  runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texname(getTextureIndex(expInfo.EXP.rightWallText)), WLength);
-                case 5
-                    wallface_PIT (expInfo.EXP.l,  runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texname(getTextureIndex(expInfo.EXP.ceilingText)), WLength);
-                case 6
-                    wallface_PIT (expInfo.EXP.l,  runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texname(getTextureIndex(expInfo.EXP.floorText)), WLength);
+        glNewList(runInfo.List2,GL.COMPILE); % Path integration task
+        if ~strcmp(expInfo.EXP.VRType,'lin') 
+            for k=1:6
+                switch k
+                    case 1
+                        wallface_PIT (expInfo.EXP.l,  runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texname(getTextureIndex_N(expInfo.EXP.farWallText)), WLength);
+                    case 2
+                        wallface_PIT (expInfo.EXP.l,  runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texname(getTextureIndex_N(expInfo.EXP.nearWallText)), WLength);
+                    case 3
+                        wallface_PIT (expInfo.EXP.l,  runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texname(getTextureIndex_N(expInfo.EXP.leftWallText)), WLength);
+                    case 4
+                        wallface_PIT (expInfo.EXP.l,  runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texname(getTextureIndex_N(expInfo.EXP.rightWallText)), WLength);
+                    case 5
+                        wallface_PIT (expInfo.EXP.l,  runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texname(getTextureIndex_N(expInfo.EXP.ceilingText)), WLength);
+                    case 6
+                        wallface_PIT (expInfo.EXP.l,  runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texname(getTextureIndex_N(expInfo.EXP.floorText)), WLength);
+                end
             end
-         end
+        end
         glEndList();
         
-        glNewList(runInfo.ListRuler,GL.COMPILE);
+        glNewList(runInfo.ListRuler,GL.COMPILE); % ruler GLlist to measure texture size
         if ~strcmp(expInfo.EXP.VRType,'lin')
-            for k=1:6%runInfo.ROOM.nOfWalls
+            for k=1:6
                 switch k
                     case 1
                         wallface_PIT (expInfo.EXP.l,  runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texname(getTextureIndex(expInfo.EXP.farWallText)), WLength);
                     case 2
                         wallface_PIT (expInfo.EXP.l,  runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texname(getTextureIndex(expInfo.EXP.nearWallText)), WLength);
                     case 3
-                        wallface_PIT (expInfo.EXP.l,  runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texname(12), WLength); % 12th texture is a square wave with 100 periods: i.e. a ruler with 1 virtual cm resolution
+                        wallface_PIT (expInfo.EXP.l,  runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texname(getTextureIndex_N(expInfo.EXP.ceilingText)), WLength); 
                     case 4
-                        wallface_PIT (expInfo.EXP.l,  runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texname(12), WLength);
+                        wallface_PIT (expInfo.EXP.l,  runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texname(getTextureIndex_N(expInfo.EXP.ceilingText)), WLength); 
                     case 5
-                        wallface_PIT (expInfo.EXP.l,  runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texname(12), WLength);
+                        wallface_PIT (expInfo.EXP.l,  runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texname(getTextureIndex_N(expInfo.EXP.ceilingText)), WLength); 
                     case 6
-                        wallface_PIT (expInfo.EXP.l,  runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texname(12), WLength);
+                        wallface_PIT (expInfo.EXP.l,  runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texname(getTextureIndex_N(expInfo.EXP.floorText)), WLength); 
                 end
             end
         end

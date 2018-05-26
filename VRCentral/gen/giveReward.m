@@ -23,7 +23,7 @@ if ~expInfo.OFFLINE
             && strcmp(runInfo.BASErewardStopT.Running,'off'))
         VRmessage = ['Reward given at trial Time: ' num2str(round(count/(60*60))) ' min ' num2str(round(rem(count/60,60))) ' s ' tag];
         disp(VRmessage);
-        VRLogMessage(expInfo, VRmessage);
+%         VRLogMessage(expInfo, VRmessage);
         
         runInfo.REWARD.TRIAL = [runInfo.REWARD.TRIAL lastActiveBase];
         runInfo.REWARD.count = [runInfo.REWARD.count count];

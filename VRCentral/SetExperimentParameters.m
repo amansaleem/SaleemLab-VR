@@ -21,7 +21,7 @@ MainFig = figure('Name', 'VR Controller',...
 
 VRchoose.Panels = uiextras.TabPanel('Parent',MainFig);
 
-VRchoose.All = uiextras.VBox('Parent',VRchoose.Panels,'Spacing',10,'Padding',5);
+VRchoose.New = uiextras.VBox('Parent',VRchoose.Panels,'Spacing',10,'Padding',5);
 VRchoose.ExpLive = uiextras.HBox('Parent',VRchoose.Panels,'Spacing',10,'Padding',5);
 set(VRchoose.Panels,'FontSize',12)
 set(VRchoose.Panels,'TabSize',150)
@@ -29,9 +29,9 @@ set(VRchoose.Panels,'FontWeight','bold')
 VRchoose.Panels.TabNames = {'New','Live'};
 VRchoose.Panels.SelectedChild = 1;
 
-VRchoose.Top = uiextras.HBox('Parent',VRchoose.All,'Spacing',10,'Padding',5);
-VRchoose.Bottom = uiextras.Empty('Parent',VRchoose.All);
-VRchoose.All.Sizes = [-1 -3];
+VRchoose.Top = uiextras.HBox('Parent',VRchoose.New,'Spacing',10,'Padding',5);
+VRchoose.Bottom = uiextras.Empty('Parent',VRchoose.New);
+VRchoose.New.Sizes = [-1 -3];
 
 VRchoose.choosePanel = uiextras.Panel('Parent',VRchoose.Top,...
     'Title','Choose Animal & Maze');%, 'fontsize',12);
@@ -595,7 +595,8 @@ clear VRparameters VRchoose
             'speckleNoise', 0,...           % Add speckle noise
             'speckleSize', 20,...            % (centre +- speckleSize) will be coloured
             'speckleLevel', 5,...           % fraction of pixels in with speckle noise
-            'speckleType', 'RAND'...       % 'GRAY' give gray squares, 'RAND' gives rand grayscale
+            'speckleType', 'RAND', ...       % 'GRAY' give gray squares, 'RAND' gives rand grayscale
+            'SF', 0 ...                      % spatial frequency for texture wrapping, in periods/cm
             ...
             );
         

@@ -135,7 +135,7 @@ if ~expInfo.REPLAY
     expInfo.EXP = param;
     %     [~, expInfo.EXP] = SetExperimentParameters(expInfo.animalName, rigInfo);
     expInfo.EXP.w = (expInfo.EXP.b)*2; % should be the same as Ex..b2 - EXP.b1/2
-    expInfo.EXP.b = expInfo.EXP.b*(1/3); % This is because of the geometric correction made
+    expInfo.EXP.b = expInfo.EXP.b/2; % This is because of the geometric correction made
     expInfo.EXP.h = expInfo.EXP.h/2;
     expInfo.EXP.tw = expInfo.EXP.tw/2;
     expInfo.EXP.c3 = expInfo.EXP.vh-expInfo.EXP.h;
@@ -168,31 +168,7 @@ end
 expInfo.centralLogName = [rigInfo.dirSave filesep 'centralLog'];
 expInfo.animalLogName  = [expInfo.AnimalDir filesep expInfo.animalName '_log'];
 
-%% AA: implement calibration and initialization of the screen
-InitializeMatlabOpenGL;
-
-screens=Screen('Screens');
-
-thisScreen = rigInfo.screenNumber;
-
-fprintf('preparing screen\n');
-hwInfo.MYSCREEN = prepareScreen(thisScreen,rigInfo,expInfo); %prepareScreen(thisScreen);
-%Screen('BlendFunction', MYSCREEN.windowPtr, GL.SRC_ALPHA, GL.ONE);
-% HideCursor; % usually done in ltScreenInitialize
-
-% define synchronization square read by photodiode
-rigInfo.photodiodeRect = struct('rect',[0 (hwInfo.MYSCREEN.Ymax - rigInfo.photodiodeSize(2) + 1) ...
-    rigInfo.photodiodeSize(1)-1            hwInfo.MYSCREEN.Ymax], ...
-    'colorOn', [1 1 1], 'colorOff', [0 0 0]);
-
-Screen('FillRect', hwInfo.MYSCREEN.windowPtr(1), 0, rigInfo.photodiodeRect.rect);
-Screen('Flip', hwInfo.MYSCREEN.windowPtr(1));
-
-pause(1)
-
-%
-% fhandle = @sessionStart;
-
+%%
 runInfo.runTimeOut = 0;
 runInfo.reward_active = ones(expInfo.EXP.nbRewSites,1);
 
@@ -216,6 +192,34 @@ if expInfo.EXP.soundOn
     
     runInfo.oBeepWrong = audioplayer((rand(size(MakeBeep(3300,0.1)))-0.5),22000);
 end
+%% AA: implement calibration and initialization of the screen
+
+try
+    InitializeMatlabOpenGL;
+
+screens=Screen('Screens');
+
+thisScreen = rigInfo.screenNumber;
+
+fprintf('preparing screen\n');
+hwInfo.MYSCREEN = prepareScreen(thisScreen,rigInfo,expInfo); %prepareScreen(thisScreen);
+%Screen('BlendFunction', MYSCREEN.windowPtr, GL.SRC_ALPHA, GL.ONE);
+% HideCursor; % usually done in ltScreenInitialize
+
+% define synchronization square read by photodiode
+rigInfo.photodiodeRect = struct('rect',[0 (hwInfo.MYSCREEN.Ymax - rigInfo.photodiodeSize(2) + 1) ...
+    rigInfo.photodiodeSize(1)-1            hwInfo.MYSCREEN.Ymax], ...
+    'colorOn', [1 1 1], 'colorOff', [0 0 0]);
+
+Screen('FillRect', hwInfo.MYSCREEN.windowPtr(1), 0, rigInfo.photodiodeRect.rect);
+Screen('Flip', hwInfo.MYSCREEN.windowPtr(1));
+
+pause(1)
+
+%
+% fhandle = @sessionStart;
+
+
 
 %%
 % initialize DIO-----------------------------------------------------------
@@ -337,6 +341,11 @@ while ~isempty(fhandle) % main loop, active during experiment
     
     [fhandle, runInfo] = feval(fhandle, rigInfo, hwInfo, expInfo, runInfo);
     
+end
+catch
+    fhandle = @trailEnd;
+    [fhandle, runInfo] = feval(fhandle, rigInfo, hwInfo, expInfo, runInfo);
+    [fhandle, runInfo] = feval(fhandle, rigInfo, hwInfo, expInfo, runInfo);
 end
 if rigInfo.runTimeLine
     tl.stop()
