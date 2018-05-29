@@ -343,7 +343,7 @@ while ~isempty(fhandle) % main loop, active during experiment
     
 end
 catch
-    fhandle = @trailEnd;
+    fhandle = @trialEnd;
     [fhandle, runInfo] = feval(fhandle, rigInfo, hwInfo, expInfo, runInfo);
     [fhandle, runInfo] = feval(fhandle, rigInfo, hwInfo, expInfo, runInfo);
 end
