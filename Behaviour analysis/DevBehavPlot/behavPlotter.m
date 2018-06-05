@@ -1,4 +1,4 @@
-classdef behavPlotter < handle
+classdef (InferiorClasses = {?expSelector}) behavPlotter < handle
     
     properties
         expObject
@@ -63,7 +63,7 @@ classdef behavPlotter < handle
                 obj.AnimalObject = expSelector(obj);
             end
             obj.AnimalObject.embeddedObj = true;
-            obj.AnimalObject.createUI(obj.figHandle.expSelectorPanel);
+            obj.AnimalObject.createUI_es(obj.figHandle.expSelectorPanel);
             
         end
         

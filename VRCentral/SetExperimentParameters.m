@@ -434,6 +434,10 @@ clear VRparameters VRchoose
     end
 
 %% function to load basic parameters if its a new file
+% add WL, RIG Name,
+% move tc1-4 to StimVar
+% add options to update the Meta data
+
     function exp = BaseData(nCond)
         if nargin<1
             nCond = 9;

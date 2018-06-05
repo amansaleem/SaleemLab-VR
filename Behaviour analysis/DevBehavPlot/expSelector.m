@@ -18,14 +18,15 @@ classdef expSelector < handle
     end
     
     methods
+        % https://uk.mathworks.com/help/matlab/matlab_oop/method-invocation.html
         function obj = expSelector(fromGUIobj)
             if nargin<1
-                obj.createUI;
+                obj.createUI_es;
             end
             obj.expObject = expObject;
             obj.behavGuiObj = fromGUIobj;
         end
-        function createUI(obj, figInput)
+        function createUI_es(obj, figInput)
             if nargin~=1
                 obj.figHandle.MainFig = figInput;
             else

@@ -1,7 +1,7 @@
 function flushReward(t, isLive, nrep)
 % Function to flush the reward valve
 % flushReward(t, isLive, nrep)
-% t      - time of reward valve opening
+% t      - time of reward valve opening, in msec
 % isLive - use space bar to open value repeatedly, 'Esc' to close
 % nrep   - number of times to open the value, with a 1 s pause
 
@@ -57,7 +57,7 @@ end
             flushinput(obj)
             fprintf(obj, '%s\r', num2str(OpeningTime));
             fclose(obj)
-            pause(1)
+            pause(2)
         end
     end
 end
