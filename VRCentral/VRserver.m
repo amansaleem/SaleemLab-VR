@@ -49,6 +49,7 @@ try
                     display(['Received parameter file']);
                 case 'startExp'
                     display(['Starting the experiment for ' animal_name]);
+                    Screen('Preference', 'SkipSyncTests', 1);
                     MouseBallExp(replay_in, EXP, animal_name, com);
                 case 'endExp'
                     display('Not running experiment, nothing to quit')
