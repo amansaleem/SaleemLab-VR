@@ -455,7 +455,7 @@ try
                 REWARD = runInfo.REWARD;
                 %                 TRIAL  = runInfo.TRIAL;
                 ROOM   = runInfo.ROOM;
-                save(s, 'TRIAL', 'EXP', 'REWARD','ROOM');
+                save(s, 'TRIAL', 'EXP', 'REWARD','ROOM', 'rigInfo');
                 runInfo.SAVE_COUNT = TRIAL.nCompTraj;
             end
             

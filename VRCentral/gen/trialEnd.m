@@ -18,7 +18,7 @@ if TRIAL.info.no > 0
     REWARD = runInfo.REWARD;
 %     TRIAL  = runInfo.TRIAL;
     ROOM   = runInfo.ROOM;
-    save(s, 'TRIAL', 'EXP', 'REWARD','ROOM');
+    save(s, 'TRIAL', 'EXP', 'REWARD','ROOM','rigInfo');
 end
 
 fprintf('TrialEnd\n'); % debug

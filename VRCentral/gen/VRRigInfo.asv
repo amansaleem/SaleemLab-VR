@@ -64,13 +64,13 @@ classdef VRRigInfo < handle
                     RigInfo.dirCode = 'S:\Code\VRCentral';%['E:\Dropbox\Work\Code\VR code\SaleemLab-VR\VRCentral'];
                 %%%%%%%%%%%%%%%%%%%%%%%%%%
                 case 'SALEEM12'
-                    RigInfo.computerName = 'AmanDesk';
+                    RigInfo.computerName = 'SALEEM12';
                     RigInfo.dirSave = 'Y:\Saleem Lab\Data\Behav';%['C:\Home\Data\ball'];
                     RigInfo.dirCode = 'D:\Dropbox\Work\Code\Model Neurons\SaleemLab-VR\VRCentral';%['E:\Dropbox\Work\Code\VR code\SaleemLab-VR\VRCentral'];
                 %%%%%%%%%%%%%%%%%%%%%%%%%%
                 case 'SALEEM08' %NEO
                     % Local computer info (basic)
-                    RigInfo.computerName = 'NEO';
+                    RigInfo.computerName = 'SALEEM08';
                     RigInfo.screenNumber = 2;
                     RigInfo.screenDist = 60; % in cm
                     RigInfo.dialogueXYPosition = [440 150];
