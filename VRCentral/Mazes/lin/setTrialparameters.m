@@ -1,4 +1,4 @@
-function setTrialparameters2
+function [expInfo, runInfo, TRIAL] = setTrialparameters(expInfo, runInfo, TRIAL)
 %% Set trial parameters
 % Room Length
 
@@ -13,7 +13,7 @@ TRIAL.trialGain(runInfo.currTrial) = getNewTrialParameters(expInfo.EXP.scaleSet,
 TRIAL.trialActive(runInfo.currTrial) = getNewTrialParameters(expInfo.EXP.active, runInfo, expInfo);
 
 % Reward position
-TRIAL.trialRewPos(runInfo.currTrial) = getNewTrialParameters(expInfo.EXP.rew_pos, runInfo, expInfo);
+TRIAL.trialRewPos(runInfo.currTril) = getNewTrialParameters(expInfo.EXP.rew_pos, runInfo, expInfo);
 TRIAL.trialRewPos(runInfo.currTrial) = TRIAL.trialRewPos(runInfo.currTrial).*TRIAL.trialRL(runInfo.currTrial);
 expInfo.EXP.punishZone = TRIAL.trialRewPos(runInfo.currTrial) - expInfo.EXP.punishLim; % Needed??
 
@@ -71,47 +71,5 @@ if ~expInfo.REPLAY
             TRIAL.posdata(runInfo.currTrial,runInfo.count,T) =  TRIAL.posdata(runInfo.currTrial,runInfo.count,T) + pi;
         otherwise
             TRIAL.posdata(runInfo.currTrial,runInfo.count,T) =  TRIAL.posdata(runInfo.currTrial,runInfo.count,T);
-    end
-end
-
-display_text = ['Trial ' num2str(runInfo.currTrial) ...
-    ', C: ' num2str(TRIAL.trialContr(runInfo.currTrial)) ...
-    ', G: ' num2str(TRIAL.trialGain(runInfo.currTrial)) ...
-    ', RL: ' num2str(TRIAL.trialRL(runInfo.currTrial)) ...
-    ', S: ' num2str(TRIAL.trialStart(runInfo.currTrial)) ...
-    ', B: ' num2str(TRIAL.trialBlanks(runInfo.currTrial)) ...
-    ', A: ' num2str(TRIAL.trialActive(runInfo.currTrial)) ...
-    ', RP: ' num2str(TRIAL.trialRewPos(runInfo.currTrial)) ...
-    ', PZ: ' num2str(expInfo.EXP.punishZone) ...
-    ];
-display(['Trial ' num2str(runInfo.currTrial) ...
-    ', C: ' num2str(TRIAL.trialContr(runInfo.currTrial)) ...
-    ', G: ' num2str(TRIAL.trialGain(runInfo.currTrial)) ...
-    ', RL: ' num2str(TRIAL.trialRL(runInfo.currTrial)) ...
-    ', S: ' num2str(TRIAL.trialStart(runInfo.currTrial)) ...
-    ', B: ' num2str(TRIAL.trialBlanks(runInfo.currTrial)) ...
-    ', A: ' num2str(TRIAL.trialActive(runInfo.currTrial)) ...
-    ', RP: ' num2str(TRIAL.trialRewPos(runInfo.currTrial)) ...
-    ', PZ: ' num2str(expInfo.EXP.punishZone) ...
-    ]);
-
-    function currTrialVar = getNewTrialParameters(varArray, runInfo, expInfo)
-        if length(varArray)>1
-            if expInfo.EXP.randScale
-                varToSet = varArray(randi(length(varArray)));
-            else
-                varIdx = runInfo.currTrial;
-                if varIdx>length(varArray)
-                    varIdx = rem(runInfo.currTrial, length(varArray));
-                    if varIdx==0
-                        varIdx = length(varArray);
-                    end
-                end
-                varToSet = varArray(varIdx);
-            end
-        else
-            varToSet = 1;
-        end
-        currTrialVar = varToSet;
     end
 end
