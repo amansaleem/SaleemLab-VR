@@ -7,6 +7,7 @@ runInfo.reset_textures = 1;
 ListenChar(2);
 
 %% First trial settings
+
 if ~expInfo.EXP.randStart
     if strcmp(expInfo.EXP.trajDir,'cw')
         runInfo.TRAJ = 0.1;
@@ -85,7 +86,9 @@ end
 
 TRIAL.trialRewPos(runInfo.currTrial) = expInfo.EXP.rew_pos(idx);
 expInfo.EXP.punishZone = TRIAL.trialRewPos(runInfo.currTrial) - expInfo.EXP.punishLim;
-% end
+
+% [expInfo, runInfo, TRIAL] = setTrialparameters(expInfo, runInfo, TRIAL);
+            
 display_text = ['Trial ' num2str(runInfo.currTrial) ...
     ', C: ' num2str(TRIAL.trialContr(runInfo.currTrial)) ...
     ', G: ' num2str(TRIAL.trialGain(runInfo.currTrial)) ...
@@ -408,9 +411,8 @@ try
             
             %             if ~REPLAY
             %% Set trial parameters
-            [expInfo, runInfo, TRIAL] = setTrialparameters(expInfo, runInfo, TRIAL)
+            [expInfo, runInfo, TRIAL] = setTrialparameters(expInfo, runInfo, TRIAL);
                        
-            TRIAL.trialGain(runInfo.currTrial) = scaling_factor;
             display_text = ['Trial ' num2str(runInfo.currTrial) ...
                 ', C: ' num2str(TRIAL.trialContr(runInfo.currTrial)) ...
                 ', G: ' num2str(TRIAL.trialGain(runInfo.currTrial)) ...

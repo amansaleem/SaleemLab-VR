@@ -17,19 +17,19 @@ TRIAL.trialRewPos(runInfo.currTrial) = getNewTrialParameter(expInfo.EXP.rew_pos,
 TRIAL.trialRewPos(runInfo.currTrial) = TRIAL.trialRewPos(runInfo.currTrial).*TRIAL.trialRL(runInfo.currTrial);
 expInfo.EXP.punishZone = TRIAL.trialRewPos(runInfo.currTrial) - expInfo.EXP.punishLim; % Needed??
 
-% Set the texture positions
-% Texture 1 position
-TRIAL.tex1pos(runInfo.currTrial) = getNewTrialParameter(expInfo.EXP.tc1pos, runInfo, expInfo);
-expInfo.EXP.tc1 = TRIAL.tex1pos;
-% Texture 2 position
-TRIAL.tex2pos(runInfo.currTrial) = getNewTrialParameter(expInfo.EXP.tc2pos, runInfo, expInfo);
-expInfo.EXP.tc2 = TRIAL.tex2pos;
-% Texture 3 position
-TRIAL.tex3pos(runInfo.currTrial) = getNewTrialParameter(expInfo.EXP.tc3pos, runInfo, expInfo);
-expInfo.EXP.tc3 = TRIAL.tex3pos;
-% Texture 4 position
-TRIAL.tex4pos(runInfo.currTrial) = getNewTrialParameter(expInfo.EXP.tc4pos, runInfo, expInfo);
-expInfo.EXP.tc4 = TRIAL.tex4pos;
+% % % Set the texture positions
+% % % Texture 1 position
+% % TRIAL.tex1pos(runInfo.currTrial) = getNewTrialParameter(expInfo.EXP.tc1pos, runInfo, expInfo);
+% % expInfo.EXP.tc1 = TRIAL.tex1pos;
+% % % Texture 2 position
+% % TRIAL.tex2pos(runInfo.currTrial) = getNewTrialParameter(expInfo.EXP.tc2pos, runInfo, expInfo);
+% % expInfo.EXP.tc2 = TRIAL.tex2pos;
+% % % Texture 3 position
+% % TRIAL.tex3pos(runInfo.currTrial) = getNewTrialParameter(expInfo.EXP.tc3pos, runInfo, expInfo);
+% % expInfo.EXP.tc3 = TRIAL.tex3pos;
+% % % Texture 4 position
+% % TRIAL.tex4pos(runInfo.currTrial) = getNewTrialParameter(expInfo.EXP.tc4pos, runInfo, expInfo);
+% % expInfo.EXP.tc4 = TRIAL.tex4pos;
 
 % Get the room data at the end of getting all the parameters
 runInfo.ROOM = getRoomData(expInfo.EXP,TRIAL.trialRL(runInfo.currTrial));
@@ -56,6 +56,7 @@ p = runInfo.TRAJ;
 
 % Contrast has same structure but is within the setupTextures
 
+X=1; Y=2; Z=3; T=4;
 if ~expInfo.REPLAY
     TRIAL.posdata(runInfo.currTrial,runInfo.count,Z) = -p;
     TRIAL.posdata(runInfo.currTrial,runInfo.count,X) = 0;
