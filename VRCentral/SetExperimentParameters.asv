@@ -3,8 +3,8 @@ function [exp, exp_out] = SetExperimentParameters
 Screen('Preference', 'SkipSyncTests', 1)
 RigInfo = VRRigInfo;
 % if nargin>1
-dataDir = RigInfo.dirSave;
-codeDir = RigInfo.dirCode;
+    dataDir = RigInfo.dirSave;
+    codeDir = RigInfo.dirCode;
 % else
 %     dataDir = '\\zserver.cortexlab.net\Data\Ball';
 %     codeDir = '\\zserver.cortexlab.net\Code\MouseRoom\VRCentral\';
@@ -210,8 +210,8 @@ clear VRparameters VRchoose
                 colformat1 = {'char','logical'};
                 coledit1  = [true, true];
                 
-                %                 data2 = addVal;
-                
+%                 data2 = addVal;
+                                
                 VRparameters.StimVarInfo1 = uitable(...
                     'Parent', VRparameters.StimVarTab,...
                     'Data',data1,...
@@ -315,7 +315,7 @@ clear VRparameters VRchoose
         
         VarNames = get(VRparameters.StimVarInfo1,'RowName');
         VarDataA = get(VRparameters.StimVarInfo1,'Data');
-        %         VarDataB = get(VRparameters.StimVarInfo2,'Data');
+%         VarDataB = get(VRparameters.StimVarInfo2,'Data');
         
         for iVar = 1:length(VarNames)
             exp.StimVar(iVar).name = VarNames{iVar};
@@ -323,8 +323,13 @@ clear VRparameters VRchoose
             exp.StimVar(iVar).trialVal = str2num(VarDataA{iVar,1});
             exp.StimVar(iVar).variable = (length(VarDataA{iVar,1})>1);
             
-            exp_out = setfield(exp_out,  VarNames{iVar}, exp.StimVar(iVar).trialVal);
-            exp_out = setfield(exp_out,  [VarNames{iVar} '_rand'], exp.StimVar(iVar).rand);
+            if VarDataA{iVar,1}==0
+                exp_out = setfield(exp_out,  VarNames{iVar}, VarDataA{iVar,2});
+            else
+                valuesSet = VarDataA{iVar,2}*VarDataB(iVar,:)./100;
+                exp_out = setfield(exp_out,  VarNames{iVar}, exp.StimVar(iVar).trialVal);
+                exp_out = setfield(exp_out,  VarNames{iVar}, exp.StimVar(iVar).trialVal);
+            end
         end
         
     end
@@ -359,9 +364,9 @@ clear VRparameters VRchoose
         VRchoose.Panels.SelectedChild = 2;
         
         set(VRchoose.clientUI.textB,...
-            'BackgroundColor',[1 0.5 0.5],...
-            'String','Disconnected',...
-            'fontsize',14,'Enable','off');
+                'BackgroundColor',[1 0.5 0.5],...
+                'String','Disconnected',...
+                'fontsize',14,'Enable','off');
         
         if client(VRchoose.numExpt).local
             uiresume(MainFig);
