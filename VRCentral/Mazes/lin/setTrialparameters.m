@@ -13,7 +13,7 @@ TRIAL.trialGain(runInfo.currTrial) = getNewTrialParameter(expInfo.EXP.scaleSet, 
 TRIAL.trialActive(runInfo.currTrial) = getNewTrialParameter(expInfo.EXP.active, runInfo, expInfo);
 
 % Reward position
-TRIAL.trialRewPos(runInfo.currTril) = getNewTrialParameter(expInfo.EXP.rew_pos, runInfo, expInfo);
+TRIAL.trialRewPos(runInfo.currTrial) = getNewTrialParameter(expInfo.EXP.rew_pos, runInfo, expInfo);
 TRIAL.trialRewPos(runInfo.currTrial) = TRIAL.trialRewPos(runInfo.currTrial).*TRIAL.trialRL(runInfo.currTrial);
 expInfo.EXP.punishZone = TRIAL.trialRewPos(runInfo.currTrial) - expInfo.EXP.punishLim; % Needed??
 
