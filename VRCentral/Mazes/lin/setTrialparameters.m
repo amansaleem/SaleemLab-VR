@@ -4,31 +4,31 @@ function [expInfo, runInfo, TRIAL] = setTrialparameters(expInfo, runInfo, TRIAL)
 
 % This is the combined function
 % Room length
-TRIAL.trialRL(runInfo.currTrial) = getNewTrialParameters(expInfo.EXP.lengthSet, runInfo, expInfo);
+TRIAL.trialRL(runInfo.currTrial) = getNewTrialParameter(expInfo.EXP.lengthSet, runInfo, expInfo);
 
 % Gain / scaling factor
-TRIAL.trialGain(runInfo.currTrial) = getNewTrialParameters(expInfo.EXP.scaleSet, runInfo, expInfo);
+TRIAL.trialGain(runInfo.currTrial) = getNewTrialParameter(expInfo.EXP.scaleSet, runInfo, expInfo);
 
 % Active / Passive reward
-TRIAL.trialActive(runInfo.currTrial) = getNewTrialParameters(expInfo.EXP.active, runInfo, expInfo);
+TRIAL.trialActive(runInfo.currTrial) = getNewTrialParameter(expInfo.EXP.active, runInfo, expInfo);
 
 % Reward position
-TRIAL.trialRewPos(runInfo.currTril) = getNewTrialParameters(expInfo.EXP.rew_pos, runInfo, expInfo);
+TRIAL.trialRewPos(runInfo.currTril) = getNewTrialParameter(expInfo.EXP.rew_pos, runInfo, expInfo);
 TRIAL.trialRewPos(runInfo.currTrial) = TRIAL.trialRewPos(runInfo.currTrial).*TRIAL.trialRL(runInfo.currTrial);
 expInfo.EXP.punishZone = TRIAL.trialRewPos(runInfo.currTrial) - expInfo.EXP.punishLim; % Needed??
 
 % Set the texture positions
 % Texture 1 position
-TRIAL.tex1pos(runInfo.currTrial) = getNewTrialParameters(expInfo.EXP.tc1pos, runInfo, expInfo);
+TRIAL.tex1pos(runInfo.currTrial) = getNewTrialParameter(expInfo.EXP.tc1pos, runInfo, expInfo);
 expInfo.EXP.tc1 = TRIAL.tex1pos;
 % Texture 2 position
-TRIAL.tex2pos(runInfo.currTrial) = getNewTrialParameters(expInfo.EXP.tc2pos, runInfo, expInfo);
+TRIAL.tex2pos(runInfo.currTrial) = getNewTrialParameter(expInfo.EXP.tc2pos, runInfo, expInfo);
 expInfo.EXP.tc2 = TRIAL.tex2pos;
 % Texture 3 position
-TRIAL.tex3pos(runInfo.currTrial) = getNewTrialParameters(expInfo.EXP.tc3pos, runInfo, expInfo);
+TRIAL.tex3pos(runInfo.currTrial) = getNewTrialParameter(expInfo.EXP.tc3pos, runInfo, expInfo);
 expInfo.EXP.tc3 = TRIAL.tex3pos;
 % Texture 4 position
-TRIAL.tex4pos(runInfo.currTrial) = getNewTrialParameters(expInfo.EXP.tc4pos, runInfo, expInfo);
+TRIAL.tex4pos(runInfo.currTrial) = getNewTrialParameter(expInfo.EXP.tc4pos, runInfo, expInfo);
 expInfo.EXP.tc4 = TRIAL.tex4pos;
 
 % Get the room data at the end of getting all the parameters
