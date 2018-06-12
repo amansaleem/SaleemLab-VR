@@ -47,10 +47,10 @@ TRIAL.trialRewPos(1) = expInfo.EXP.rew_pos(1);
 TRIAL.trialStart(1) = 0;
 TRIAL.trialGain(1)  = 1;
 TRIAL.trialBlanks(1) = expInfo.EXP.pause_frames;
-TRIAL.tex1pos(1)    = expInfo.EXP.tc1(1);
-TRIAL.tex2pos(1)    = expInfo.EXP.tc2(1);
-TRIAL.tex3pos(1)    = expInfo.EXP.tc3(1);
-TRIAL.tex4pos(1)    = expInfo.EXP.tc4(1);
+TRIAL.tex1pos(1)    = expInfo.EXP.tex1pos(1);
+TRIAL.tex2pos(1)    = expInfo.EXP.tex2pos(1);
+TRIAL.tex3pos(1)    = expInfo.EXP.tex3pos(1);
+TRIAL.tex4pos(1)    = expInfo.EXP.tex4pos(1);
 TRIAL.waveLength(1) = expInfo.EXP.waveLength(1);
 
 fprintf('PrepareNextTrial\n'); % debug
@@ -89,6 +89,11 @@ else
 end
 TRIAL.trialRL(runInfo.currTrial) = roomLength;
 % end
+
+expInfo.EXP.tc1 = TRIAL.tex1pos(1);
+expInfo.EXP.tc2 = TRIAL.tex2pos(1);
+expInfo.EXP.tc3 = TRIAL.tex3pos(1);
+expInfo.EXP.tc4 = TRIAL.tex4pos(1);
 
 %% *** LOAD THE ROOM HERE ***
 if ~expInfo.REPLAY

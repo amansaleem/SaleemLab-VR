@@ -22,19 +22,19 @@ TRIAL.trialRewPos(runInfo.currTrial) = getNewTrialParameter(expInfo.EXP.rew_pos,
 TRIAL.trialRewPos(runInfo.currTrial) = TRIAL.trialRewPos(runInfo.currTrial).*TRIAL.trialRL(runInfo.currTrial);
 expInfo.EXP.punishZone = TRIAL.trialRewPos(runInfo.currTrial) - expInfo.EXP.punishLim; % Needed??
 
-% % Set the texture positions
-% % Texture 1 position
-% TRIAL.tex1pos(runInfo.currTrial) = getNewTrialParameter(expInfo.EXP.tc1, expInfo.EXP.tc1_rand, runInfo, expInfo);
-% expInfo.EXP.tc1 = TRIAL.tex1pos(runInfo.currTrial);
-% % Texture 2 position
-% TRIAL.tex2pos(runInfo.currTrial) = getNewTrialParameter(expInfo.EXP.tc2, expInfo.EXP.tc2_rand, runInfo, expInfo);
-% expInfo.EXP.tc2 = TRIAL.tex2pos(runInfo.currTrial);
-% % Texture 3 position
-% TRIAL.tex3pos(runInfo.currTrial) = getNewTrialParameter(expInfo.EXP.tc3, expInfo.EXP.tc3_rand, runInfo, expInfo);
-% expInfo.EXP.tc3 = TRIAL.tex3pos(runInfo.currTrial);
-% % Texture 4 position
-% TRIAL.tex4pos(runInfo.currTrial) = getNewTrialParameter(expInfo.EXP.tc4, expInfo.EXP.tc4_rand, runInfo, expInfo);
-% expInfo.EXP.tc4 = TRIAL.tex4pos(runInfo.currTrial);
+% Set the texture positions
+% Texture 1 position
+TRIAL.tex1pos(runInfo.currTrial) = getNewTrialParameter(expInfo.EXP.tex1pos, expInfo.EXP.tex1pos_rand, runInfo, expInfo);
+expInfo.EXP.tc1 = TRIAL.tex1pos(runInfo.currTrial);
+% Texture 2 position
+TRIAL.tex2pos(runInfo.currTrial) = getNewTrialParameter(expInfo.EXP.tex2pos, expInfo.EXP.tex2pos_rand, runInfo, expInfo);
+expInfo.EXP.tc2 = TRIAL.tex2pos(runInfo.currTrial);
+% Texture 3 position
+TRIAL.tex3pos(runInfo.currTrial) = getNewTrialParameter(expInfo.EXP.tex3pos, expInfo.EXP.tex3pos_rand, runInfo, expInfo);
+expInfo.EXP.tc3 = TRIAL.tex3pos(runInfo.currTrial);
+% Texture 4 position
+TRIAL.tex4pos(runInfo.currTrial) = getNewTrialParameter(expInfo.EXP.tex4pos, expInfo.EXP.tex4pos_rand, runInfo, expInfo);
+expInfo.EXP.tc4 = TRIAL.tex4pos(runInfo.currTrial);
 % 
 % % WaveLength
 % TRIAL.waveLength(runInfo.currTrial) = getNewTrialParameter(expInfo.EXP.waveLength, expInfo.EXP.waveLength_rand, runInfo, expInfo);

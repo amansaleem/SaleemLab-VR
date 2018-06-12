@@ -529,22 +529,22 @@ clear VRparameters VRchoose
         exp.StimVar(6).rand = true;
         exp.StimVar(6).trialVal = '[1 1]'; %ones(1, exp.StimFix.nTrialTypes);%[1  1   1    1    -1  1   1  1    1    1 1 1];
         
-        exp.StimVar(7).name = 'tc1';
+        exp.StimVar(7).name = 'tex1pos';
         exp.StimVar(7).variable = true;
         exp.StimVar(7).rand = false;
         exp.StimVar(7).trialVal = '[20]'; %ones(1, exp.StimFix.nTrialTypes);%[1  1   1    1    -1  1   1  1    1    1 1 1];
         
-        exp.StimVar(8).name = 'tc2';
+        exp.StimVar(8).name = 'tex2pos';
         exp.StimVar(8).variable = true;
         exp.StimVar(8).rand = false;
         exp.StimVar(8).trialVal = '[40]'; %ones(1, exp.StimFix.nTrialTypes);%[1  1   1    1    -1  1   1  1    1    1 1 1];
         
-        exp.StimVar(9).name = 'tc3';
+        exp.StimVar(9).name = 'tex3pos';
         exp.StimVar(9).variable = true;
         exp.StimVar(9).rand = false;
         exp.StimVar(9).trialVal = '[60]'; %ones(1, exp.StimFix.nTrialTypes);%[1  1   1    1    -1  1   1  1    1    1 1 1];
         
-        exp.StimVar(10).name = 'tc4';
+        exp.StimVar(10).name = 'tex4pos';
         exp.StimVar(10).variable = true;
         exp.StimVar(10).rand = false;
         exp.StimVar(10).trialVal = '[80]'; %ones(1, exp.StimFix.nTrialTypes);%[1  1   1    1    -1  1   1  1    1    1 1 1];
