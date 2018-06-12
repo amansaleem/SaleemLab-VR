@@ -25,16 +25,16 @@ expInfo.EXP.punishZone = TRIAL.trialRewPos(runInfo.currTrial) - expInfo.EXP.puni
 % % Set the texture positions
 % % Texture 1 position
 % TRIAL.tex1pos(runInfo.currTrial) = getNewTrialParameter(expInfo.EXP.tc1, expInfo.EXP.tc1_rand, runInfo, expInfo);
-% expInfo.EXP.tc1 = TRIAL.tex1pos;
+% expInfo.EXP.tc1 = TRIAL.tex1pos(runInfo.currTrial);
 % % Texture 2 position
 % TRIAL.tex2pos(runInfo.currTrial) = getNewTrialParameter(expInfo.EXP.tc2, expInfo.EXP.tc2_rand, runInfo, expInfo);
-% expInfo.EXP.tc2 = TRIAL.tex2pos;
+% expInfo.EXP.tc2 = TRIAL.tex2pos(runInfo.currTrial);
 % % Texture 3 position
 % TRIAL.tex3pos(runInfo.currTrial) = getNewTrialParameter(expInfo.EXP.tc3, expInfo.EXP.tc3_rand, runInfo, expInfo);
-% expInfo.EXP.tc3 = TRIAL.tex3pos;
+% expInfo.EXP.tc3 = TRIAL.tex3pos(runInfo.currTrial);
 % % Texture 4 position
 % TRIAL.tex4pos(runInfo.currTrial) = getNewTrialParameter(expInfo.EXP.tc4, expInfo.EXP.tc4_rand, runInfo, expInfo);
-% expInfo.EXP.tc4 = TRIAL.tex4pos;
+% expInfo.EXP.tc4 = TRIAL.tex4pos(runInfo.currTrial);
 % 
 % % WaveLength
 % TRIAL.waveLength(runInfo.currTrial) = getNewTrialParameter(expInfo.EXP.waveLength, expInfo.EXP.waveLength_rand, runInfo, expInfo);

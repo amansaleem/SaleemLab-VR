@@ -18,7 +18,7 @@ else
         runInfo.TRAJ = 1;
     else
         runInfo.TRAJ = expInfo.EXP.l- expInfo.EXP.l*rand(1)*expInfo.EXP.startRegion;
-    end        
+    end
 end
 
 TRIAL.trialStart(runInfo.currTrial) = runInfo.TRAJ;
@@ -87,7 +87,7 @@ TRIAL.trialRewPos(runInfo.currTrial) = expInfo.EXP.rew_pos(idx);
 expInfo.EXP.punishZone = TRIAL.trialRewPos(runInfo.currTrial) - expInfo.EXP.punishLim;
 
 % [expInfo, runInfo, TRIAL] = setTrialparameters(expInfo, runInfo, TRIAL);
-            
+
 display_text = ['Trial ' num2str(runInfo.currTrial) ...
     ', C: ' num2str(TRIAL.trialContr(runInfo.currTrial)) ...
     ', G: ' num2str(TRIAL.trialGain(runInfo.currTrial)) ...
@@ -243,164 +243,164 @@ try
         %         Screen('Flip', hwInfo.MYSCREEN.windowPtr(1));
         % Switch to OpenGL rendering again for drawing of next frame:
         Screen('BeginOpenGL', hwInfo.MYSCREEN.windowPtr(1));
-%         if ~runInfo.blank_screen
-            % Camera showing 180 degrees of the VR world onto a screen
-            % surface of same angular span
-            %             glViewport((1280-1280/240*180)/2,0,(1280/240*180),800);
-            getVRMovement;
-            runInfo = getTrajectory(dbx, X, Y, Z, T, rigInfo, hwInfo, expInfo, runInfo);
-            
-            for icam =1:rigInfo.numCameras
-%                 if icam==1
-%                     scan_ard_flag = true;
-%                 else
-%                     scan_ard_flag = false;
-%                 end
-                if ~runInfo.blank_screen
-                    switch rigInfo.screenType
-                        case 'DOME'
-                            if icam==rigInfo.numCameras
-                                glViewport(round(1280/rigInfo.numCameras)*(icam-1)+1,0,1279-(round(1280/rigInfo.numCameras)*(icam-1)),800);
-                            else
-                                glViewport(round(1280/rigInfo.numCameras)*(icam-1)+1,0,round(1280/rigInfo.numCameras),800);
-                            end
-                            glMatrixMode(GL.PROJECTION);
-                            glLoadIdentity;
-                            glFrustum( -sind((240/rigInfo.numCameras/2)*(1/3))*0.01, ...
-                                        sind((240/rigInfo.numCameras/2)*(1/3))*0.01, ...
-                                       -sind(30*(1/3))*0.01, sind(90*(1/3))*0.01, 0.01,expInfo.EXP.visibleDepth)
-                            glMatrixMode(GL.MODELVIEW);
-                            glLoadIdentity;
-                            glClear(GL.DEPTH_BUFFER_BIT);
-                            glRotated((-(240/2)+(240/2/rigInfo.numCameras)+((icam-1)*(240/rigInfo.numCameras)))*(1/3),0.0,1.0,0.0); % 0.333 is a parameter to get the desired rotation in degrees
-                            
-                        case '3SCREEN'
-                            glMatrixMode(GL.PROJECTION);
-                            glLoadIdentity;
-                            [ww,hh]=Screen('WindowSize',rigInfo.screenNumber);
-                            glViewport(round(ww/rigInfo.numCameras)*(icam-1)+1,0,round(ww/rigInfo.numCameras),hh);
-                            glFrustum( -sind(180/rigInfo.numCameras/2)*0.01, ...
-                                        sind(180/rigInfo.numCameras/2)*0.01, ...
-                                       ...-sind(22)*0.01, sind(67)*0.01, rigInfo.screenDist,expInfo.EXP.visibleDepth)
-                                       -sind(22)*0.01, sind(67)*0.01, 0.01,expInfo.EXP.visibleDepth)
-%                             gluPerspective(90,round(ww/rigInfo.numCameras)/hh,...
-%                                            0.01,expInfo.EXP.visibleDepth);
-                            glMatrixMode(GL.MODELVIEW);
-                            glLoadIdentity;
-                            glClear(GL.DEPTH_BUFFER_BIT);
-                            
-                            glRotated((-(180/2)+(180/2/rigInfo.numCameras)+((icam-1)*(180/rigInfo.numCameras))),0.0,1.0,0.0); % 0.333 is a parameter to get the desired rotation in degrees
-                            
-                            glRotated (0,1,0,0); % to look a little bit downward                            
-                    end
-                end
-                % Set background color to 'gray':
-                glClearColor(0.5,0.5,0.5,1);
-                glLightfv(GL.LIGHT0,GL.AMBIENT, [ 0.5 0.5 0.5 1 ]);
-                glShadeModel(GL.SMOOTH);
-                glPushMatrix;
-                glRotated (0,1,0,0); % to look a little bit downward
-                glRotated (TRIAL.posdata(runInfo.currTrial,runInfo.count,T)/pi*180,0,1,0);
-                glTranslated (-TRIAL.posdata(runInfo.currTrial,runInfo.count,X),-expInfo.EXP.c3,-TRIAL.posdata(runInfo.currTrial,runInfo.count,Z));
-
-                if strcmp(expInfo.EXP.VRType,'lin')
-                    glCallList(runInfo.List1); % with texture landmarks
-                elseif strcmp(expInfo.EXP.VRType,'PIT')
-                    glCallList(runInfo.List2); % path integration task - PIT
-                elseif strcmp(expInfo.EXP.VRType,'Ruler')
-                    glCallList(runInfo.ListRuler); % VR with square wave texture with period of 2 cm
-                end
-                
-                %DrawTextures
-                glPushMatrix;
-                glPopMatrix;
-                glPopMatrix;
-            end    
-            %runInfo = getTrajectory(dbx, X, Y, Z, T, rigInfo, hwInfo, expInfo, runInfo);
-             %%% end of for loop of viewports
-%         end 
-            % open loop
-            if expInfo.REPLAY
-                endExpt = 0;
-                if (runInfo.currTrial>=expInfo.EXP.maxTraj)
-                    endExpt = 1;
-                elseif (TRIAL.time(runInfo.currTrial,runInfo.count) == 0 && TRIAL.time(runInfo.currTrial+1,2) == 0)
-                    endExpt = 1;
-                    display(['Reached global end @ trial: ' num2str(runInfo.currTrial)]);
-                end
-                if endExpt
-                    display('Reached global end');
-                    if ~expInfo.OFFLINE
-                        VRmessage = ['StimStart ' expInfo.animalName ' ' expInfo.dateStr ...
-                            ' ' expInfo.sessionName ' ' num2str(TRIAL.nCompTraj) ' 1 ' ...
-                            num2str(round(expInfo.EXP.maxTrialDuration*10))];
-                        rigInfo.sendUDPmessage(VRmessage); %%%
-                        VRLogMessage(expInfo, VRmessage);
-                        if rigInfo.sendTTL
-                            session.outputSingleScan(true);
-                            pause(1);
-                        end
-                    end
-                    runInfo.currTrial = runInfo.currTrial + 1;
-                    fhandle = @trialEnd;
-                    TRIAL.info.abort =1;
-                    break
-                end
-            end
-            if expInfo.REPLAY
-                TRIAL.currTime(runInfo.currTrial,runInfo.count) = GetSecs;
-            else
-                TRIAL.time(runInfo.currTrial,runInfo.count) = GetSecs;
-                %display(['Trial: ' num2str(runInfo.currTrial) ', count: ' num2str(runInfo.count) ...
-                 %   ', Time: ' num2str(TRIAL.time(runInfo.currTrial,runInfo.count))]);
-            end
-            TRIAL.info.epoch = runInfo.count;
-            
+        %         if ~runInfo.blank_screen
+        % Camera showing 180 degrees of the VR world onto a screen
+        % surface of same angular span
+        %             glViewport((1280-1280/240*180)/2,0,(1280/240*180),800);
+        getVRMovement;
+        runInfo = getTrajectory(dbx, X, Y, Z, T, rigInfo, hwInfo, expInfo, runInfo);
+        
+        for icam =1:rigInfo.numCameras
+            %                 if icam==1
+            %                     scan_ard_flag = true;
+            %                 else
+            %                     scan_ard_flag = false;
+            %                 end
             if ~runInfo.blank_screen
-                % update x, z positions and viewangle
-                
-                if ~expInfo.REPLAY
-                    TRIAL.traj(runInfo.currTrial,runInfo.count) = runInfo.TRAJ;
-                    %                 disp(['Traj is ' num2str(runInfo.TRAJ*10)]);
-                end
-                
-                if TRIAL.nCompTraj > expInfo.EXP.maxTraj
-                    if ~expInfo.OFFLINE
-                        VRmessage = ['StimStart ' expInfo.animalName ' ' expInfo.dateStr ' ' ...
-                            expInfo.sessionName ' ' num2str(TRIAL.nCompTraj) ' 1 ' num2str(round(expInfo.EXP.maxTrialDuration*10))];
-                        rigInfo.sendUDPmessage(VRmessage); %%%
-                        VRLogMessage(expInfo, VRmessage);
-                        if rigInfo.sendTTL
-                            hwInfo.session.outputSingleScan(true);
+                switch rigInfo.screenType
+                    case 'DOME'
+                        if icam==rigInfo.numCameras
+                            glViewport(round(1280/rigInfo.numCameras)*(icam-1)+1,0,1279-(round(1280/rigInfo.numCameras)*(icam-1)),800);
+                        else
+                            glViewport(round(1280/rigInfo.numCameras)*(icam-1)+1,0,round(1280/rigInfo.numCameras),800);
                         end
-                    end
-                    fhandle = @trialEnd;
-                    break
+                        glMatrixMode(GL.PROJECTION);
+                        glLoadIdentity;
+                        glFrustum( -sind((240/rigInfo.numCameras/2)*(1/3))*0.01, ...
+                            sind((240/rigInfo.numCameras/2)*(1/3))*0.01, ...
+                            -sind(30*(1/3))*0.01, sind(90*(1/3))*0.01, 0.01,expInfo.EXP.visibleDepth)
+                        glMatrixMode(GL.MODELVIEW);
+                        glLoadIdentity;
+                        glClear(GL.DEPTH_BUFFER_BIT);
+                        glRotated((-(240/2)+(240/2/rigInfo.numCameras)+((icam-1)*(240/rigInfo.numCameras)))*(1/3),0.0,1.0,0.0); % 0.333 is a parameter to get the desired rotation in degrees
+                        
+                    case '3SCREEN'
+                        glMatrixMode(GL.PROJECTION);
+                        glLoadIdentity;
+                        [ww,hh]=Screen('WindowSize',rigInfo.screenNumber);
+                        glViewport(round(ww/rigInfo.numCameras)*(icam-1)+1,0,round(ww/rigInfo.numCameras),hh);
+                        glFrustum( -sind(180/rigInfo.numCameras/2)*0.01, ...
+                            sind(180/rigInfo.numCameras/2)*0.01, ...
+                            ...-sind(22)*0.01, sind(67)*0.01, rigInfo.screenDist,expInfo.EXP.visibleDepth)
+                            -sind(22)*0.01, sind(67)*0.01, 0.01,expInfo.EXP.visibleDepth)
+                        %                             gluPerspective(90,round(ww/rigInfo.numCameras)/hh,...
+                        %                                            0.01,expInfo.EXP.visibleDepth);
+                        glMatrixMode(GL.MODELVIEW);
+                        glLoadIdentity;
+                        glClear(GL.DEPTH_BUFFER_BIT);
+                        
+                        glRotated((-(180/2)+(180/2/rigInfo.numCameras)+((icam-1)*(180/rigInfo.numCameras))),0.0,1.0,0.0); % 0.333 is a parameter to get the desired rotation in degrees
+                        
+                        glRotated (0,1,0,0); % to look a little bit downward
                 end
-                currentPos = [TRIAL.posdata(runInfo.currTrial,runInfo.count,X) TRIAL.posdata(runInfo.currTrial,runInfo.count,Y) TRIAL.posdata(runInfo.currTrial,runInfo.count,Z)];
             end
-            % start drawing
-            if runInfo.blank_screen
-                glClear;
+            % Set background color to 'gray':
+            glClearColor(0.5,0.5,0.5,1);
+            glLightfv(GL.LIGHT0,GL.AMBIENT, [ 0.5 0.5 0.5 1 ]);
+            glShadeModel(GL.SMOOTH);
+            glPushMatrix;
+            glRotated (0,1,0,0); % to look a little bit downward
+            glRotated (TRIAL.posdata(runInfo.currTrial,runInfo.count,T)/pi*180,0,1,0);
+            glTranslated (-TRIAL.posdata(runInfo.currTrial,runInfo.count,X),-expInfo.EXP.c3,-TRIAL.posdata(runInfo.currTrial,runInfo.count,Z));
+            
+            if strcmp(expInfo.EXP.VRType,'lin')
+                glCallList(runInfo.List1); % with texture landmarks
+            elseif strcmp(expInfo.EXP.VRType,'PIT')
+                glCallList(runInfo.List2); % path integration task - PIT
+            elseif strcmp(expInfo.EXP.VRType,'Ruler')
+                glCallList(runInfo.ListRuler); % VR with square wave texture with period of 2 cm
             end
-            % get new coordinates
-            runInfo.count = runInfo.count + 1;
-            gcount = gcount + 1;
             
-            % Finish OpenGL rendering into PTB window and check for OpenGL errors.
-            Screen('EndOpenGL', hwInfo.MYSCREEN.windowPtr(1));
-            % Show rendered image at next vertical retrace:
-            % Show the sync square
-            % alternate between black and white with every frame
+            %DrawTextures
+            glPushMatrix;
+            glPopMatrix;
+            glPopMatrix;
+        end
+        %runInfo = getTrajectory(dbx, X, Y, Z, T, rigInfo, hwInfo, expInfo, runInfo);
+        %%% end of for loop of viewports
+        %         end
+        % open loop
+        if expInfo.REPLAY
+            endExpt = 0;
+            if (runInfo.currTrial>=expInfo.EXP.maxTraj)
+                endExpt = 1;
+            elseif (TRIAL.time(runInfo.currTrial,runInfo.count) == 0 && TRIAL.time(runInfo.currTrial+1,2) == 0)
+                endExpt = 1;
+                display(['Reached global end @ trial: ' num2str(runInfo.currTrial)]);
+            end
+            if endExpt
+                display('Reached global end');
+                if ~expInfo.OFFLINE
+                    VRmessage = ['StimStart ' expInfo.animalName ' ' expInfo.dateStr ...
+                        ' ' expInfo.sessionName ' ' num2str(TRIAL.nCompTraj) ' 1 ' ...
+                        num2str(round(expInfo.EXP.maxTrialDuration*10))];
+                    rigInfo.sendUDPmessage(VRmessage); %%%
+                    VRLogMessage(expInfo, VRmessage);
+                    if rigInfo.sendTTL
+                        session.outputSingleScan(true);
+                        pause(1);
+                    end
+                end
+                runInfo.currTrial = runInfo.currTrial + 1;
+                fhandle = @trialEnd;
+                TRIAL.info.abort =1;
+                break
+            end
+        end
+        if expInfo.REPLAY
+            TRIAL.currTime(runInfo.currTrial,runInfo.count) = GetSecs;
+        else
+            TRIAL.time(runInfo.currTrial,runInfo.count) = GetSecs;
+            %display(['Trial: ' num2str(runInfo.currTrial) ', count: ' num2str(runInfo.count) ...
+            %   ', Time: ' num2str(TRIAL.time(runInfo.currTrial,runInfo.count))]);
+        end
+        TRIAL.info.epoch = runInfo.count;
+        
+        if ~runInfo.blank_screen
+            % update x, z positions and viewangle
             
-            Screen('FillRect', hwInfo.MYSCREEN.windowPtr(1), mod(gcount,2)*255, rigInfo.photodiodeRect.rect);
-            %         glFlush;
-            Screen('Flip', hwInfo.MYSCREEN.windowPtr(1));
-            % Switch to OpenGL rendering again for drawing of next frame:
-             Screen('BeginOpenGL', hwInfo.MYSCREEN.windowPtr(1));
+            if ~expInfo.REPLAY
+                TRIAL.traj(runInfo.currTrial,runInfo.count) = runInfo.TRAJ;
+                %                 disp(['Traj is ' num2str(runInfo.TRAJ*10)]);
+            end
+            
+            if TRIAL.nCompTraj > expInfo.EXP.maxTraj
+                if ~expInfo.OFFLINE
+                    VRmessage = ['StimStart ' expInfo.animalName ' ' expInfo.dateStr ' ' ...
+                        expInfo.sessionName ' ' num2str(TRIAL.nCompTraj) ' 1 ' num2str(round(expInfo.EXP.maxTrialDuration*10))];
+                    rigInfo.sendUDPmessage(VRmessage); %%%
+                    VRLogMessage(expInfo, VRmessage);
+                    if rigInfo.sendTTL
+                        hwInfo.session.outputSingleScan(true);
+                    end
+                end
+                fhandle = @trialEnd;
+                break
+            end
+            currentPos = [TRIAL.posdata(runInfo.currTrial,runInfo.count,X) TRIAL.posdata(runInfo.currTrial,runInfo.count,Y) TRIAL.posdata(runInfo.currTrial,runInfo.count,Z)];
+        end
+        % start drawing
+        if runInfo.blank_screen
+            glClear;
+        end
+        % get new coordinates
+        runInfo.count = runInfo.count + 1;
+        gcount = gcount + 1;
+        
+        % Finish OpenGL rendering into PTB window and check for OpenGL errors.
+        Screen('EndOpenGL', hwInfo.MYSCREEN.windowPtr(1));
+        % Show rendered image at next vertical retrace:
+        % Show the sync square
+        % alternate between black and white with every frame
+        
+        Screen('FillRect', hwInfo.MYSCREEN.windowPtr(1), mod(gcount,2)*255, rigInfo.photodiodeRect.rect);
+        %         glFlush;
+        Screen('Flip', hwInfo.MYSCREEN.windowPtr(1));
+        % Switch to OpenGL rendering again for drawing of next frame:
+        Screen('BeginOpenGL', hwInfo.MYSCREEN.windowPtr(1));
         if runInfo.blank_screen
             runInfo.blank_screen_count = runInfo.blank_screen_count + 1;
-%             display(num2str(runInfo.blank_screen_count));
+            %             display(num2str(runInfo.blank_screen_count));
         end
         
         if runInfo.blank_screen_count > TRIAL.trialBlanks(runInfo.currTrial)
@@ -411,7 +411,8 @@ try
             %             if ~REPLAY
             %% Set trial parameters
             [expInfo, runInfo, TRIAL] = setTrialparameters(expInfo, runInfo, TRIAL);
-                       
+            scaling_factor = TRIAL.trialGain(runInfo.currTrial);
+            
             display_text = ['Trial ' num2str(runInfo.currTrial) ...
                 ', C: ' num2str(TRIAL.trialContr(runInfo.currTrial)) ...
                 ', G: ' num2str(TRIAL.trialGain(runInfo.currTrial)) ...
@@ -423,15 +424,15 @@ try
                 ', PZ: ' num2str(expInfo.EXP.punishZone) ...
                 ];
             display(['Trial ' num2str(runInfo.currTrial) ...
-    ', C: ' num2str(TRIAL.trialContr(runInfo.currTrial)) ...
-    ', G: ' num2str(TRIAL.trialGain(runInfo.currTrial)) ...
-    ', RL: ' num2str(TRIAL.trialRL(runInfo.currTrial)) ...
-    ', S: ' num2str(TRIAL.trialStart(runInfo.currTrial)) ...
-    ', B: ' num2str(TRIAL.trialBlanks(runInfo.currTrial)) ...
-    ', A: ' num2str(TRIAL.trialActive(runInfo.currTrial)) ...
-    ', RP: ' num2str(TRIAL.trialRewPos(runInfo.currTrial)) ...
-    ', PZ: ' num2str(expInfo.EXP.punishZone) ...
-    ]);
+                ', C: ' num2str(TRIAL.trialContr(runInfo.currTrial)) ...
+                ', G: ' num2str(TRIAL.trialGain(runInfo.currTrial)) ...
+                ', RL: ' num2str(TRIAL.trialRL(runInfo.currTrial)) ...
+                ', S: ' num2str(TRIAL.trialStart(runInfo.currTrial)) ...
+                ', B: ' num2str(TRIAL.trialBlanks(runInfo.currTrial)) ...
+                ', A: ' num2str(TRIAL.trialActive(runInfo.currTrial)) ...
+                ', RP: ' num2str(TRIAL.trialRewPos(runInfo.currTrial)) ...
+                ', PZ: ' num2str(expInfo.EXP.punishZone) ...
+                ]);
             if ~isempty(rigInfo.comms)
                 rigInfo.comms.send('currentTrial',num2str(runInfo.currTrial));
                 rigInfo.comms.send('trialParam',display_text);
@@ -478,17 +479,17 @@ try
             runInfo = giveReward(runInfo.count,'USER',runInfo.currTrial,1, expInfo, runInfo, hwInfo, rigInfo);
         end
         
-%         % Finish OpenGL rendering into PTB window and check for OpenGL errors.
-%             Screen('EndOpenGL', hwInfo.MYSCREEN.windowPtr(1));
-%             % Show rendered image at next vertical retrace:
-%             % Show the sync square
-%             % alternate between black and white with every frame
-%             
-%             Screen('FillRect', hwInfo.MYSCREEN.windowPtr(1), mod(gcount,2)*255, rigInfo.photodiodeRect.rect);
-%             %         glFlush;
-%             Screen('Flip', hwInfo.MYSCREEN.windowPtr(1),0,2,1);
-%             % Switch to OpenGL rendering again for drawing of next frame:
-%             Screen('BeginOpenGL', hwInfo.MYSCREEN.windowPtr(1));
+        %         % Finish OpenGL rendering into PTB window and check for OpenGL errors.
+        %             Screen('EndOpenGL', hwInfo.MYSCREEN.windowPtr(1));
+        %             % Show rendered image at next vertical retrace:
+        %             % Show the sync square
+        %             % alternate between black and white with every frame
+        %
+        %             Screen('FillRect', hwInfo.MYSCREEN.windowPtr(1), mod(gcount,2)*255, rigInfo.photodiodeRect.rect);
+        %             %         glFlush;
+        %             Screen('Flip', hwInfo.MYSCREEN.windowPtr(1),0,2,1);
+        %             % Switch to OpenGL rendering again for drawing of next frame:
+        %             Screen('BeginOpenGL', hwInfo.MYSCREEN.windowPtr(1));
     end
     
 catch ME
@@ -681,59 +682,59 @@ end
                     
                 case 'WHEEL'
                     %if scan_ard_flag
-                        ballTime = TRIAL.time(runInfo.currTrial,runInfo.count);
-                        dax = 0; day = 0; dby = 0;
-                        switch rigInfo.DevType
-                            case 'NI'
-                                scan_input = (hwInfo.rotEnc.readPosition);
-                                hwInfo.rotEnc.zero;
-                            case 'ARDUINO'
-                                
+                    ballTime = TRIAL.time(runInfo.currTrial,runInfo.count);
+                    dax = 0; day = 0; dby = 0;
+                    switch rigInfo.DevType
+                        case 'NI'
+                            scan_input = (hwInfo.rotEnc.readPosition);
+                            hwInfo.rotEnc.zero;
+                        case 'ARDUINO'
+                            
+                            flushinput(hwInfo.ardDev)
+                            ard_scan = fscanf(hwInfo.ardDev, '%d\t%d\t%d');
+                            while length(ard_scan)~=3
                                 flushinput(hwInfo.ardDev)
                                 ard_scan = fscanf(hwInfo.ardDev, '%d\t%d\t%d');
-                                while length(ard_scan)~=3
-                                    flushinput(hwInfo.ardDev)
-                                    ard_scan = fscanf(hwInfo.ardDev, '%d\t%d\t%d');
-                                end
-                                %                             hwInfo.ardDev.zero
-                                % rotary encoder
-                                temp1 = ard_scan(1) - rigInfo.ARDHistory(1);
-                                rigInfo.ARDHistory(1) = ard_scan(1);
-                                scan_input(1) = temp1;
-                                % lick detector
-                                temp2 = ard_scan(2) - rigInfo.ARDHistory(2);
-                                rigInfo.ARDHistory(2) = ard_scan(2);
-                                %display(scan_input(2));
-                                %                             display([num2str(ard_scan(2))]);
-                                scan_input(2) = temp2;
-                                flushinput(hwInfo.ardDev);
-                                %sync signal
-                                day = ard_scan(3); % this the interval between 0->3500 transitions of the sync pulse signal
-                                
-                        end
-                        if ~strcmp(rigInfo.rotEncPos,'right')
-                            dbx = -scan_input(1);
-                        else
-                            dbx = scan_input(1);
-                        end
-                        % convert to cm
-                        dbx = dbx*((2*pi*expInfo.EXP.wheelRadius)./(1024)); % (cm)% because it is a 4 x 1024 unit encoder
-                        % dbx = 50*dbx; % to be removed when the room is better calibrated
-                        
-                        TRIAL.balldata(runInfo.currTrial,runInfo.count,:) = [ballTime, dax, dbx, day, dby];
-                        dbx = nansum([dbx 0]).*scaling_factor.*expInfo.EXP.wheelToVR;
-                        % Remove 'BALL_TO_ROOM' after this set of animals (28th
-                        % Feb)
-                        currLikStatus = scan_input(2);
-                        if currLikStatus
-                            TRIAL.lick(runInfo.currTrial,runInfo.count) = 1;
-                            if ~isempty(rigInfo.comms)
-                                rigInfo.comms.send('licks',num2str(1));
                             end
-                            display(['Lick Detected']);
-                        else
-                            TRIAL.lick(runInfo.currTrial,runInfo.count) = 0;
+                            %                             hwInfo.ardDev.zero
+                            % rotary encoder
+                            temp1 = ard_scan(1) - rigInfo.ARDHistory(1);
+                            rigInfo.ARDHistory(1) = ard_scan(1);
+                            scan_input(1) = temp1;
+                            % lick detector
+                            temp2 = ard_scan(2) - rigInfo.ARDHistory(2);
+                            rigInfo.ARDHistory(2) = ard_scan(2);
+                            %display(scan_input(2));
+                            %                             display([num2str(ard_scan(2))]);
+                            scan_input(2) = temp2;
+                            flushinput(hwInfo.ardDev);
+                            %sync signal
+                            day = ard_scan(3); % this the interval between 0->3500 transitions of the sync pulse signal
+                            
+                    end
+                    if ~strcmp(rigInfo.rotEncPos,'right')
+                        dbx = -scan_input(1);
+                    else
+                        dbx = scan_input(1);
+                    end
+                    % convert to cm
+                    dbx = dbx*((2*pi*expInfo.EXP.wheelRadius)./(1024)); % (cm)% because it is a 4 x 1024 unit encoder
+                    % dbx = 50*dbx; % to be removed when the room is better calibrated
+                    
+                    TRIAL.balldata(runInfo.currTrial,runInfo.count,:) = [ballTime, dax, dbx, day, dby];
+                    dbx = nansum([dbx 0]).*scaling_factor.*expInfo.EXP.wheelToVR;
+                    % Remove 'BALL_TO_ROOM' after this set of animals (28th
+                    % Feb)
+                    currLikStatus = scan_input(2);
+                    if currLikStatus
+                        TRIAL.lick(runInfo.currTrial,runInfo.count) = 1;
+                        if ~isempty(rigInfo.comms)
+                            rigInfo.comms.send('licks',num2str(1));
                         end
+                        display(['Lick Detected']);
+                    else
+                        TRIAL.lick(runInfo.currTrial,runInfo.count) = 0;
+                    end
                     %end
                 case 'KEYBRD'
                     [KeyIsDown, secs, KeyCode] = KbCheck;
@@ -748,12 +749,12 @@ end
                     TRIAL.balldata(runInfo.currTrial,runInfo.count,:) = [ballTime, dax, dbx, day, dby];
                     dbx = nansum([dbx 0]).*scaling_factor.*expInfo.EXP.wheelToVR;
                     
-%                     getNonBallDeltas;
-%                     ballTime = TRIAL.time(runInfo.currTrial,runInfo.count);
-%                     dax = runInfo.MOUSEXY.dax;
-%                     day = runInfo.MOUSEXY.day;
-%                     dbx = runInfo.MOUSEXY.dbx;
-%                     dby = runInfo.MOUSEXY.dby;
+                    %                     getNonBallDeltas;
+                    %                     ballTime = TRIAL.time(runInfo.currTrial,runInfo.count);
+                    %                     dax = runInfo.MOUSEXY.dax;
+                    %                     day = runInfo.MOUSEXY.day;
+                    %                     dbx = runInfo.MOUSEXY.dbx;
+                    %                     dby = runInfo.MOUSEXY.dby;
             end
         else
             getNonBallDeltas;
@@ -770,17 +771,17 @@ end
         
         runInfo.ListRuler = glGenLists(1); % display list to show the ruler-texture
         runInfo.List1 = glGenLists(1);
-
+        
         if isfield(expInfo.EXP, 'SF')
             WLength = expInfo.EXP.SF;
         else
             WLength = 1;
         end
-
+        
         runInfo.List2 = glGenLists(1);
         
         glNewList(runInfo.List1,GL.COMPILE);
-         for k=1:runInfo.ROOM.nOfWalls
+        for k=1:runInfo.ROOM.nOfWalls
             switch k
                 case 1
                     wallface (runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texname(getTextureIndex(expInfo.EXP.farWallText)),runInfo.ROOM.wrap(k,:));
@@ -852,11 +853,11 @@ end
                 otherwise
                 wallface (runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texname(getTextureIndex('WHITENOISE')),runInfo.ROOM.wrap(k,:));
             end
-         end
+        end
         glEndList();
         
         glNewList(runInfo.List2,GL.COMPILE); % Path integration task
-        if ~strcmp(expInfo.EXP.VRType,'lin') 
+        if ~strcmp(expInfo.EXP.VRType,'lin')
             for k=1:6
                 switch k
                     case 1
@@ -885,13 +886,13 @@ end
                     case 2
                         wallface_PIT (expInfo.EXP.l,  runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texname(getTextureIndex(expInfo.EXP.nearWallText)), WLength);
                     case 3
-                        wallface_PIT (expInfo.EXP.l,  runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texname(getTextureIndex_N(expInfo.EXP.ceilingText)), WLength); 
+                        wallface_PIT (expInfo.EXP.l,  runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texname(getTextureIndex_N(expInfo.EXP.ceilingText)), WLength);
                     case 4
-                        wallface_PIT (expInfo.EXP.l,  runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texname(getTextureIndex_N(expInfo.EXP.ceilingText)), WLength); 
+                        wallface_PIT (expInfo.EXP.l,  runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texname(getTextureIndex_N(expInfo.EXP.ceilingText)), WLength);
                     case 5
-                        wallface_PIT (expInfo.EXP.l,  runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texname(getTextureIndex_N(expInfo.EXP.ceilingText)), WLength); 
+                        wallface_PIT (expInfo.EXP.l,  runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texname(getTextureIndex_N(expInfo.EXP.ceilingText)), WLength);
                     case 6
-                        wallface_PIT (expInfo.EXP.l,  runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texname(getTextureIndex_N(expInfo.EXP.floorText)), WLength); 
+                        wallface_PIT (expInfo.EXP.l,  runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texname(getTextureIndex_N(expInfo.EXP.floorText)), WLength);
                 end
             end
         end
