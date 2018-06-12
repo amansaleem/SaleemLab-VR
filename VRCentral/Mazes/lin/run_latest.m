@@ -7,7 +7,6 @@ runInfo.reset_textures = 1;
 ListenChar(2);
 
 %% First trial settings
-
 if ~expInfo.EXP.randStart
     if strcmp(expInfo.EXP.trajDir,'cw')
         runInfo.TRAJ = 0.1;
@@ -47,7 +46,7 @@ likCount = 0;
 
 % Scaling of the room
 if expInfo.EXP.scaling
-    if expInfo.EXP.randScale
+    if expInfo.EXP.scaleSet_rand
         scaling_factor = expInfo.EXP.scaleSet(randi(length(expInfo.EXP.scaleSet)));
     else
         idx = runInfo.currTrial;
