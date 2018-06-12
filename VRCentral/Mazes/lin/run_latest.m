@@ -45,7 +45,7 @@ end
 likCount = 0;
 
 % Scaling of the room
-if expInfo.EXP.scaling
+if length(expInfo.EXP.scaleSet)>1
     if expInfo.EXP.scaleSet_rand
         scaling_factor = expInfo.EXP.scaleSet(randi(length(expInfo.EXP.scaleSet)));
     else
