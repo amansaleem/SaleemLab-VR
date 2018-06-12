@@ -510,7 +510,7 @@ clear VRparameters VRchoose
         exp.StimVar(5).name = 'rew_pos';
         exp.StimVar(5).variable = true;
         exp.StimVar(5).rand = true;
-        exp.StimVar(5).trialVal = '[1 1]'; %ones(1, exp.StimFix.nTrialTypes);%[1  1   1    1    -1  1   1  1    1    1 1 1];
+        exp.StimVar(5).trialVal = '[70]'; %ones(1, exp.StimFix.nTrialTypes);%[1  1   1    1    -1  1   1  1    1    1 1 1];
         
         exp.StimVar(6).name = 'waveLength';
         exp.StimVar(6).variable = true;
