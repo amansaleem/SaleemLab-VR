@@ -360,8 +360,14 @@ clear VRparameters VRchoose
         VarDataA = get(VRparameters.StimVarInfo1,'Data');
         notGood = false;
         
-        x = contains(VarNames,'contrLevels');
-        cList = str2num(VarDataA{x});
+        x = strfind(VarNames,'contrLevels');
+        y = [];
+        for x_idx = 1:length(x)
+            if ~isempty(x{x_idx})
+                y = [y x_idx];
+            end
+        end
+        cList = str2num(VarDataA{y});
         if sum(cList>1)>=1
             msgbox({'WARNING!';'CONTRAST has values > 1'}, 'Error', 'error');
             not_good = true;
@@ -370,8 +376,14 @@ clear VRparameters VRchoose
             not_good = true;
         end
         
-        x = contains(VarNames, 'scaleSet');
-        cList = str2num(VarDataA{x});
+        x = strfind(VarNames, 'scaleSet');
+        y = [];
+        for x_idx = 1:length(x)
+            if ~isempty(x{x_idx})
+                y = [y x_idx];
+            end
+        end
+        cList = str2num(VarDataA{y});
         if sum(cList<=0)>=1
             msgbox({'WARNING!';'SCALE has values <= 0'}, 'Warning', 'warn');
         end
