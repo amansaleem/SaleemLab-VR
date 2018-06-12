@@ -35,7 +35,7 @@ expInfo.EXP.punishZone = TRIAL.trialRewPos(runInfo.currTrial) - expInfo.EXP.puni
 % % Texture 4 position
 % TRIAL.tex4pos(runInfo.currTrial) = getNewTrialParameter(expInfo.EXP.tc4, expInfo.EXP.tc4_rand, runInfo, expInfo);
 % expInfo.EXP.tc4 = TRIAL.tex4pos;
-
+% 
 % % WaveLength
 % TRIAL.waveLength(runInfo.currTrial) = getNewTrialParameter(expInfo.EXP.waveLength, expInfo.EXP.waveLength_rand, runInfo, expInfo);
 
