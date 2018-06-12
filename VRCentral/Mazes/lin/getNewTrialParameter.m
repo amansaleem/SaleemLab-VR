@@ -1,7 +1,7 @@
-function currTrialVar = getNewTrialParameter(varArray, runInfo, expInfo)
+function currTrialVar = getNewTrialParameter(varArray, varArray_rand, runInfo, expInfo)
 
 if length(varArray)>1
-    if expInfo.EXP.randScale
+    if varArray_rand
         varToSet = varArray(randi(length(varArray)));
     else
         varIdx = runInfo.currTrial;

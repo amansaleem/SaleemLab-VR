@@ -221,6 +221,14 @@ clear VRparameters VRchoose
                     'ColumnWidth',{600 40},...
                     'FontSize',14, ...
                     'ColumnEditable',logical(coledit1));
+                
+                VRparameters.StimVarInfo2 = uiextras.HBox('Parent',VRparameters.StimVarTab,'Spacing',10,'Padding',5);
+                uiextras.Empty('Parent', VRparameters.StimVarInfo2)
+                VRparameters.StimVarCheck = uicontrol('Parent', VRparameters.StimVarInfo2,...
+                    'String','Check Parameters','fontsize',12,'Enable','on', 'Callback', @(~,~) checkPara);
+                uiextras.Empty('Parent', VRparameters.StimVarInfo2)
+                VRparameters.StimVarInfo2.Sizes = [-1 -3 -3]
+                VRparameters.StimVarTab.Sizes = [-4 -1];
             end
             if iTab==4
                 rownames = fieldnames(exp.Reward);
@@ -320,10 +328,10 @@ clear VRparameters VRchoose
         for iVar = 1:length(VarNames)
             exp.StimVar(iVar).name = VarNames{iVar};
             exp.StimVar(iVar).rand = VarDataA{iVar,2};
-            exp.StimVar(iVar).trialVal = str2num(VarDataA{iVar,1});
+            exp.StimVar(iVar).trialVal = VarDataA{iVar,1};
             exp.StimVar(iVar).variable = (length(VarDataA{iVar,1})>1);
             
-            exp_out = setfield(exp_out,  VarNames{iVar}, exp.StimVar(iVar).trialVal);
+            exp_out = setfield(exp_out,  VarNames{iVar}, str2num(exp.StimVar(iVar).trialVal));
             exp_out = setfield(exp_out,  [VarNames{iVar} '_rand'], exp.StimVar(iVar).rand);
         end
         
@@ -347,6 +355,30 @@ clear VRparameters VRchoose
         %         uiresume(MainFig);
     end
 
+    function checkPara
+        VarNames = get(VRparameters.StimVarInfo1,'RowName');
+        VarDataA = get(VRparameters.StimVarInfo1,'Data');
+        notGood = false;
+        
+        x = contains(VarNames,'contrLevels');
+        cList = str2num(VarDataA{x});
+        if sum(cList>1)>=1
+            msgbox({'WARNING!';'CONTRAST has values > 1'}, 'Error', 'error');
+            not_good = true;
+        elseif sum(cList<0)>=1
+            msgbox({'WARNING!';'CONTRAST has values < 0'}, 'Error', 'error');
+            not_good = true;
+        end
+        
+        x = contains(VarNames, 'scaleSet');
+        cList = str2num(VarDataA{x});
+        if sum(cList<=0)>=1
+            msgbox({'WARNING!';'SCALE has values <= 0'}, 'Warning', 'warn');
+        end
+        
+        
+            
+    end
     function runExp
         % Save in the appropriate folder and start running the experiment.
         [exp, exp_out] = runOutput(VRparameters);
@@ -487,23 +519,23 @@ clear VRparameters VRchoose
         
         exp.StimVar(7).name = 'tc1';
         exp.StimVar(7).variable = true;
-        exp.StimVar(7).rand = true;
-        exp.StimVar(7).trialVal = '[20 20]'; %ones(1, exp.StimFix.nTrialTypes);%[1  1   1    1    -1  1   1  1    1    1 1 1];
+        exp.StimVar(7).rand = false;
+        exp.StimVar(7).trialVal = '[20]'; %ones(1, exp.StimFix.nTrialTypes);%[1  1   1    1    -1  1   1  1    1    1 1 1];
         
         exp.StimVar(8).name = 'tc2';
         exp.StimVar(8).variable = true;
-        exp.StimVar(8).rand = true;
-        exp.StimVar(8).trialVal = '[20 20]'; %ones(1, exp.StimFix.nTrialTypes);%[1  1   1    1    -1  1   1  1    1    1 1 1];
+        exp.StimVar(8).rand = false;
+        exp.StimVar(8).trialVal = '[40]'; %ones(1, exp.StimFix.nTrialTypes);%[1  1   1    1    -1  1   1  1    1    1 1 1];
         
         exp.StimVar(9).name = 'tc3';
         exp.StimVar(9).variable = true;
-        exp.StimVar(9).rand = true;
-        exp.StimVar(9).trialVal = '[20 20]'; %ones(1, exp.StimFix.nTrialTypes);%[1  1   1    1    -1  1   1  1    1    1 1 1];
+        exp.StimVar(9).rand = false;
+        exp.StimVar(9).trialVal = '[60]'; %ones(1, exp.StimFix.nTrialTypes);%[1  1   1    1    -1  1   1  1    1    1 1 1];
         
         exp.StimVar(10).name = 'tc4';
         exp.StimVar(10).variable = true;
-        exp.StimVar(10).rand = true;
-        exp.StimVar(10).trialVal = '[20 20]'; %ones(1, exp.StimFix.nTrialTypes);%[1  1   1    1    -1  1   1  1    1    1 1 1];
+        exp.StimVar(10).rand = false;
+        exp.StimVar(10).trialVal = '[80]'; %ones(1, exp.StimFix.nTrialTypes);%[1  1   1    1    -1  1   1  1    1    1 1 1];
         
         exp.Reward = ...
             struct(...
