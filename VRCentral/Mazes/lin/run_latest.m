@@ -528,7 +528,7 @@ end
         
         runInfo.reset_textures = 0;
         %         if ~REPLAY
-        if expInfo.EXP.randContr
+        if expInfo.EXP.contrLevels_rand
             contrLevel = expInfo.EXP.contrLevels(randi(length(expInfo.EXP.contrLevels)));
         else
             idxc = runInfo.currTrial;

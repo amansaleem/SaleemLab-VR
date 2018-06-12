@@ -26,6 +26,7 @@ expInfo.EXP.punishZone = TRIAL.trialRewPos(runInfo.currTrial) - expInfo.EXP.puni
 % Texture 1 position
 TRIAL.tex1pos(runInfo.currTrial) = getNewTrialParameter(expInfo.EXP.tex1pos, expInfo.EXP.tex1pos_rand, runInfo, expInfo);
 expInfo.EXP.tc1 = TRIAL.tex1pos(runInfo.currTrial);
+display(num2str(expInfo.EXP.tc1));
 % Texture 2 position
 TRIAL.tex2pos(runInfo.currTrial) = getNewTrialParameter(expInfo.EXP.tex2pos, expInfo.EXP.tex2pos_rand, runInfo, expInfo);
 expInfo.EXP.tc2 = TRIAL.tex2pos(runInfo.currTrial);
@@ -36,12 +37,12 @@ expInfo.EXP.tc3 = TRIAL.tex3pos(runInfo.currTrial);
 TRIAL.tex4pos(runInfo.currTrial) = getNewTrialParameter(expInfo.EXP.tex4pos, expInfo.EXP.tex4pos_rand, runInfo, expInfo);
 expInfo.EXP.tc4 = TRIAL.tex4pos(runInfo.currTrial);
 % 
-% % WaveLength
-% TRIAL.waveLength(runInfo.currTrial) = getNewTrialParameter(expInfo.EXP.waveLength, expInfo.EXP.waveLength_rand, runInfo, expInfo);
+% WaveLength
+TRIAL.waveLength(runInfo.currTrial) = getNewTrialParameter(expInfo.EXP.waveLength, expInfo.EXP.waveLength_rand, runInfo, expInfo);
 
 
 % Get the room data at the end of getting all the parameters
-runInfo.ROOM = getRoomData(expInfo.EXP,TRIAL.trialRL(runInfo.currTrial));
+runInfo.ROOM = getRoomData(expInfo.EXP, TRIAL.trialRL(runInfo.currTrial));
 
 % Start Position
 % This is just doing a random start position based on the start region,
