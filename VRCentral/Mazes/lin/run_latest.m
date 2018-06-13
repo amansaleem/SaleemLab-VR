@@ -769,31 +769,32 @@ end
 %% generate OpenGL list of drawings
     function CreateOpenGLlist
         
+        disp('Running create lists');
         % Aman adding a generation of glLists for different combinations of
         % stimuli
         runInfo.glLists.varLengths = [length(expInfo.EXP.contrLevels) length(expInfo.EXP.lengthSet) ...
-            length(expInfo.EXP.wavelength) length(expInfo.EXP.tex1pos) length(expInfo.EXP.tex2pos) ...
+            length(expInfo.EXP.waveLength) length(expInfo.EXP.tex1pos) length(expInfo.EXP.tex2pos) ...
             length(expInfo.EXP.tex3pos) length(expInfo.EXP.tex4pos)];
         runInfo.glLists.numLists = [length(expInfo.EXP.contrLevels)*length(expInfo.EXP.lengthSet)* ...
-            length(expInfo.EXP.wavelength)* length(expInfo.EXP.tex1pos)* length(expInfo.EXP.tex2pos) ...
+            length(expInfo.EXP.waveLength)* length(expInfo.EXP.tex1pos)* length(expInfo.EXP.tex2pos) ...
             length(expInfo.EXP.tex3pos)* length(expInfo.EXP.tex4pos)];
         temp = [1:runInfo.glLists.numLists];
         runInfo.glLists.lookUp = reshape(temp, runInfo.glLists.varLengths);
-        
+        disp('Running create lists 2');
         for iCon = 1:length(expInfo.EXP.contrLevels)
             for iLength = 1:length(expInfo.EXP.lengthSet)
                 for it1 = 1:length(expInfo.EXP.tex1pos)
                     for it2 = 1:length(expInfo.EXP.tex2pos)
                         for it3 = 1:length(expInfo.EXP.tex3pos)
                             for it4 = 1:length(expInfo.EXP.tex4pos)
-                                for iWavelength = 1:length(expInfo.EXP.wavelength)
-                                    if expInfo.EXP.wavelength(iWavelength) == 0
+                                for iWavelength = 1:length(expInfo.EXP.waveLength)
+                                    if expInfo.EXP.waveLength(iWavelength) == 0
                                         list_idx = runInfo.glLists.lookUp(iCon,iLength,iWavelength,it1,it2,it3,it4);
                                         runInfo.glLists.lists(list_idx).list = glGenLists(1);
                                         
                                         TRIAL.trialContr(runInfo.currTrial) = expInfo.EXP.contrLevels(iCon);
                                         TRIAL.trialRL(runInfo.currTrial) = expInfo.EXP.lengthSet(iLength);
-                                        TRIAL.waveLength(runInfo.currTrial) = expInfo.EXP.wavelength(iWavelength);
+                                        TRIAL.waveLength(runInfo.currTrial) = expInfo.EXP.waveLength(iWavelength);
                                         expInfo.EXP.tc1 = expInfo.EXP.tex1pos(it1);
                                         expInfo.EXP.tc2 = expInfo.EXP.tex2pos(it2);
                                         expInfo.EXP.tc3 = expInfo.EXP.tex3pos(it3);
