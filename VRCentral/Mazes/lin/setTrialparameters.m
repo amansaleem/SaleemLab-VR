@@ -44,6 +44,7 @@ expInfo.EXP.tc4 = TRIAL.tex4pos(runInfo.currTrial);
 [TRIAL.trialContr(runInfo.currTrial), CONidx] = getNewTrialParameter(expInfo.EXP.contrLevels, expInfo.EXP.contrLevels_rand, runInfo, expInfo);
         
 TRIAL.currList(runInfo.currTrial) = runInfo.glLists.lookUp(CONidx, RLidx, WLidx, tc1idx, tc2idx, tc3idx, tc4idx);
+disp(['Current list is: ' num2str(TRIAL.currList(runInfo.currTrial))]);
 
 % Get the room data at the end of getting all the parameters
 runInfo.ROOM = getRoomData(expInfo.EXP, TRIAL.trialRL(runInfo.currTrial));

@@ -41,7 +41,7 @@ TRIAL.tex2pos   = NaN.*ones(1,expInfo.EXP.maxTraj);
 TRIAL.tex3pos   = NaN.*ones(1,expInfo.EXP.maxTraj);
 TRIAL.tex4pos   = NaN.*ones(1,expInfo.EXP.maxTraj);
 TRIAL.waveLength= NaN.*ones(1,expInfo.EXP.maxTraj);
-TRIAL.currList  = NaN.*ones(1,expInfo.EXP.maxTraj);
+TRIAL.currList  = ones(1,expInfo.EXP.maxTraj);
 
 TRIAL.trialActive(1) = expInfo.EXP.active(1);
 TRIAL.trialRewPos(1) = expInfo.EXP.rew_pos(1);
