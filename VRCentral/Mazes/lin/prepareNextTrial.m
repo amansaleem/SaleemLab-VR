@@ -41,6 +41,7 @@ TRIAL.tex2pos   = NaN.*ones(1,expInfo.EXP.maxTraj);
 TRIAL.tex3pos   = NaN.*ones(1,expInfo.EXP.maxTraj);
 TRIAL.tex4pos   = NaN.*ones(1,expInfo.EXP.maxTraj);
 TRIAL.waveLength= NaN.*ones(1,expInfo.EXP.maxTraj);
+TRIAL.currList  = NaN.*ones(1,expInfo.EXP.maxTraj);
 
 TRIAL.trialActive(1) = expInfo.EXP.active(1);
 TRIAL.trialRewPos(1) = expInfo.EXP.rew_pos(1);
@@ -52,6 +53,7 @@ TRIAL.tex2pos(1)    = expInfo.EXP.tex2pos(1);
 TRIAL.tex3pos(1)    = expInfo.EXP.tex3pos(1);
 TRIAL.tex4pos(1)    = expInfo.EXP.tex4pos(1);
 TRIAL.waveLength(1) = expInfo.EXP.waveLength(1);
+TRIAL.currList(1)   = 1;
 
 fprintf('PrepareNextTrial\n'); % debug
 fprintf('*** trial %4d of %4d ***\n', TRIAL.info.no, expInfo.EXP.maxNTrials); % debug
