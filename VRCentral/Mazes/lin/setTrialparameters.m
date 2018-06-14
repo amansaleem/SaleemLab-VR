@@ -8,7 +8,7 @@ function [expInfo, runInfo, TRIAL] = setTrialparameters(expInfo, runInfo, TRIAL)
 
 % This is the combined function
 % Room length
-TRIAL.trialRL(runInfo.currTrial) = getNewTrialParameter(expInfo.EXP.lengthSet, expInfo.EXP.lengthSet_rand, runInfo, expInfo);
+[TRIAL.trialRL(runInfo.currTrial), RLidx] = getNewTrialParameter(expInfo.EXP.lengthSet, expInfo.EXP.lengthSet_rand, runInfo, expInfo);
 
 % Gain / scaling factor
 TRIAL.trialGain(runInfo.currTrial) = getNewTrialParameter(expInfo.EXP.scaleSet, expInfo.EXP.scaleSet_rand, runInfo, expInfo);
@@ -24,23 +24,25 @@ expInfo.EXP.punishZone = TRIAL.trialRewPos(runInfo.currTrial) - expInfo.EXP.puni
 
 % Set the texture positions
 % Texture 1 position
-TRIAL.tex1pos(runInfo.currTrial) = getNewTrialParameter(expInfo.EXP.tex1pos, expInfo.EXP.tex1pos_rand, runInfo, expInfo);
+[TRIAL.tex1pos(runInfo.currTrial), tc1idx] = getNewTrialParameter(expInfo.EXP.tex1pos, expInfo.EXP.tex1pos_rand, runInfo, expInfo);
 expInfo.EXP.tc1 = TRIAL.tex1pos(runInfo.currTrial);
 display(num2str(expInfo.EXP.tc1));
 % Texture 2 position
-TRIAL.tex2pos(runInfo.currTrial) = getNewTrialParameter(expInfo.EXP.tex2pos, expInfo.EXP.tex2pos_rand, runInfo, expInfo);
+[TRIAL.tex2pos(runInfo.currTrial), tc2idx] = getNewTrialParameter(expInfo.EXP.tex2pos, expInfo.EXP.tex2pos_rand, runInfo, expInfo);
 expInfo.EXP.tc2 = TRIAL.tex2pos(runInfo.currTrial);
 % Texture 3 position
-TRIAL.tex3pos(runInfo.currTrial) = getNewTrialParameter(expInfo.EXP.tex3pos, expInfo.EXP.tex3pos_rand, runInfo, expInfo);
+[TRIAL.tex3pos(runInfo.currTrial), tc3idx] = getNewTrialParameter(expInfo.EXP.tex3pos, expInfo.EXP.tex3pos_rand, runInfo, expInfo);
 expInfo.EXP.tc3 = TRIAL.tex3pos(runInfo.currTrial);
 % Texture 4 position
-TRIAL.tex4pos(runInfo.currTrial) = getNewTrialParameter(expInfo.EXP.tex4pos, expInfo.EXP.tex4pos_rand, runInfo, expInfo);
+[TRIAL.tex4pos(runInfo.currTrial), tc4idx] = getNewTrialParameter(expInfo.EXP.tex4pos, expInfo.EXP.tex4pos_rand, runInfo, expInfo);
 expInfo.EXP.tc4 = TRIAL.tex4pos(runInfo.currTrial);
 % 
 % WaveLength
-TRIAL.waveLength(runInfo.currTrial) = getNewTrialParameter(expInfo.EXP.waveLength, expInfo.EXP.waveLength_rand, runInfo, expInfo);
+[TRIAL.waveLength(runInfo.currTrial), WLidx] = getNewTrialParameter(expInfo.EXP.waveLength, expInfo.EXP.waveLength_rand, runInfo, expInfo);
 
-
+% Contrast
+[TRIAL.trialContr(runInfo.currTrial), CONidx] = getNewTrialParameter(expInfo.EXP.contrLevels, expInfo.EXP.contrLevels_rand, runInfo, expInfo);
+        
 % Get the room data at the end of getting all the parameters
 runInfo.ROOM = getRoomData(expInfo.EXP, TRIAL.trialRL(runInfo.currTrial));
 

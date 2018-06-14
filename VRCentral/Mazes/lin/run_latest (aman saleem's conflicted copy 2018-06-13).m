@@ -6,83 +6,6 @@ global TRIAL;
 runInfo.reset_textures = 1;
 ListenChar(2);
 
-%% shit to initialise so that we can load textures later
-textures = []; y1 = [];Imf = [];ans = [];filt1 = [];filt2 = [];
-filtSize = [];n = [];sf = [];sigma = [];sigma1 = [];texsize = [];
-textures = [];x = [];x2= [];
-% end
-
-BALL_TO_DEGREE =1/300;%1/20000*360;
-
-BALL_TO_ROOM = 1.11; %1.11 calculated to equate the cm and the distance travelled
-
-PI_OVER_180 = pi/180;
-
-runInfo.REWARD.TRIAL = [];
-runInfo.REWARD.count = [];
-runInfo.REWARD.TYPE  = [];
-runInfo.REWARD.TotalValveOpenTime = 0;
-runInfo.REWARD.STOP_VALVE_TIME = expInfo.EXP.STOPvalveTime;
-runInfo.REWARD.BASE_VALVE_TIME = expInfo.EXP.BASEvalveTime;
-runInfo.REWARD.PASS_VALVE_TIME = expInfo.EXP.PASSvalveTime;
-runInfo.REWARD.ACTV_VALVE_TIME = expInfo.EXP.ACTVvalveTime;
-runInfo.REWARD.USER_VALVE_TIME = expInfo.EXP.BASEvalveTime;
-
-X=1; %x coordinate
-Y=2; %y coordinate
-Z=3; %z coordinate
-T=4; %T: theta (viewangle)
-% S=5; %S: speed
-
-STOP = 1;
-BASE = 1;
-
-
-%% Is the script running in OpenGL Psychtoolbox?
-% AssertOpenGL;
-
-Screen('BeginOpenGL', hwInfo.MYSCREEN.windowPtr(1));
-% Get the aspect ratio of the screen:
-ar=hwInfo.MYSCREEN.screenRect(1,4)/(hwInfo.MYSCREEN.screenRect(1,3));
-
-display(['Monitor aspect ratio is: ' num2str(1/ar) ', and fov is: ' ...
-    num2str(atan(hwInfo.MYSCREEN.MonitorHeight/(2*hwInfo.MYSCREEN.Dist))*360/pi) ...
-    ' vertical and ' num2str((1/ar)*atan(hwInfo.MYSCREEN.MonitorHeight/(2*hwInfo.MYSCREEN.Dist))*360/pi) ...
-    ' horizontal']);
-
-%[fbo , texids] = moglCreateFBO(1280, 800);%, 1, 4, GL.RGBA_FLOAT32_APPLE, 0, 0);
-
-% Turn on OpenGL local lighting model: The lighting model supported by
-% OpenGL is a local Phong model with Gouraud shading.
-glEnable(GL.LIGHTING);
-
-% Enable the first local light source GL.LIGHT_0. Each OpenGL
-% implementation is guaranteed to support at least 8 light sources.
-glEnable(GL.LIGHT0);
-
-% Enable two-sided lighting - Back sides of polygons are lit as well.
-% glLightModelfv(GL.LIGHT_MODEL_TWO_SIDE,GL.TRUE);
-glLightModelfv(GL.LIGHT_MODEL_AMBIENT,[0.5 0.5 0.5 1]);
-% glLightModelfv(GL.LIGHT_MODEL_LOCAL_VIEWER,0.0);
-
-% glShadeModel(GL.SMOOTH);
-% Enable proper occlusion handling via depth tests:
-glEnable(GL.DEPTH_TEST);
-
-% Define the walls light reflection properties by setting up reflection
-% coefficients for ambient, diffuse and specular reflection:
-glMaterialfv(GL.FRONT_AND_BACK,GL.AMBIENT, [ 1 1 1 1 ]);
-% glMaterialfv(GL.FRONT_AND_BACK,GL.AMBIENT_AND_DIFFUSE, [ .5 .5 .5 1 ]);
-% glMaterialfv(GL.FRONT_AND_BACK,GL.SPECULAR, [ .5 .5 .5 1 ]);
-load(expInfo.EXP.textureFile);
-
-setupTextures(textures)
-CreateOpenGLlist;
-%BuildLists();
-
-%%%%% Move the above stuff down here after creating the textures
-%%%%% test if this works
-
 %% First trial settings
 if ~expInfo.EXP.randStart
     if strcmp(expInfo.EXP.trajDir,'cw')
@@ -189,6 +112,79 @@ if ~isempty(rigInfo.comms)
     rigInfo.comms.send('currentTrial',num2str(runInfo.currTrial));
     rigInfo.comms.send('trialParam',display_text);
 end
+%% shit to initialise so that we can load textures later
+textures = []; y1 = [];Imf = [];ans = [];filt1 = [];filt2 = [];
+filtSize = [];n = [];sf = [];sigma = [];sigma1 = [];texsize = [];
+textures = [];x = [];x2= [];
+% end
+
+BALL_TO_DEGREE =1/300;%1/20000*360;
+
+BALL_TO_ROOM = 1.11; %1.11 calculated to equate the cm and the distance travelled
+
+PI_OVER_180 = pi/180;
+
+runInfo.REWARD.TRIAL = [];
+runInfo.REWARD.count = [];
+runInfo.REWARD.TYPE  = [];
+runInfo.REWARD.TotalValveOpenTime = 0;
+runInfo.REWARD.STOP_VALVE_TIME = expInfo.EXP.STOPvalveTime;
+runInfo.REWARD.BASE_VALVE_TIME = expInfo.EXP.BASEvalveTime;
+runInfo.REWARD.PASS_VALVE_TIME = expInfo.EXP.PASSvalveTime;
+runInfo.REWARD.ACTV_VALVE_TIME = expInfo.EXP.ACTVvalveTime;
+runInfo.REWARD.USER_VALVE_TIME = expInfo.EXP.BASEvalveTime;
+
+X=1; %x coordinate
+Y=2; %y coordinate
+Z=3; %z coordinate
+T=4; %T: theta (viewangle)
+% S=5; %S: speed
+
+STOP = 1;
+BASE = 1;
+
+
+%% Is the script running in OpenGL Psychtoolbox?
+% AssertOpenGL;
+
+Screen('BeginOpenGL', hwInfo.MYSCREEN.windowPtr(1));
+% Get the aspect ratio of the screen:
+ar=hwInfo.MYSCREEN.screenRect(1,4)/(hwInfo.MYSCREEN.screenRect(1,3));
+
+display(['Monitor aspect ratio is: ' num2str(1/ar) ', and fov is: ' ...
+    num2str(atan(hwInfo.MYSCREEN.MonitorHeight/(2*hwInfo.MYSCREEN.Dist))*360/pi) ...
+    ' vertical and ' num2str((1/ar)*atan(hwInfo.MYSCREEN.MonitorHeight/(2*hwInfo.MYSCREEN.Dist))*360/pi) ...
+    ' horizontal']);
+
+%[fbo , texids] = moglCreateFBO(1280, 800);%, 1, 4, GL.RGBA_FLOAT32_APPLE, 0, 0);
+
+% Turn on OpenGL local lighting model: The lighting model supported by
+% OpenGL is a local Phong model with Gouraud shading.
+glEnable(GL.LIGHTING);
+
+% Enable the first local light source GL.LIGHT_0. Each OpenGL
+% implementation is guaranteed to support at least 8 light sources.
+glEnable(GL.LIGHT0);
+
+% Enable two-sided lighting - Back sides of polygons are lit as well.
+% glLightModelfv(GL.LIGHT_MODEL_TWO_SIDE,GL.TRUE);
+glLightModelfv(GL.LIGHT_MODEL_AMBIENT,[0.5 0.5 0.5 1]);
+% glLightModelfv(GL.LIGHT_MODEL_LOCAL_VIEWER,0.0);
+
+% glShadeModel(GL.SMOOTH);
+% Enable proper occlusion handling via depth tests:
+glEnable(GL.DEPTH_TEST);
+
+% Define the walls light reflection properties by setting up reflection
+% coefficients for ambient, diffuse and specular reflection:
+glMaterialfv(GL.FRONT_AND_BACK,GL.AMBIENT, [ 1 1 1 1 ]);
+% glMaterialfv(GL.FRONT_AND_BACK,GL.AMBIENT_AND_DIFFUSE, [ .5 .5 .5 1 ]);
+% glMaterialfv(GL.FRONT_AND_BACK,GL.SPECULAR, [ .5 .5 .5 1 ]);
+load(expInfo.EXP.textureFile);
+
+setupTextures(textures)
+CreateOpenGLlist;
+%BuildLists();
 
 %% Set start position
 
@@ -529,8 +525,7 @@ end
 
 %% Setup textures for all six sides of cube:
     function setupTextures(textures)
-        %%%% need to add textures at different contrast levels from the
-        %%%% start
+        
         runInfo.reset_textures = 0;
         %         if ~REPLAY
         if expInfo.EXP.contrLevels_rand
@@ -598,7 +593,6 @@ end
     end
 
 %% Draw textures
-%%%%% remove this function as it is now redundant
     function DrawTextures
         for k=1:runInfo.ROOM.nOfWalls
             switch k
@@ -775,31 +769,32 @@ end
 %% generate OpenGL list of drawings
     function CreateOpenGLlist
         
+        disp('Running create lists');
         % Aman adding a generation of glLists for different combinations of
         % stimuli
         runInfo.glLists.varLengths = [length(expInfo.EXP.contrLevels) length(expInfo.EXP.lengthSet) ...
-            length(expInfo.EXP.wavelength) length(expInfo.EXP.tex1pos) length(expInfo.EXP.tex2pos) ...
+            length(expInfo.EXP.waveLength) length(expInfo.EXP.tex1pos) length(expInfo.EXP.tex2pos) ...
             length(expInfo.EXP.tex3pos) length(expInfo.EXP.tex4pos)];
         runInfo.glLists.numLists = [length(expInfo.EXP.contrLevels)*length(expInfo.EXP.lengthSet)* ...
-            length(expInfo.EXP.wavelength)* length(expInfo.EXP.tex1pos)* length(expInfo.EXP.tex2pos) ...
+            length(expInfo.EXP.waveLength)* length(expInfo.EXP.tex1pos)* length(expInfo.EXP.tex2pos) ...
             length(expInfo.EXP.tex3pos)* length(expInfo.EXP.tex4pos)];
         temp = [1:runInfo.glLists.numLists];
         runInfo.glLists.lookUp = reshape(temp, runInfo.glLists.varLengths);
-        
+        disp('Running create lists 2');
         for iCon = 1:length(expInfo.EXP.contrLevels)
             for iLength = 1:length(expInfo.EXP.lengthSet)
                 for it1 = 1:length(expInfo.EXP.tex1pos)
                     for it2 = 1:length(expInfo.EXP.tex2pos)
                         for it3 = 1:length(expInfo.EXP.tex3pos)
                             for it4 = 1:length(expInfo.EXP.tex4pos)
-                                for iWavelength = 1:length(expInfo.EXP.wavelength)
-                                    if expInfo.EXP.wavelength(iWavelength) == 0
+                                for iWavelength = 1:length(expInfo.EXP.waveLength)
+                                    if expInfo.EXP.waveLength(iWavelength) == 1
                                         list_idx = runInfo.glLists.lookUp(iCon,iLength,iWavelength,it1,it2,it3,it4);
                                         runInfo.glLists.lists(list_idx).list = glGenLists(1);
                                         
                                         TRIAL.trialContr(runInfo.currTrial) = expInfo.EXP.contrLevels(iCon);
                                         TRIAL.trialRL(runInfo.currTrial) = expInfo.EXP.lengthSet(iLength);
-                                        TRIAL.waveLength(runInfo.currTrial) = expInfo.EXP.wavelength(iWavelength);
+                                        TRIAL.waveLength(runInfo.currTrial) = expInfo.EXP.waveLength(iWavelength);
                                         expInfo.EXP.tc1 = expInfo.EXP.tex1pos(it1);
                                         expInfo.EXP.tc2 = expInfo.EXP.tex2pos(it2);
                                         expInfo.EXP.tc3 = expInfo.EXP.tex3pos(it3);

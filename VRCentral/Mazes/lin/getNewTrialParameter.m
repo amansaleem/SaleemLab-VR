@@ -1,8 +1,9 @@
-function currTrialVar = getNewTrialParameter(varArray, varArray_rand, runInfo, expInfo)
+function [currTrialVar varIdx] = getNewTrialParameter(varArray, varArray_rand, runInfo, expInfo)
 
+varIdx = 1;
 if length(varArray)>1
     if varArray_rand
-        varToSet = varArray(randi(length(varArray)));
+        varIdx = randi(length(varArray));
     else
         varIdx = runInfo.currTrial;
         if varIdx>length(varArray)
@@ -11,8 +12,8 @@ if length(varArray)>1
                 varIdx = length(varArray);
             end
         end
-        varToSet = varArray(varIdx);
     end
+    varToSet = varArray(varIdx);
 else
     varToSet = 1;
 end
