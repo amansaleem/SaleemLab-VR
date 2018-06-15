@@ -1,12 +1,7 @@
 function [expInfo, runInfo, TRIAL] = setTrialparameters(expInfo, runInfo, TRIAL)
 
 %% Set trial parameters
-% fn = fieldnames(expInfo.EXP);
-% fn_rand = endsWith(fn,'_rand');
 
-% Room Length
-
-% This is the combined function
 % Room length
 [TRIAL.trialRL(runInfo.currTrial), RLidx] = getNewTrialParameter(expInfo.EXP.lengthSet, expInfo.EXP.lengthSet_rand, runInfo, expInfo);
 
@@ -47,6 +42,7 @@ TRIAL.currList(runInfo.currTrial) = runInfo.glLists.lookUp(CONidx, RLidx, WLidx,
 disp(['Current list is: ' num2str(TRIAL.currList(runInfo.currTrial))]);
 
 % Get the room data at the end of getting all the parameters
+%%% try commenting this out
 runInfo.ROOM = getRoomData(expInfo.EXP, TRIAL.trialRL(runInfo.currTrial));
 
 % Start Position
@@ -68,8 +64,6 @@ end
 TRIAL.trialStart(runInfo.currTrial) = runInfo.TRAJ;
 
 p = runInfo.TRAJ;
-
-% Contrast has same structure but is within the setupTextures
 
 X=1; Y=2; Z=3; T=4;
 if ~expInfo.REPLAY

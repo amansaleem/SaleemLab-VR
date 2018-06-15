@@ -513,9 +513,8 @@ Priority(0);
 
 %% Delete all allocated OpenGL textures:
 if ~runInfo.blank_screen
-    for iCon = 1:length(expInfo.EXP.contrLevels)
-        glDeleteTextures(length(texCont(iCon).texname),texCont(iCon).texname);
-    end
+    for 
+    glDeleteTextures(length(texname),texname);
     Screen('EndOpenGL', hwInfo.MYSCREEN.windowPtr(1));
 end
 
@@ -848,5 +847,6 @@ end
             end
         end
     end
+
 end
 
