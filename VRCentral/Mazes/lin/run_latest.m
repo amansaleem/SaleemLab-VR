@@ -112,47 +112,15 @@ likCount = 0;
 % 
 % % Scaling of the room
 % if length(expInfo.EXP.scaleSet)>1
-%     if expInfo.EXP.scaleSet_rand
-%         scaling_factor = expInfo.EXP.scaleSet(randi(length(expInfo.EXP.scaleSet)));
-%     else
-%         idx = runInfo.currTrial;
-%         if idx>length(expInfo.EXP.scaleSet)
-%             idx = rem(runInfo.currTrial, length(expInfo.EXP.scaleSet));
-%             if idx==0
 %                 idx = length(expInfo.EXP.scaleSet);
 %             end
-%         end
-%         scaling_factor = expInfo.EXP.scaleSet(idx);
-%     end
-% else
-%     scaling_factor = 1;
-% end
-% TRIAL.trialGain(runInfo.currTrial) = scaling_factor;
 % 
 % % Active/Passive reward
-% idx = runInfo.currTrial;
-% if idx>length(expInfo.EXP.active)
-%     idx = rem(runInfo.currTrial, length(expInfo.EXP.active));
-%     if idx==0
-%         idx = length(expInfo.EXP.active);
-%     end
-% end
 % TRIAL.trialActive(runInfo.currTrial) = expInfo.EXP.active(idx);
 % 
-% % Reward Position
-% % Active/Passive reward
-% idx = runInfo.currTrial;
-% if idx>length(expInfo.EXP.rew_pos)
-%     idx = rem(runInfo.currTrial, length(expInfo.EXP.rew_pos));
-%     if idx==0
-%         idx = length(expInfo.EXP.rew_pos);
 %     end
-% end
-% 
-% TRIAL.trialRewPos(runInfo.currTrial) = expInfo.EXP.rew_pos(idx);
-% expInfo.EXP.punishZone = TRIAL.trialRewPos(runInfo.currTrial) - expInfo.EXP.punishLim;
-
-[expInfo, runInfo, TRIAL] = setTrialparameters(expInfo, runInfo, TRIAL);
+[expInfo, runInfo] = setTrialparameters(expInfo, runInfo);
+scaling_factor = TRIAL.trialGain(runInfo.currTrial);
 
 display_text = ['Trial ' num2str(runInfo.currTrial) ...
     ', C: ' num2str(TRIAL.trialContr(runInfo.currTrial)) ...
@@ -172,8 +140,10 @@ display(['Trial ' num2str(runInfo.currTrial) ...
     ', B: ' num2str(TRIAL.trialBlanks(runInfo.currTrial)) ...
     ', A: ' num2str(TRIAL.trialActive(runInfo.currTrial)) ...
     ', RP: ' num2str(TRIAL.trialRewPos(runInfo.currTrial)) ...
-    ', PZ: ' num2str(expInfo.EXP.punishZone) ...
+    ', TC1: ' num2str(TRIAL.tex1pos(runInfo.currTrial)) ...
+    ', TC2: ' num2str(TRIAL.tex2pos(runInfo.currTrial)) ...
     ]);
+
 if ~isempty(rigInfo.comms)
     rigInfo.comms.send('currentTrial',num2str(runInfo.currTrial));
     rigInfo.comms.send('trialParam',display_text);
@@ -404,7 +374,7 @@ try
             
             %             if ~REPLAY
             %% Set trial parameters
-            [expInfo, runInfo, TRIAL] = setTrialparameters(expInfo, runInfo, TRIAL);
+            [expInfo, runInfo] = setTrialparameters(expInfo, runInfo);
             scaling_factor = TRIAL.trialGain(runInfo.currTrial);
             
             display_text = ['Trial ' num2str(runInfo.currTrial) ...
@@ -425,7 +395,8 @@ try
                 ', B: ' num2str(TRIAL.trialBlanks(runInfo.currTrial)) ...
                 ', A: ' num2str(TRIAL.trialActive(runInfo.currTrial)) ...
                 ', RP: ' num2str(TRIAL.trialRewPos(runInfo.currTrial)) ...
-                ', PZ: ' num2str(expInfo.EXP.punishZone) ...
+                ', TC1: ' num2str(TRIAL.tex1pos(runInfo.currTrial)) ...
+                ', TC2: ' num2str(TRIAL.tex2pos(runInfo.currTrial)) ...
                 ]);
             if ~isempty(rigInfo.comms)
                 rigInfo.comms.send('currentTrial',num2str(runInfo.currTrial));

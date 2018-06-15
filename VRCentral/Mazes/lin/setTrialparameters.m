@@ -1,5 +1,6 @@
-function [expInfo, runInfo, TRIAL] = setTrialparameters(expInfo, runInfo, TRIAL)
+function [expInfo, runInfo] = setTrialparameters(expInfo, runInfo)
 
+global TRIAL
 %% Set trial parameters
 
 % Room length
@@ -31,23 +32,16 @@ expInfo.EXP.tc3 = TRIAL.tex3pos(runInfo.currTrial);
 % Texture 4 position
 [TRIAL.tex4pos(runInfo.currTrial), tc4idx] = getNewTrialParameter(expInfo.EXP.tex4pos, expInfo.EXP.tex4pos_rand, runInfo, expInfo);
 expInfo.EXP.tc4 = TRIAL.tex4pos(runInfo.currTrial);
-% 
+%
 % WaveLength
 [TRIAL.waveLength(runInfo.currTrial), WLidx] = getNewTrialParameter(expInfo.EXP.waveLength, expInfo.EXP.waveLength_rand, runInfo, expInfo);
 
 % Contrast
 [TRIAL.trialContr(runInfo.currTrial), CONidx] = getNewTrialParameter(expInfo.EXP.contrLevels, expInfo.EXP.contrLevels_rand, runInfo, expInfo);
-        
+
 TRIAL.currList(runInfo.currTrial) = runInfo.glLists.lookUp(CONidx, RLidx, WLidx, tc1idx, tc2idx, tc3idx, tc4idx);
 disp(['Current list is: ' num2str(TRIAL.currList(runInfo.currTrial))]);
 
-% Get the room data at the end of getting all the parameters
-%%% try commenting this out
-runInfo.ROOM = getRoomData(expInfo.EXP, TRIAL.trialRL(runInfo.currTrial));
-
-% Start Position
-% This is just doing a random start position based on the start region,
-% running this is very different
 if ~expInfo.EXP.randStart
     if strcmp(expInfo.EXP.trajDir,'cw')
         runInfo.TRAJ = 0.1;
@@ -63,23 +57,29 @@ else
 end
 TRIAL.trialStart(runInfo.currTrial) = runInfo.TRAJ;
 
-p = runInfo.TRAJ;
-
-X=1; Y=2; Z=3; T=4;
-if ~expInfo.REPLAY
-    TRIAL.posdata(runInfo.currTrial,runInfo.count,Z) = -p;
-    TRIAL.posdata(runInfo.currTrial,runInfo.count,X) = 0;
-    TRIAL.posdata(runInfo.currTrial,1,Y) = expInfo.EXP.c3;
-    TRIAL.posdata(runInfo.currTrial,runInfo.count,T) = 0;
-end
-
-TRIAL.trialIdx(runInfo.currTrial,runInfo.count) = TRIAL.nCompTraj;
-
-if ~expInfo.REPLAY
-    switch expInfo.EXP.trajDir
-        case 'ccw'
-            TRIAL.posdata(runInfo.currTrial,runInfo.count,T) =  TRIAL.posdata(runInfo.currTrial,runInfo.count,T) + pi;
-        otherwise
-            TRIAL.posdata(runInfo.currTrial,runInfo.count,T) =  TRIAL.posdata(runInfo.currTrial,runInfo.count,T);
+if runInfo.currTrial > 1
+    % Start Position
+    % This is just doing a random start position based on the start region,
+    % running this is very different
+        
+    p = runInfo.TRAJ;
+    
+    X=1; Y=2; Z=3; T=4;
+    if ~expInfo.REPLAY
+        TRIAL.posdata(runInfo.currTrial,runInfo.count,Z) = -p;
+        TRIAL.posdata(runInfo.currTrial,runInfo.count,X) = 0;
+        TRIAL.posdata(runInfo.currTrial,1,Y) = expInfo.EXP.c3;
+        TRIAL.posdata(runInfo.currTrial,runInfo.count,T) = 0;
+    end
+    
+    TRIAL.trialIdx(runInfo.currTrial,runInfo.count) = TRIAL.nCompTraj;
+    
+    if ~expInfo.REPLAY
+        switch expInfo.EXP.trajDir
+            case 'ccw'
+                TRIAL.posdata(runInfo.currTrial,runInfo.count,T) =  TRIAL.posdata(runInfo.currTrial,runInfo.count,T) + pi;
+            otherwise
+                TRIAL.posdata(runInfo.currTrial,runInfo.count,T) =  TRIAL.posdata(runInfo.currTrial,runInfo.count,T);
+        end
     end
 end
