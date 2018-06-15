@@ -47,8 +47,6 @@ display(['Monitor aspect ratio is: ' num2str(1/ar) ', and fov is: ' ...
     ' vertical and ' num2str((1/ar)*atan(hwInfo.MYSCREEN.MonitorHeight/(2*hwInfo.MYSCREEN.Dist))*360/pi) ...
     ' horizontal']);
 
-%[fbo , texids] = moglCreateFBO(1280, 800);%, 1, 4, GL.RGBA_FLOAT32_APPLE, 0, 0);
-
 % Turn on OpenGL local lighting model: The lighting model supported by
 % OpenGL is a local Phong model with Gouraud shading.
 glEnable(GL.LIGHTING);
@@ -75,36 +73,6 @@ setupTextures(textures)
 CreateOpenGLlist;
 
 %% First trial settings
-if ~expInfo.EXP.randStart
-    if strcmp(expInfo.EXP.trajDir,'cw')
-        runInfo.TRAJ = 0.1;
-    else
-        runInfo.TRAJ = expInfo.EXP.l-0.1;
-    end
-else
-    if strcmp(expInfo.EXP.trajDir,'cw')
-        runInfo.TRAJ = 1;
-    else
-        runInfo.TRAJ = expInfo.EXP.l- expInfo.EXP.l*rand(1)*expInfo.EXP.startRegion;
-    end
-end
-
-TRIAL.trialStart(runInfo.currTrial) = runInfo.TRAJ;
-
-if expInfo.EXP.contrLevels_rand
-    contrLevel = expInfo.EXP.contrLevels(randi(length(expInfo.EXP.contrLevels)));
-else
-    idxc = runInfo.currTrial;
-    if idxc>length(expInfo.EXP.contrLevels)
-        idxc = rem(runInfo.currTrial, length(expInfo.EXP.contrLevels));
-        if idxc==0
-            idxc = length(expInfo.EXP.contrLevels);
-        end
-    end
-    contrLevel = expInfo.EXP.contrLevels(idxc);
-end
-TRIAL.trialContr(runInfo.currTrial) = contrLevel;
-
 
 if strcmp(rigInfo.DevType,'NI')
     hwInfo.rotEnc.zero;
@@ -112,49 +80,79 @@ if strcmp(rigInfo.DevType,'NI')
 end
 likCount = 0;
 
-% Scaling of the room
-if length(expInfo.EXP.scaleSet)>1
-    if expInfo.EXP.scaleSet_rand
-        scaling_factor = expInfo.EXP.scaleSet(randi(length(expInfo.EXP.scaleSet)));
-    else
-        idx = runInfo.currTrial;
-        if idx>length(expInfo.EXP.scaleSet)
-            idx = rem(runInfo.currTrial, length(expInfo.EXP.scaleSet));
-            if idx==0
-                idx = length(expInfo.EXP.scaleSet);
-            end
-        end
-        scaling_factor = expInfo.EXP.scaleSet(idx);
-    end
-else
-    scaling_factor = 1;
-end
-TRIAL.trialGain(runInfo.currTrial) = scaling_factor;
+% if ~expInfo.EXP.randStart
+%     if strcmp(expInfo.EXP.trajDir,'cw')
+%         runInfo.TRAJ = 0.1;
+%     else
+%         runInfo.TRAJ = expInfo.EXP.l-0.1;
+%     end
+% else
+%     if strcmp(expInfo.EXP.trajDir,'cw')
+%         runInfo.TRAJ = 1;
+%     else
+%         runInfo.TRAJ = expInfo.EXP.l- expInfo.EXP.l*rand(1)*expInfo.EXP.startRegion;
+%     end
+% end
+% 
+% TRIAL.trialStart(runInfo.currTrial) = runInfo.TRAJ;
+% 
+% if expInfo.EXP.contrLevels_rand
+%     contrLevel = expInfo.EXP.contrLevels(randi(length(expInfo.EXP.contrLevels)));
+% else
+%     idxc = runInfo.currTrial;
+%     if idxc>length(expInfo.EXP.contrLevels)
+%         idxc = rem(runInfo.currTrial, length(expInfo.EXP.contrLevels));
+%         if idxc==0
+%             idxc = length(expInfo.EXP.contrLevels);
+%         end
+%     end
+%     contrLevel = expInfo.EXP.contrLevels(idxc);
+% end
+% TRIAL.trialContr(runInfo.currTrial) = contrLevel;
+% 
+% % Scaling of the room
+% if length(expInfo.EXP.scaleSet)>1
+%     if expInfo.EXP.scaleSet_rand
+%         scaling_factor = expInfo.EXP.scaleSet(randi(length(expInfo.EXP.scaleSet)));
+%     else
+%         idx = runInfo.currTrial;
+%         if idx>length(expInfo.EXP.scaleSet)
+%             idx = rem(runInfo.currTrial, length(expInfo.EXP.scaleSet));
+%             if idx==0
+%                 idx = length(expInfo.EXP.scaleSet);
+%             end
+%         end
+%         scaling_factor = expInfo.EXP.scaleSet(idx);
+%     end
+% else
+%     scaling_factor = 1;
+% end
+% TRIAL.trialGain(runInfo.currTrial) = scaling_factor;
+% 
+% % Active/Passive reward
+% idx = runInfo.currTrial;
+% if idx>length(expInfo.EXP.active)
+%     idx = rem(runInfo.currTrial, length(expInfo.EXP.active));
+%     if idx==0
+%         idx = length(expInfo.EXP.active);
+%     end
+% end
+% TRIAL.trialActive(runInfo.currTrial) = expInfo.EXP.active(idx);
+% 
+% % Reward Position
+% % Active/Passive reward
+% idx = runInfo.currTrial;
+% if idx>length(expInfo.EXP.rew_pos)
+%     idx = rem(runInfo.currTrial, length(expInfo.EXP.rew_pos));
+%     if idx==0
+%         idx = length(expInfo.EXP.rew_pos);
+%     end
+% end
+% 
+% TRIAL.trialRewPos(runInfo.currTrial) = expInfo.EXP.rew_pos(idx);
+% expInfo.EXP.punishZone = TRIAL.trialRewPos(runInfo.currTrial) - expInfo.EXP.punishLim;
 
-% Active/Passive reward
-idx = runInfo.currTrial;
-if idx>length(expInfo.EXP.active)
-    idx = rem(runInfo.currTrial, length(expInfo.EXP.active));
-    if idx==0
-        idx = length(expInfo.EXP.active);
-    end
-end
-TRIAL.trialActive(runInfo.currTrial) = expInfo.EXP.active(idx);
-
-% Reward Position
-% Active/Passive reward
-idx = runInfo.currTrial;
-if idx>length(expInfo.EXP.rew_pos)
-    idx = rem(runInfo.currTrial, length(expInfo.EXP.rew_pos));
-    if idx==0
-        idx = length(expInfo.EXP.rew_pos);
-    end
-end
-
-TRIAL.trialRewPos(runInfo.currTrial) = expInfo.EXP.rew_pos(idx);
-expInfo.EXP.punishZone = TRIAL.trialRewPos(runInfo.currTrial) - expInfo.EXP.punishLim;
-
-% [expInfo, runInfo, TRIAL] = setTrialparameters(expInfo, runInfo, TRIAL);
+[expInfo, runInfo, TRIAL] = setTrialparameters(expInfo, runInfo, TRIAL);
 
 display_text = ['Trial ' num2str(runInfo.currTrial) ...
     ', C: ' num2str(TRIAL.trialContr(runInfo.currTrial)) ...

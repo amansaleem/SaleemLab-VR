@@ -308,7 +308,7 @@ if rigInfo.runTimeLine
     tl.start(expRef, 'rotaryEncoder');
 end
 
-fhandle = @prepareNextTrial;
+fhandle = @prepTrialStruct;
 
 runInfo.TRIAL_COUNT = 0;
 fprintf('\nStarting MouseBall session %s\n', datestr(now, 'mm-dd'));

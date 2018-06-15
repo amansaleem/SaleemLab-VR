@@ -1,5 +1,5 @@
-function [fhandle, runInfo] = prepareNextTrial(rigInfo, hwInfo, expInfo, runInfo)
-% prepareNextTrial
+function [fhandle, runInfo] = prepTrialStruct(rigInfo, hwInfo, expInfo, runInfo)
+% prepTrialStruct
 % initializes trial specific information such us initializing base
 % information
 
@@ -55,7 +55,7 @@ TRIAL.tex4pos(1)    = expInfo.EXP.tex4pos(1);
 TRIAL.waveLength(1) = expInfo.EXP.waveLength(1);
 TRIAL.currList(1)   = 1;
 
-fprintf('PrepareNextTrial\n'); % debug
+fprintf('prepTrialStruct\n'); % debug
 fprintf('*** trial %4d of %4d ***\n', TRIAL.info.no, expInfo.EXP.maxNTrials); % debug
 
 

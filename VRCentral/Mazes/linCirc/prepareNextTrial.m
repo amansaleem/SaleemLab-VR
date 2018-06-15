@@ -1,5 +1,5 @@
-function [fhandle, runInfo] = prepareNextTrial(rigInfo, hwInfo, expInfo, runInfo)
-% prepareNextTrial
+function [fhandle, runInfo] = prepTrialStruct(rigInfo, hwInfo, expInfo, runInfo)
+% prepTrialStruct
 % initializes trial specific information such us initializing base
 % information
 
@@ -54,7 +54,7 @@ TRIAL.trialStart(1) = 0;
 TRIAL.trialGain(1)  = 1;
 TRIAL.trialBlanks(1) = expInfo.EXP.pause_frames;
 
-fprintf('PrepareNextTrial\n'); % debug
+fprintf('prepTrialStruct\n'); % debug
 fprintf('*** trial %4d of %4d ***\n', TRIAL.info.no, expInfo.EXP.maxNTrials); % debug
 
 TRIAL.posdata = zeros(expInfo.EXP.maxTraj, expInfo.EXP.maxTrialDuration*70*expInfo.EXP.nTrialChange,6,'double'); % x,y,z,theta,speed,inRoom
