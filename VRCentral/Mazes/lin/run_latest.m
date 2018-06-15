@@ -80,45 +80,6 @@ if strcmp(rigInfo.DevType,'NI')
 end
 likCount = 0;
 
-% if ~expInfo.EXP.randStart
-%     if strcmp(expInfo.EXP.trajDir,'cw')
-%         runInfo.TRAJ = 0.1;
-%     else
-%         runInfo.TRAJ = expInfo.EXP.l-0.1;
-%     end
-% else
-%     if strcmp(expInfo.EXP.trajDir,'cw')
-%         runInfo.TRAJ = 1;
-%     else
-%         runInfo.TRAJ = expInfo.EXP.l- expInfo.EXP.l*rand(1)*expInfo.EXP.startRegion;
-%     end
-% end
-% 
-% TRIAL.trialStart(runInfo.currTrial) = runInfo.TRAJ;
-% 
-% if expInfo.EXP.contrLevels_rand
-%     contrLevel = expInfo.EXP.contrLevels(randi(length(expInfo.EXP.contrLevels)));
-% else
-%     idxc = runInfo.currTrial;
-%     if idxc>length(expInfo.EXP.contrLevels)
-%         idxc = rem(runInfo.currTrial, length(expInfo.EXP.contrLevels));
-%         if idxc==0
-%             idxc = length(expInfo.EXP.contrLevels);
-%         end
-%     end
-%     contrLevel = expInfo.EXP.contrLevels(idxc);
-% end
-% TRIAL.trialContr(runInfo.currTrial) = contrLevel;
-% 
-% % Scaling of the room
-% if length(expInfo.EXP.scaleSet)>1
-%                 idx = length(expInfo.EXP.scaleSet);
-%             end
-% 
-% % Active/Passive reward
-% TRIAL.trialActive(runInfo.currTrial) = expInfo.EXP.active(idx);
-% 
-%     end
 [expInfo, runInfo] = setTrialparameters(expInfo, runInfo);
 scaling_factor = TRIAL.trialGain(runInfo.currTrial);
 
