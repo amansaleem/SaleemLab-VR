@@ -11,8 +11,8 @@ textures = []; y1 = [];Imf = [];ans = [];filt1 = [];filt2 = [];
 filtSize = [];n = [];sf = [];sigma = [];sigma1 = [];texsize = [];
 textures = [];x = [];x2= [];
 
-BALL_TO_DEGREE =1;%1/20000*360;
-BALL_TO_ROOM = 1; %1.11 calculated to equate the cm and the distance travelled
+BALL_TO_DEGREE =1;
+BALL_TO_ROOM = 1;
 
 PI_OVER_180 = pi/180;
 
@@ -69,16 +69,10 @@ glEnable(GL.DEPTH_TEST);
 % Define the walls light reflection properties by setting up reflection
 % coefficients for ambient, diffuse and specular reflection:
 glMaterialfv(GL.FRONT_AND_BACK,GL.AMBIENT, [ 1 1 1 1 ]);
-% glMaterialfv(GL.FRONT_AND_BACK,GL.AMBIENT_AND_DIFFUSE, [ .5 .5 .5 1 ]);
-% glMaterialfv(GL.FRONT_AND_BACK,GL.SPECULAR, [ .5 .5 .5 1 ]);
 load(expInfo.EXP.textureFile);
 
 setupTextures(textures)
 CreateOpenGLlist;
-%BuildLists();
-
-%%%%% Move the above stuff down here after creating the textures
-%%%%% test if this works
 
 %% First trial settings
 if ~expInfo.EXP.randStart
@@ -236,9 +230,9 @@ end
 %% The main programme
 try
     while (~timeIsUp && ~TRIAL.info.abort)
-        if runInfo.reset_textures
-            setupTextures(textures);
-        end
+%         if runInfo.reset_textures
+%             setupTextures(textures);
+%         end
         Screen('EndOpenGL', hwInfo.MYSCREEN.windowPtr(1));
         % Show rendered image at next vertical retrace:
         %         Screen('Flip', hwInfo.MYSCREEN.windowPtr(1));
