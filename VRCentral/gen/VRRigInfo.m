@@ -489,7 +489,7 @@ classdef VRRigInfo < handle
                     RigInfo.ARDHistory = [0 0];
                     
                     RigInfo.screenType = '3SCREEN';
-                    RigInfo.numCameras = 3;
+                    RigInfo.numCameras = 1;
                     
                     RigInfo.NIdevID = 'Dev1';
                     RigInfo.NIsessRate = 10000;

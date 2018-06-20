@@ -574,13 +574,12 @@ end
                     ballTime = TRIAL.time(runInfo.currTrial,runInfo.count);
                     dax = 0; day = 0; dby = 0; dbx = 0;
                     [KeyIsDown, secs, KeyCode] = KbCheck;
-                    KeyCode
                     if KeyIsDown==1
                         if KeyCode(38) % up
-                            dbx = 0.1;
+                            dbx = 0.4;
                         end
                         if KeyCode(40) % down
-                            dbx = -0.1;
+                            dbx = -0.4;
                         end
                     end
                     TRIAL.balldata(runInfo.currTrial,runInfo.count,:) = [ballTime, dax, dbx, day, dby];
