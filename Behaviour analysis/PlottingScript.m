@@ -12,7 +12,6 @@ PlotOBject.es = es
 PlotOBject.VR = VR
 
 PlotObject = behavPlotter;
-AnimalObject = AnimalObject;
 expObject = r;
 es = es;
 VR = VR;
