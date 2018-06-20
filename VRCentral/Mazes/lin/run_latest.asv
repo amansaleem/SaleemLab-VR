@@ -577,10 +577,10 @@ end
                     KeyCode
                     if KeyIsDown==1
                         if KeyCode(38) % up
-                            dbx = 0.1;
+                            dbx = 0.01;
                         end
-                        if KeyCode(40) % down
-                            dbx = -0.1;
+                        if KeyCode() % down
+                            dbx = 0.01;
                         end
                     end
                     TRIAL.balldata(runInfo.currTrial,runInfo.count,:) = [ballTime, dax, dbx, day, dby];
