@@ -657,6 +657,7 @@ end
                                         for k=1:runInfo.ROOM.nOfWalls
                                             switch k
                                                 case 1
+                                                    % wallface_PIT allows to take as input the wavelength and stretchs is along the track length
                                                     wallface_PIT (expInfo.EXP.l,  runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texCont(iCon).texname(getTextureIndex_N(expInfo.EXP.farWallText)), iWavelength);
                                                 case 2
                                                     wallface_PIT (expInfo.EXP.l,  runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texCont(iCon).texname(getTextureIndex_N(expInfo.EXP.nearWallText)), iWavelength);
