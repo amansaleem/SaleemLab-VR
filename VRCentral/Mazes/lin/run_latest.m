@@ -236,12 +236,7 @@ try
             glRotated (TRIAL.posdata(runInfo.currTrial,runInfo.count,T)/pi*180,0,1,0);
             glTranslated (-TRIAL.posdata(runInfo.currTrial,runInfo.count,X),-expInfo.EXP.c3,-TRIAL.posdata(runInfo.currTrial,runInfo.count,Z));
             
-%             if strcmp(expInfo.EXP.VRType,'lin')
-%                 glCallList(runInfo.List1); % with texture landmarks
-                glCallList(runInfo.glLists.lists(TRIAL.currList(runInfo.currTrial)).list); %% Check this
-%             elseif strcmp(expInfo.EXP.VRType,'PIT')
-%                 glCallList(runInfo.List2); % path integration task - PIT
-%             end
+            glCallList(runInfo.glLists.lists(TRIAL.currList(runInfo.currTrial)).list); %% Check this
             
             %DrawTextures
             glPushMatrix;
