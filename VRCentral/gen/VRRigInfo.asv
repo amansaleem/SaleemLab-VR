@@ -510,6 +510,8 @@ classdef VRRigInfo < handle
                     RigInfo.filenameScreenCalib =  '';%'geometricCorr_2.mat';%'test.mat';%'HalfCylinderCalibdata_2_2695_1024.mat';%'HalfCylinderCalibdata_1_2400_600.mat';
                     % External computer connection info
                     % (These are optinal)
+                    RigInfo.connectIPs{1} = []; % 'Zirkus'
+                    RigInfo.connectPCs{1} = [];
                     %
                     %                     RigInfo.connectIPs{2} = '144.82.135.51'; % 'Zankh'
                     %                     RigInfo.connectPCs{2} = 'Zankh';
