@@ -183,28 +183,37 @@ try
             if ~runInfo.blank_screen
                 switch rigInfo.screenType
                     case 'DOME'
+                        FoV = 240;
+                        [ww,hh]=Screen('WindowSize',rigInfo.screenNumber);
                         if icam==rigInfo.numCameras
-                            glViewport(round(1280/rigInfo.numCameras)*(icam-1)+1,0,1279-(round(1280/rigInfo.numCameras)*(icam-1)),800);
+                            glViewport(round(ww/rigInfo.numCameras)*(icam-1)+1,0,(ww-1)-(round(ww/rigInfo.numCameras)*(icam-1)),hh);
                         else
-                            glViewport(round(1280/rigInfo.numCameras)*(icam-1)+1,0,round(1280/rigInfo.numCameras),800);
+                            glViewport(round(ww/rigInfo.numCameras)*(icam-1)+1,0,round(ww/rigInfo.numCameras),hh);
                         end
+                        %glViewport(round(ww/rigInfo.numCameras)*(icam-1)+1,0,round(ww/rigInfo.numCameras),hh);
                         glMatrixMode(GL.PROJECTION);
                         glLoadIdentity;
-                        glFrustum( -sind((240/rigInfo.numCameras/2)*(1/3))*0.01, ...
-                            sind((240/rigInfo.numCameras/2)*(1/3))*0.01, ...
-                            -sind(30*(1/3))*0.01, sind(90*(1/3))*0.01, 0.01,expInfo.EXP.visibleDepth)
+                        glFrustum( -sind((FoV/rigInfo.numCameras/2))*0.01, ...
+                            sind((FoV/rigInfo.numCameras/2))*0.01, ...
+                            -sind(30)*0.01, sind(90)*0.01, 0.01,expInfo.EXP.visibleDepth)
                         glMatrixMode(GL.MODELVIEW);
                         glLoadIdentity;
                         glClear(GL.DEPTH_BUFFER_BIT);
-                        glRotated((-(240/2)+(240/2/rigInfo.numCameras)+((icam-1)*(240/rigInfo.numCameras)))*(1/3),0.0,1.0,0.0); % 0.333 is a parameter to get the desired rotation in degrees
+                        glRotated((-(FoV/2)+(FoV/2/rigInfo.numCameras)+((icam-1)*(FoV/rigInfo.numCameras))),0.0,1.0,0.0); % 0.333 is a parameter to get the desired rotation in degrees
                         
                     case '3SCREEN'
+                        FoV = 240;
                         glMatrixMode(GL.PROJECTION);
                         glLoadIdentity;
                         [ww,hh]=Screen('WindowSize',rigInfo.screenNumber);
-                        glViewport(round(ww/rigInfo.numCameras)*(icam-1)+1,0,round(ww/rigInfo.numCameras),hh);
-                        glFrustum( -sind(180/rigInfo.numCameras/2)*0.01, ...
-                            sind(180/rigInfo.numCameras/2)*0.01, ...
+                        if icam==rigInfo.numCameras
+                            glViewport(round(ww/rigInfo.numCameras)*(icam-1)+1,0,(ww-1)-(round(ww/rigInfo.numCameras)*(icam-1)),hh);
+                        else
+                            glViewport(round(ww/rigInfo.numCameras)*(icam-1)+1,0,round(ww/rigInfo.numCameras),hh);
+                        end
+                        %glViewport(round(ww/rigInfo.numCameras)*(icam-1)+1,0,round(ww/rigInfo.numCameras),hh);
+                        glFrustum( -sind(FoV/rigInfo.numCameras/2)*0.01, ...
+                            sind(FoV/rigInfo.numCameras/2)*0.01, ...
                             ...-sind(22)*0.01, sind(67)*0.01, rigInfo.screenDist,expInfo.EXP.visibleDepth)
                             -sind(22)*0.01, sind(67)*0.01, 0.01,expInfo.EXP.visibleDepth)
                         %                             gluPerspective(90,round(ww/rigInfo.numCameras)/hh,...
@@ -213,7 +222,7 @@ try
                         glLoadIdentity;
                         glClear(GL.DEPTH_BUFFER_BIT);
                         
-                        glRotated((-(180/2)+(180/2/rigInfo.numCameras)+((icam-1)*(180/rigInfo.numCameras))),0.0,1.0,0.0); % 0.333 is a parameter to get the desired rotation in degrees
+                        glRotated((-(FoV/2)+(FoV/2/rigInfo.numCameras)+((icam-1)*(FoV/rigInfo.numCameras))),0.0,1.0,0.0); % 0.333 is a parameter to get the desired rotation in degrees
                         
                         glRotated (0,1,0,0); % to look a little bit downward
                 end
@@ -227,14 +236,12 @@ try
             glRotated (TRIAL.posdata(runInfo.currTrial,runInfo.count,T)/pi*180,0,1,0);
             glTranslated (-TRIAL.posdata(runInfo.currTrial,runInfo.count,X),-expInfo.EXP.c3,-TRIAL.posdata(runInfo.currTrial,runInfo.count,Z));
             
-            if strcmp(expInfo.EXP.VRType,'lin')
+%             if strcmp(expInfo.EXP.VRType,'lin')
 %                 glCallList(runInfo.List1); % with texture landmarks
                 glCallList(runInfo.glLists.lists(TRIAL.currList(runInfo.currTrial)).list); %% Check this
-            elseif strcmp(expInfo.EXP.VRType,'PIT')
-                glCallList(runInfo.List2); % path integration task - PIT
-            elseif strcmp(expInfo.EXP.VRType,'Ruler')
-                glCallList(runInfo.ListRuler); % VR with square wave texture with period of 2 cm
-            end
+%             elseif strcmp(expInfo.EXP.VRType,'PIT')
+%                 glCallList(runInfo.List2); % path integration task - PIT
+%             end
             
             %DrawTextures
             glPushMatrix;
@@ -614,48 +621,6 @@ end
         wallface (runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texCont(iCon).texname(getTextureIndex(expInfo.EXP.farWallText)),runInfo.ROOM.wrap(k,:));
         glEndList();
         
-        glNewList(runInfo.List2,GL.COMPILE); % Path integration task
-        if ~strcmp(expInfo.EXP.VRType,'lin')
-            for k=1:6
-                switch k
-                    case 1
-                        wallface_PIT (expInfo.EXP.l,  runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texCont(iCon).texname(getTextureIndex_N(expInfo.EXP.farWallText)), WLength);
-                    case 2
-                        wallface_PIT (expInfo.EXP.l,  runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texCont(iCon).texname(getTextureIndex_N(expInfo.EXP.nearWallText)), WLength);
-                    case 3
-                        wallface_PIT (expInfo.EXP.l,  runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texCont(iCon).texname(getTextureIndex_N(expInfo.EXP.leftWallText)), WLength);
-                    case 4
-                        wallface_PIT (expInfo.EXP.l,  runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texCont(iCon).texname(getTextureIndex_N(expInfo.EXP.rightWallText)), WLength);
-                    case 5
-                        wallface_PIT (expInfo.EXP.l,  runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texCont(iCon).texname(getTextureIndex_N(expInfo.EXP.ceilingText)), WLength);
-                    case 6
-                        wallface_PIT (expInfo.EXP.l,  runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texCont(iCon).texname(getTextureIndex_N(expInfo.EXP.floorText)), WLength);
-                end
-            end
-        end
-        glEndList();
-        
-        glNewList(runInfo.ListRuler,GL.COMPILE); % ruler GLlist to measure texture size
-        if ~strcmp(expInfo.EXP.VRType,'lin')
-            for k=1:6
-                switch k
-                    case 1
-                        wallface_PIT (expInfo.EXP.l,  runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texCont(iCon).texname(getTextureIndex(expInfo.EXP.farWallText)), WLength);
-                    case 2
-                        wallface_PIT (expInfo.EXP.l,  runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texCont(iCon).texname(getTextureIndex(expInfo.EXP.nearWallText)), WLength);
-                    case 3
-                        wallface_PIT (expInfo.EXP.l,  runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texCont(iCon).texname(getTextureIndex_N(expInfo.EXP.ceilingText)), WLength);
-                    case 4
-                        wallface_PIT (expInfo.EXP.l,  runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texCont(iCon).texname(getTextureIndex_N(expInfo.EXP.ceilingText)), WLength);
-                    case 5
-                        wallface_PIT (expInfo.EXP.l,  runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texCont(iCon).texname(getTextureIndex_N(expInfo.EXP.ceilingText)), WLength);
-                    case 6
-                        wallface_PIT (expInfo.EXP.l,  runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texCont(iCon).texname(getTextureIndex_N(expInfo.EXP.floorText)), WLength);
-                end
-            end
-        end
-        glEndList();
-        
         % %         Aman adding a generation of glLists for different combinations of
         %         % stimuli
         runInfo.glLists.varLengths = [length(expInfo.EXP.contrLevels) length(expInfo.EXP.lengthSet) ...
@@ -673,7 +638,7 @@ end
                         for it3 = 1:length(expInfo.EXP.tex3pos)
                             for it4 = 1:length(expInfo.EXP.tex4pos)
                                 for iWavelength = 1:length(expInfo.EXP.waveLength)
-                                    if expInfo.EXP.waveLength(iWavelength) == 1
+                                    
                                         expInfo.EXP.contrLevels(iCon);
                                         list_idx = runInfo.glLists.lookUp(iCon,iLength,iWavelength,it1,it2,it3,it4);
                                         runInfo.glLists.lists(list_idx).list = glGenLists(1);
@@ -692,17 +657,17 @@ end
                                         for k=1:runInfo.ROOM.nOfWalls
                                             switch k
                                                 case 1
-                                                    wallface (runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texCont(iCon).texname(getTextureIndex(expInfo.EXP.farWallText)),runInfo.ROOM.wrap(k,:));
+                                                    wallface_PIT (expInfo.EXP.l,  runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texCont(iCon).texname(getTextureIndex_N(expInfo.EXP.farWallText)), iWavelength);
                                                 case 2
-                                                    wallface (runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texCont(iCon).texname(getTextureIndex(expInfo.EXP.nearWallText)),runInfo.ROOM.wrap(k,:));
+                                                    wallface_PIT (expInfo.EXP.l,  runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texCont(iCon).texname(getTextureIndex_N(expInfo.EXP.nearWallText)), iWavelength);
                                                 case 3
-                                                    wallface (runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texCont(iCon).texname(getTextureIndex(expInfo.EXP.leftWallText)),runInfo.ROOM.wrap(k,:));
+                                                    wallface_PIT (expInfo.EXP.l,  runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texCont(iCon).texname(getTextureIndex_N(expInfo.EXP.leftWallText)), iWavelength);
                                                 case 4
-                                                    wallface (runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texCont(iCon).texname(getTextureIndex(expInfo.EXP.rightWallText)),runInfo.ROOM.wrap(k,:));
+                                                    wallface_PIT (expInfo.EXP.l,  runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texCont(iCon).texname(getTextureIndex_N(expInfo.EXP.rightWallText)), iWavelength);
                                                 case 5
-                                                    wallface (runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texCont(iCon).texname(getTextureIndex(expInfo.EXP.ceilingText)),runInfo.ROOM.wrap(k,:));
+                                                    wallface_PIT (expInfo.EXP.l,  runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texCont(iCon).texname(getTextureIndex_N(expInfo.EXP.ceilingText)), iWavelength);
                                                 case 6
-                                                    wallface (runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texCont(iCon).texname(getTextureIndex(expInfo.EXP.floorText)),runInfo.ROOM.wrap(k,:));
+                                                    wallface_PIT (expInfo.EXP.l,  runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texCont(iCon).texname(getTextureIndex_N(expInfo.EXP.floorText)), iWavelength);
                                                     ... Texture 1
                                                 case 7
                                                 wallface (runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texCont(iCon).texname(getTextureIndex(expInfo.EXP.Leg1Text1)),runInfo.ROOM.wrap(k,:));
@@ -763,9 +728,6 @@ end
                                             end
                                         end
                                         glEndList();
-                                    else
-                                        
-                                    end
                                 end
                             end
                         end
