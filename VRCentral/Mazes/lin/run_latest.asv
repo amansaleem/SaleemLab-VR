@@ -491,15 +491,9 @@ end
                 %    glTexImage2D(GL.TEXTURE_2D,0,GL.ALPHA,256,256,1,GL.ALPHA,GL.UNSIGNED_BYTE,noisematrix);
                 
                 % Setup texture wrapping behaviour:
-                if strcmp(expInfo.EXP.textureFile,'textures_PIT')
-                    if (i>=4 && i<=8) || (i>=12 && i<=16)
-                        glTexParameteri(GL.TEXTURE_2D,GL.TEXTURE_WRAP_S,GL.REPEAT);%GL.CLAMP_TO_EDGE);%GL.REPEAT);%
-                        glTexParameteri(GL.TEXTURE_2D,GL.TEXTURE_WRAP_T,GL.CLAMP_TO_EDGE);%GL.CLAMP_TO_EDGE);
-                    end
-                else
-                    glTexParameteri(GL.TEXTURE_2D,GL.TEXTURE_WRAP_S,GL.REPEAT);%GL.CLAMP_TO_EDGE);%GL.REPEAT);%
-                    glTexParameteri(GL.TEXTURE_2D,GL.TEXTURE_WRAP_T,GL.REPEAT);%GL.CLAMP_TO_EDGE);
-                end
+                if (i>=4 && i<=8) || (i>=4 && i<=8)
+                glTexParameteri(GL.TEXTURE_2D,GL.TEXTURE_WRAP_S,GL.REPEAT);%GL.CLAMP_TO_EDGE);%GL.REPEAT);%
+                glTexParameteri(GL.TEXTURE_2D,GL.TEXTURE_WRAP_T,GL.REPEAT);%GL.CLAMP_TO_EDGE);
                 %glTexParameteri(GL.TEXTURE_2D,GL.TEXTURE_WRAP_R,GL.CLAMP);%GL.CLAMP_TO_EDGE);
                 
                 %     % Setup filtering for the textures:
