@@ -867,7 +867,7 @@ end
         if isfield(expInfo.EXP, 'SF')
             WLength = expInfo.EXP.SF;
         else
-            WLength = 1;
+            WLength = 0.25;
         end
 
         runInfo.List2 = glGenLists(1);
