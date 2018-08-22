@@ -5,7 +5,6 @@ function wallface_PIT(mazelength, v, order, n, tx, WLength)
 % variables GLU and AGL...
 global GL
 
-
 % Bind (Select) texture 'tx' for drawing:
 glBindTexture(GL.TEXTURE_2D,tx);
 glBegin(GL.POLYGON);
