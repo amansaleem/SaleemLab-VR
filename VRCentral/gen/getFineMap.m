@@ -13,13 +13,31 @@ ScreenInfo.WhichScreen = WhichScreen;
 ScreenInfo.FrameRate = FrameRate(WhichScreen);
 
 PsychImaging('PrepareConfiguration');
-transformFile = 'C:\Home\Code\SaleemLab-VR\VRCentral\gen\MeshMapping_VR.mat'
+transformFile = 'C:\Home\Code\SaleemLab-VR\VRCentral\gen\MeshMapping_VR.mat';
 PsychImaging('AddTask', 'AllViews', 'GeometryCorrection', transformFile);
 PsychImaging('AddTask', 'AllViews', 'FlipHorizontal');
 
 [ScreenInfo.windowPtr, ScreenInfo.screenRect] = PsychImaging('OpenWindow', WhichScreen, ScreenInfo.grayIndex);
-get(0,'MonitorPositions')
+get(0,'MonitorPositions');
 
-xm = 1081:(1081+1280);
-ym = 1:800;
+sampling = 1; % no.of pixels
+
+xm = 1081:sampling:(1081+1280);
+ym = 1:sampling:800;
 [xo, yo] = RemapMouse(ScreenInfo.windowPtr, 'AllViews', xm, ym);
+
+xm1 = repmat(xm, 800,1);
+ym1 = repmat(ym', 1,1281);
+
+xm1 = (xm1-1081)./1280;
+xm1 = xm1*2 - 1;
+
+ym1 = (ym1)./800;
+ym1 = ym1*2 - 1;
+
+xo = xo./1280;
+yo = yo./800;
+
+t = xo==0 | yo==0;
+MeshMap = [xm1(~t(:)) ym1(~t(:)) xo(~t(:)) yo(~t(:)) ones(sum(~t(:)),1)];
+csvwrite('MeshMapping_Neo3.csv', MeshMap);
