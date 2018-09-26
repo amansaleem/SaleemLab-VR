@@ -207,9 +207,16 @@ hwInfo.MYSCREEN = prepareScreen(thisScreen,rigInfo,expInfo); %prepareScreen(this
 % HideCursor; % usually done in ltScreenInitialize
 
 % define synchronization square read by photodiode
-rigInfo.photodiodeRect = struct('rect',[0 (hwInfo.MYSCREEN.Ymax - rigInfo.photodiodeSize(2) + 1) ...
-    rigInfo.photodiodeSize(1)-1            hwInfo.MYSCREEN.Ymax], ...
-    'colorOn', [1 1 1], 'colorOff', [0 0 0]);
+switch rigInfo.photodiodePos
+    case 'left'
+        rigInfo.photodiodeRect = struct('rect',[0 (hwInfo.MYSCREEN.Ymax - rigInfo.photodiodeSize(2) + 1) ...
+            rigInfo.photodiodeSize(1)-1            hwInfo.MYSCREEN.Ymax], ...
+            'colorOn', [1 1 1], 'colorOff', [0 0 0]);
+    case 'right'
+        rigInfo.photodiodeRect = struct('rect',[(hwInfo.MYSCREEN.Xmax-rigInfo.photodiodeSize(1)+1) (hwInfo.MYSCREEN.Ymax - rigInfo.photodiodeSize(2) + 1) ...
+            hwInfo.MYSCREEN.Xmax            hwInfo.MYSCREEN.Ymax], ...
+            'colorOn', [1 1 1], 'colorOff', [0 0 0]);
+end
 
 Screen('FillRect', hwInfo.MYSCREEN.windowPtr(1), 0, rigInfo.photodiodeRect.rect);
 Screen('Flip', hwInfo.MYSCREEN.windowPtr(1));
