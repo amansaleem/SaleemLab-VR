@@ -13,19 +13,38 @@ ScreenInfo.WhichScreen = WhichScreen;
 ScreenInfo.FrameRate = FrameRate(WhichScreen);
 
 PsychImaging('PrepareConfiguration');
-transformFile = 'C:\Home\Code\SaleemLab-VR\VRCentral\gen\MeshMapping_VR.mat'
+transformFile = 'C:\Home\Code\SaleemLab-VR\VRCentral\gen\MeshMapping_VR.mat';
 PsychImaging('AddTask', 'AllViews', 'GeometryCorrection', transformFile);
 PsychImaging('AddTask', 'AllViews', 'FlipHorizontal');
 
 [ScreenInfo.windowPtr, ScreenInfo.screenRect] = PsychImaging('OpenWindow', WhichScreen, ScreenInfo.grayIndex);
-get(0,'MonitorPositions')
+[slims] = get(0,'MonitorPositions');
 
-xm = 1081:(1081+1280);
-ym = 1:800;
-[xo, yo] = RemapMouse(ScreenInfo.windowPtr, 'AllViews', xm, ym);
+sampling = 10; % no.of pixels
 
-xm1 = (xm1-1081)./1280;
-xm1 = xm1*2 - 1;
+xm = slims(2,1):sampling:(slims(2,1)+slims(2,3));
+ym = 1:sampling*2:slims(2,4);
+
+xm1 = zeros(length(xm), length(ym));
+ym1 = xm1; xo = xm1; yo = xo;
+
+for ix = 1:length(xm)
+    for iy = 1:length(ym)
+        [xo, yo] = RemapMouse(ScreenInfo.windowPtr, 'AllViews', xm, ym);[xo, yo] = RemapMouse(ScreenInfo.windowPtr, 'AllViews', xm, ym);
+
+xm1 = repmat(xm, length(ym),1);
+ym1 = repmat(ym', 1,length(xm));
+
+xm1 = (xm1-slims(2,1))./slims(2,3);
 
 ym1 = (ym1)./800;
-ym1 = ym1*2 - 1;
+
+xo = xo./1280;
+yo = yo./800;
+xo = xo*2 - 1;
+yo = yo*2 - 1;
+
+t = xo==0 | yo==0;
+% MeshMap = [xo(~t(:)) yo(~t(:)) xm1(~t(:)) ym1(~t(:)) ones(sum(~t(:)),1)];
+MeshMap = [xo(:) yo(:) xm1(:) ym1(:) ones(size(ym1(:)))];
+csvwrite('MeshMapping_Neo3.csv', MeshMap);
