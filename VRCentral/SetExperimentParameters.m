@@ -73,7 +73,7 @@ try
     end
     if numCond~=nCond
         display('Different number of condition, choosing new number!');
-%         exp = ChangenTrialTypes(exp, nCond);
+        %         exp = ChangenTrialTypes(exp, nCond);
     end
     if strcmp(VRtype,'linCirc')
         exp.CircularMaze = 1;
@@ -355,42 +355,6 @@ clear VRparameters VRchoose
         %         uiresume(MainFig);
     end
 
-    function checkPara
-        VarNames = get(VRparameters.StimVarInfo1,'RowName');
-        VarDataA = get(VRparameters.StimVarInfo1,'Data');
-        notGood = false;
-        
-        x = strfind(VarNames,'contrLevels');
-        y = [];
-        for x_idx = 1:length(x)
-            if ~isempty(x{x_idx})
-                y = [y x_idx];
-            end
-        end
-        cList = str2num(VarDataA{y});
-        if sum(cList>1)>=1
-            msgbox({'WARNING!';'CONTRAST has values > 1'}, 'Error', 'error');
-            not_good = true;
-        elseif sum(cList<0)>=1
-            msgbox({'WARNING!';'CONTRAST has values < 0'}, 'Error', 'error');
-            not_good = true;
-        end
-        
-        x = strfind(VarNames, 'scaleSet');
-        y = [];
-        for x_idx = 1:length(x)
-            if ~isempty(x{x_idx})
-                y = [y x_idx];
-            end
-        end
-        cList = str2num(VarDataA{y});
-        if sum(cList<=0)>=1
-            msgbox({'WARNING!';'SCALE has values <= 0'}, 'Warning', 'warn');
-        end
-        
-        
-            
-    end
     function runExp
         % Save in the appropriate folder and start running the experiment.
         [exp, exp_out] = runOutput(VRparameters);
@@ -436,7 +400,111 @@ clear VRparameters VRchoose
         end
         %         uiresume(MainFig);
     end
-
+    function checkPara
+        VarNames = get(VRparameters.StimVarInfo1,'RowName');
+        VarDataA = get(VRparameters.StimVarInfo1,'Data');
+        notGood = false;
+        
+        x = strfind(VarNames,'contrLevels');
+        y = [];
+        for x_idx = 1:length(x)
+            if ~isempty(x{x_idx})
+                y = [y x_idx];
+            end
+        end
+        cList = str2num(VarDataA{y});
+        if sum(cList>1)>=1
+            msgbox({'WARNING!';'CONTRAST has values > 1'}, 'Error', 'error');
+            not_good = true;
+        elseif sum(cList<0)>=1
+            msgbox({'WARNING!';'CONTRAST has values < 0'}, 'Error', 'error');
+            not_good = true;
+        end
+        
+        x = strfind(VarNames, 'scaleSet');
+        y = [];
+        for x_idx = 1:length(x)
+            if ~isempty(x{x_idx})
+                y = [y x_idx];
+            end
+        end
+        sList = str2num(VarDataA{y});
+        if sum(sList<=0)>=1
+            msgbox({'WARNING!';'SCALE has values <= 0'}, 'Warning', 'warn');
+        end
+        
+        %t1
+        x = strfind(VarNames, 'tex1pos');
+        y = [];
+        for x_idx = 1:length(x)
+            if ~isempty(x{x_idx})
+                y = [y x_idx];
+            end
+        end
+        t1List = str2num(VarDataA{y});
+        
+        %t2
+        x = strfind(VarNames, 'tex2pos');
+        y = [];
+        for x_idx = 1:length(x)
+            if ~isempty(x{x_idx})
+                y = [y x_idx];
+            end
+        end
+        t2List = str2num(VarDataA{y});
+        
+        %t3
+        x = strfind(VarNames, 'tex3pos');
+        y = [];
+        for x_idx = 1:length(x)
+            if ~isempty(x{x_idx})
+                y = [y x_idx];
+            end
+        end
+        t3List = str2num(VarDataA{y});
+        
+        %t4
+        x = strfind(VarNames, 'tex4pos');
+        y = [];
+        for x_idx = 1:length(x)
+            if ~isempty(x{x_idx})
+                y = [y x_idx];
+            end
+        end
+        t4List = str2num(VarDataA{y});
+        
+        if length(t1List)==length(t2List)
+            if sum(abs(t1List-t2List)<exp.Maze.tw)
+                msgbox({'WARNING!';'Textures 1 and 2 seem to overlap, closer than texture width'}, 'Warning', 'warn');
+            end
+        end
+        if length(t1List)==length(t3List)
+            if sum(abs(t1List-t3List)<exp.Maze.tw)
+                msgbox({'WARNING!';'Textures 1 and 3 seem to overlap, closer than texture width'}, 'Warning', 'warn');
+            end
+        end
+        if length(t1List)==length(t4List)
+            if sum(abs(t1List-t4List)<exp.Maze.tw)
+                msgbox({'WARNING!';'Textures 1 and 4 seem to overlap, closer than texture width'}, 'Warning', 'warn');
+            end
+        end
+        if length(t2List)==length(t3List)
+            if sum(abs(t2List-t3List)<exp.Maze.tw)
+                msgbox({'WARNING!';'Textures 2 and 3 seem to overlap, closer than texture width'}, 'Warning', 'warn');
+            end
+        end
+        if length(t2List)==length(t4List)
+            if sum(abs(t2List-t4List)<exp.Maze.tw)
+                msgbox({'WARNING!';'Textures 2 and 4 seem to overlap, closer than texture width'}, 'Warning', 'warn');
+            end
+        end
+        if length(t3List)==length(t4List)
+            if sum(abs(t3List-t4List)<exp.Maze.tw)
+                msgbox({'WARNING!';'Textures 3 and 4 seem to overlap, closer than texture width'}, 'Warning', 'warn');
+            end
+        end
+        
+    end
 %% function to change the number of trial types
 % % Can take this out. Is going to be redundant
     function exp = ChangenTrialTypes(exp, nCond)
