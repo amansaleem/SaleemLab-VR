@@ -388,7 +388,20 @@ clear VRparameters VRchoose
             msgbox({'WARNING!';'SCALE has values <= 0'}, 'Warning', 'warn');
         end
         
-        
+        t1pos = strfind(VarNames, 'tex1pos');
+        t2pos = strfind(VarNames, 'tex2pos');
+        t3pos = strfind(VarNames, 'tex3pos');
+        t4pos = strfind(VarNames, 'tex4pos');
+        y = [];
+        for x_idx = 1:length(x)
+            if ~isempty(x{x_idx})
+                y = [y x_idx];
+            end
+        end
+        cList = str2num(VarDataA{y});
+        if sum(cList<=0)>=1
+            msgbox({'WARNING!';'SCALE has values <= 0'}, 'Warning', 'warn');
+        end
             
     end
     function runExp
