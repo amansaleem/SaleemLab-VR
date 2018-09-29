@@ -12,11 +12,15 @@ if ~expInfo.OFFLINE
     rigInfo.sendUDPmessage(VRmessage);
     VRLogMessage(expInfo, VRmessage);
     pause(1)
+    
     VRmessage = ['ExpEnd ' expInfo.animalName ' ' expInfo.dateStr ' ' expInfo.sessionName];
     rigInfo.sendUDPmessage(VRmessage);
-    VRLogMessage(expInfo, VRmessage);
     
-    VRLogMessage(expInfo);
+    bothLogs = 'true';
+    VRLogMessage(expInfo, VRmessage, bothLogs);
+    emptyMessage = [];
+    VRLogMessage(expInfo, emptyMessage, bothLogs);
+    
     VRLogMessage(expInfo);
     
     if ~isempty(rigInfo.comms) %send message again in case there was an error

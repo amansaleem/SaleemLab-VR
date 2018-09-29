@@ -329,8 +329,10 @@ if ~expInfo.OFFLINE
     pause(1)
     VRLogMessage(expInfo);
     VRmessage = ['Starting new experiment with animal ' expInfo.animalName ':'];
-    VRLogMessage(expInfo, VRmessage);
-    VRLogMessage(expInfo);
+    bothLogs = 'true';
+    VRLogMessage(expInfo, VRmessage, bothLogs);
+    emptyMessage = [];
+    VRLogMessage(expInfo, emptyMessage, bothLogs);
     
     VRmessage = ['ExpStart ' expInfo.animalName ' ' expInfo.dateStr ' ' expInfo.sessionName];
     rigInfo.sendUDPmessage(VRmessage);
