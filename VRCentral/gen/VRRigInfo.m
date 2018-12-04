@@ -541,19 +541,19 @@ classdef VRRigInfo < handle
                     RigInfo.screenDist = 13; % in cm
                     RigInfo.dialogueXYPosition = [680 160];
                     
-                    RigInfo.DevType = 'ARDUINO';
-                    RigInfo.ARDrotCountPos = 1;
-                    RigInfo.ARDCOMPort = 3;
-                    RigInfo.ARDHistory = [0 0];
-                    
-                    RigInfo.screenType = '3SCREEN';
-                    RigInfo.numCameras = 3;
-                    
-                    RigInfo.NIdevID = 'Dev1';
-                    RigInfo.NIsessRate = 10000;
-                    RigInfo.NIRotEnc = 'ctr0';
-                    RigInfo.NILicEnc = 'ctr1';
-                    RigInfo.NIRewVal = 'ao1';
+%                     RigInfo.DevType = 'ARDUINO';
+%                     RigInfo.ARDrotCountPos = 1;
+%                     RigInfo.ARDCOMPort = 3;
+%                     RigInfo.ARDHistory = [0 0];
+%                     
+%                     RigInfo.screenType = '3SCREEN';
+%                     RigInfo.numCameras = 3;
+%                     
+%                     RigInfo.NIdevID = 'Dev1';
+%                     RigInfo.NIsessRate = 10000;
+%                     RigInfo.NIRotEnc = 'ctr0';
+%                     RigInfo.NILicEnc = 'ctr1';
+%                     RigInfo.NIRewVal = 'ao1';
                     RigInfo.photodiodePos  = 'right';
                     RigInfo.photodiodeSize = [75 75];
                     RigInfo.rotEncPos = 'left';
