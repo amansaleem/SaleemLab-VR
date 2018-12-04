@@ -196,159 +196,159 @@ end
 
 try
     InitializeMatlabOpenGL;
-
-screens=Screen('Screens');
-
-thisScreen = rigInfo.screenNumber;
-
-fprintf('preparing screen\n');
-hwInfo.MYSCREEN = prepareScreen(thisScreen,rigInfo,expInfo); %prepareScreen(thisScreen);
-%Screen('BlendFunction', MYSCREEN.windowPtr, GL.SRC_ALPHA, GL.ONE);
-% HideCursor; % usually done in ltScreenInitialize
-
-% define synchronization square read by photodiode
-switch rigInfo.photodiodePos
-    case 'left'
-        rigInfo.photodiodeRect = struct('rect',[0 (hwInfo.MYSCREEN.Ymax - rigInfo.photodiodeSize(2) + 1) ...
-            rigInfo.photodiodeSize(1)-1            hwInfo.MYSCREEN.Ymax], ...
-            'colorOn', [1 1 1], 'colorOff', [0 0 0]);
-    case 'right'
-        rigInfo.photodiodeRect = struct('rect',[(hwInfo.MYSCREEN.Xmax-rigInfo.photodiodeSize(1)+1) (hwInfo.MYSCREEN.Ymax - rigInfo.photodiodeSize(2) + 1) ...
-            hwInfo.MYSCREEN.Xmax            hwInfo.MYSCREEN.Ymax], ...
-            'colorOn', [1 1 1], 'colorOff', [0 0 0]);
-end
-
-Screen('FillRect', hwInfo.MYSCREEN.windowPtr(1), 0, rigInfo.photodiodeRect.rect);
-Screen('Flip', hwInfo.MYSCREEN.windowPtr(1));
-
-pause(1)
-
-%
-% fhandle = @sessionStart;
-
-
-
-%%
-% initialize DIO-----------------------------------------------------------
-if ~expInfo.OFFLINE % Dev2 - Dev1 swapped for ZUPERVISION
-    %     DIO = digitalio('nidaq', 'Dev2');
-    %     addline(DIO, 0, 1, 'out', {'SOL1'});
-    %     start(DIO);
-    %     putvalue(DIO.Line(1), 1);
-    % define the UDP port
-    hwInfo.BALLPort = 9999;
     
-    %     % open udp port
-    %     ZirkusPort  = pnet('udpsocket', 1001);
-    %     pnet(ZirkusPort,'udpconnect','144.82.135.38',1001);
+    screens=Screen('Screens');
+    
+    thisScreen = rigInfo.screenNumber;
+    
+    fprintf('preparing screen\n');
+    hwInfo.MYSCREEN = prepareScreen(thisScreen,rigInfo,expInfo); %prepareScreen(thisScreen);
+    %Screen('BlendFunction', MYSCREEN.windowPtr, GL.SRC_ALPHA, GL.ONE);
+    % HideCursor; % usually done in ltScreenInitialize
+    
+    % define synchronization square read by photodiode
+    switch rigInfo.photodiodePos
+        case 'left'
+            rigInfo.photodiodeRect = struct('rect',[0 (hwInfo.MYSCREEN.Ymax - rigInfo.photodiodeSize(2) + 1) ...
+                rigInfo.photodiodeSize(1)-1            hwInfo.MYSCREEN.Ymax], ...
+                'colorOn', [1 1 1], 'colorOff', [0 0 0]);
+        case 'right'
+            rigInfo.photodiodeRect = struct('rect',[(hwInfo.MYSCREEN.Xmax-rigInfo.photodiodeSize(1)+1) (hwInfo.MYSCREEN.Ymax - rigInfo.photodiodeSize(2) + 1) ...
+                hwInfo.MYSCREEN.Xmax            hwInfo.MYSCREEN.Ymax], ...
+                'colorOn', [1 1 1], 'colorOff', [0 0 0]);
+    end
+    
+    Screen('FillRect', hwInfo.MYSCREEN.windowPtr(1), 0, rigInfo.photodiodeRect.rect);
+    Screen('Flip', hwInfo.MYSCREEN.windowPtr(1));
+    
+    pause(1)
+    
     %
-    %     % open udp port
-    %     EYEPort  = pnet('udpsocket', 1002);
-    %     pnet(EYEPort,'udpconnect','144.82.135.51',1001); %%%Check the IP and port
-    rigInfo.initialiseUDPports;
+    % fhandle = @sessionStart;
     
-    if strcmp(expInfo.EXP.wheelType, 'WHEEL')
+    
+    
+    %%
+    % initialize DIO-----------------------------------------------------------
+    if ~expInfo.OFFLINE % Dev2 - Dev1 swapped for ZUPERVISION
+        %     DIO = digitalio('nidaq', 'Dev2');
+        %     addline(DIO, 0, 1, 'out', {'SOL1'});
+        %     start(DIO);
+        %     putvalue(DIO.Line(1), 1);
+        % define the UDP port
+        hwInfo.BALLPort = 9999;
         
-        switch rigInfo.DevType
-            case 'NI'
-                hwInfo.session = daq.createSession('ni');
-                hwInfo.session.Rate = rigInfo.NIsessRate;
-                
-                hwInfo.rotEnc = DaqRotaryEncoder;
-                hwInfo.rotEnc.DaqSession = hwInfo.session;
-                hwInfo.rotEnc.DaqId = rigInfo.NIdevID;
-                hwInfo.rotEnc.DaqChannelId = rigInfo.NIRotEnc;
-                hwInfo.rotEnc.createDaqChannel;
-                hwInfo.rotEnc.zero;
-                
-                hwInfo.likEnc = DaqLickEncoder;
-                hwInfo.likEnc.DaqSession = hwInfo.session;
-                hwInfo.likEnc.DaqId = rigInfo.NIdevID;
-                hwInfo.likEnc.DaqChannelId = rigInfo.NILicEnc;
-                hwInfo.likEnc.createDaqChannel;
-                
-                hwInfo.sessionVal = daq.createSession('ni');
-                hwInfo.sessionVal.Rate = rigInfo.NIsessRate;
-                
-                hwInfo.rewVal = DaqRewardValve;
-                load('rewCalib');
-                hwInfo.rewVal.DaqSession = hwInfo.sessionVal;
-                hwInfo.rewVal.DaqId = rigInfo.NIdevID;
-                hwInfo.rewVal.DaqChannelId = rigInfo.NIRewVal;
-                hwInfo.rewVal.createDaqChannel;
-                hwInfo.rewVal.MeasuredDeliveries = rewardCalibrations(end).measuredDeliveries;
-                hwInfo.rewVal.OpenValue = 6;
-                hwInfo.rewVal.ClosedValue = 0;
-                hwInfo.rewVal.close;
-                
-                if rigInfo.sendTTL
-                    hwInfo.session.addDigitalChannel(...
-                        'Dev1', 'Port0/Line0', 'OutputOnly');
-                    hwInfo.session.outputSingleScan(false);
-                end
-            case 'ARDUINO'
-                % Initialize Serial object
-                %                 fclose(instrfind);
-                [~,res]=system('mode');
-                ports=regexp(res,'COM\d+','match')';
-                hwInfo.ardDev = serial(ports{end});
-                set(hwInfo.ardDev,'DataBits',8);
-                set(hwInfo.ardDev,'StopBits',1);
-                set(hwInfo.ardDev,'BaudRate',115200);
-                set(hwInfo.ardDev,'Parity','none');
-                fopen(hwInfo.ardDev);
+        %     % open udp port
+        %     ZirkusPort  = pnet('udpsocket', 1001);
+        %     pnet(ZirkusPort,'udpconnect','144.82.135.38',1001);
+        %
+        %     % open udp port
+        %     EYEPort  = pnet('udpsocket', 1002);
+        %     pnet(EYEPort,'udpconnect','144.82.135.51',1001); %%%Check the IP and port
+        rigInfo.initialiseUDPports;
+        
+        if strcmp(expInfo.EXP.wheelType, 'WHEEL')
+            
+            switch rigInfo.DevType
+                case 'NI'
+                    hwInfo.session = daq.createSession('ni');
+                    hwInfo.session.Rate = rigInfo.NIsessRate;
+                    
+                    hwInfo.rotEnc = DaqRotaryEncoder;
+                    hwInfo.rotEnc.DaqSession = hwInfo.session;
+                    hwInfo.rotEnc.DaqId = rigInfo.NIdevID;
+                    hwInfo.rotEnc.DaqChannelId = rigInfo.NIRotEnc;
+                    hwInfo.rotEnc.createDaqChannel;
+                    hwInfo.rotEnc.zero;
+                    
+                    hwInfo.likEnc = DaqLickEncoder;
+                    hwInfo.likEnc.DaqSession = hwInfo.session;
+                    hwInfo.likEnc.DaqId = rigInfo.NIdevID;
+                    hwInfo.likEnc.DaqChannelId = rigInfo.NILicEnc;
+                    hwInfo.likEnc.createDaqChannel;
+                    
+                    hwInfo.sessionVal = daq.createSession('ni');
+                    hwInfo.sessionVal.Rate = rigInfo.NIsessRate;
+                    
+                    hwInfo.rewVal = DaqRewardValve;
+                    load('rewCalib');
+                    hwInfo.rewVal.DaqSession = hwInfo.sessionVal;
+                    hwInfo.rewVal.DaqId = rigInfo.NIdevID;
+                    hwInfo.rewVal.DaqChannelId = rigInfo.NIRewVal;
+                    hwInfo.rewVal.createDaqChannel;
+                    hwInfo.rewVal.MeasuredDeliveries = rewardCalibrations(end).measuredDeliveries;
+                    hwInfo.rewVal.OpenValue = 6;
+                    hwInfo.rewVal.ClosedValue = 0;
+                    hwInfo.rewVal.close;
+                    
+                    if rigInfo.sendTTL
+                        hwInfo.session.addDigitalChannel(...
+                            'Dev1', 'Port0/Line0', 'OutputOnly');
+                        hwInfo.session.outputSingleScan(false);
+                    end
+                case 'ARDUINO'
+                    % Initialize Serial object
+                    %                 fclose(instrfind);
+                    [~,res]=system('mode');
+                    ports=regexp(res,'COM\d+','match')';
+                    hwInfo.ardDev = serial(ports{end});
+                    set(hwInfo.ardDev,'DataBits',8);
+                    set(hwInfo.ardDev,'StopBits',1);
+                    set(hwInfo.ardDev,'BaudRate',115200);
+                    set(hwInfo.ardDev,'Parity','none');
+                    fopen(hwInfo.ardDev);
+            end
+            %        ValveClosed = 5;
+            %        ValveOpen = 0;
+            %        % defining the Analog Output object for the valve (for precise timing)
+            %        session.addAnalogOutputChannel(aoDeviceID, aoValveChannel, 'Voltage');
+            %        session.outputSingleScan(ValveClosed);
+            
         end
-        %        ValveClosed = 5;
-        %        ValveOpen = 0;
-        %        % defining the Analog Output object for the valve (for precise timing)
-        %        session.addAnalogOutputChannel(aoDeviceID, aoValveChannel, 'Voltage');
-        %        session.outputSingleScan(ValveClosed);
+    end
+    
+    %%
+    if rigInfo.sendTTL
+        expRef = getfield(dat.mpepMessageParse(['blah ' expInfo.animalName ' ' expInfo.dateStr ' ' expInfo.sessionName]),'expRef');
+    end
+    if rigInfo.runTimeLine
+        tl.start(expRef, 'rotaryEncoder');
+    end
+    
+    fhandle = @prepTrialStruct;
+    
+    runInfo.TRIAL_COUNT = 0;
+    fprintf('\nStarting MouseBall session %s\n', datestr(now, 'mm-dd'));
+    
+    dstr = num2str(str2num(datestr(now, 'mmdd')));
+    fprintf(dstr);
+    runInfo.blank_screen = 0;
+    runInfo.blank_screen_count = 0;
+    
+    if ~expInfo.OFFLINE
+        pause(1)
+        VRLogMessage(expInfo);
+        VRmessage = ['Starting new experiment with animal ' expInfo.animalName ':'];
+        VRLogMessage(expInfo, VRmessage);
+        VRLogMessage(expInfo);
+        
+        VRmessage = ['ExpStart ' expInfo.animalName ' ' expInfo.dateStr ' ' expInfo.sessionName];
+        rigInfo.sendUDPmessage(VRmessage);
+        VRLogMessage(expInfo, VRmessage);
+        if ~isempty(rigInfo.comms)
+            rigInfo.comms.send('animalName',expInfo.animalName);
+            rigInfo.comms.send('sessionNum',expInfo.dateStr);
+            rigInfo.comms.send('expNum',expInfo.sessionName);
+            rigInfo.comms.send('server',rigInfo.computerName);
+        end
+        pause(1)
+    end
+    display('Move to prepare trial')
+    while ~isempty(fhandle) % main loop, active during experiment
+        
+        [fhandle, runInfo] = feval(fhandle, rigInfo, hwInfo, expInfo, runInfo);
         
     end
-end
-
-%%
-if rigInfo.sendTTL
-    expRef = getfield(dat.mpepMessageParse(['blah ' expInfo.animalName ' ' expInfo.dateStr ' ' expInfo.sessionName]),'expRef');
-end
-if rigInfo.runTimeLine
-    tl.start(expRef, 'rotaryEncoder');
-end
-
-fhandle = @prepTrialStruct;
-
-runInfo.TRIAL_COUNT = 0;
-fprintf('\nStarting MouseBall session %s\n', datestr(now, 'mm-dd'));
-
-dstr = num2str(str2num(datestr(now, 'mmdd')));
-fprintf(dstr);
-runInfo.blank_screen = 0;
-runInfo.blank_screen_count = 0;
-
-if ~expInfo.OFFLINE
-    pause(1)
-    VRLogMessage(expInfo);
-    VRmessage = ['Starting new experiment with animal ' expInfo.animalName ':'];
-    VRLogMessage(expInfo, VRmessage);
-    VRLogMessage(expInfo);
-    
-    VRmessage = ['ExpStart ' expInfo.animalName ' ' expInfo.dateStr ' ' expInfo.sessionName];
-    rigInfo.sendUDPmessage(VRmessage);
-    VRLogMessage(expInfo, VRmessage);
-    if ~isempty(rigInfo.comms)
-        rigInfo.comms.send('animalName',expInfo.animalName);
-        rigInfo.comms.send('sessionNum',expInfo.dateStr);
-        rigInfo.comms.send('expNum',expInfo.sessionName);
-        rigInfo.comms.send('server',rigInfo.computerName);
-    end
-    pause(1)
-end
-display('Move to prepare trial')
-while ~isempty(fhandle) % main loop, active during experiment
-    
-    [fhandle, runInfo] = feval(fhandle, rigInfo, hwInfo, expInfo, runInfo);
-    
-end
 catch
     fhandle = @trialEnd;
     [fhandle, runInfo] = feval(fhandle, rigInfo, hwInfo, expInfo, runInfo);

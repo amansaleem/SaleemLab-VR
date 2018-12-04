@@ -63,10 +63,10 @@ classdef VRRigInfo < handle
                     RigInfo.dirSave = 'S:\Data\Behav';%['C:\Home\Data\ball'];
                     RigInfo.dirCode = 'S:\Code\VRCentral';%['E:\Dropbox\Work\Code\VR code\SaleemLab-VR\VRCentral'];
                     %%%%%%%%%%%%%%%%%%%%%%%%%%
-                case 'SALEEM12'
-                    RigInfo.computerName = 'AmanDesk';
-                    RigInfo.dirSave = 'Y:\Saleem Lab\Data\Behav';%['C:\Home\Data\ball'];
-                    RigInfo.dirCode = 'D:\Dropbox\Work\Code\Model Neurons\SaleemLab-VR\VRCentral';%['E:\Dropbox\Work\Code\VR code\SaleemLab-VR\VRCentral'];
+                    %                 case 'SALEEM12'
+                    %                     RigInfo.computerName = 'AmanDesk';
+                    %                     RigInfo.dirSave = 'Y:\Saleem Lab\Data\Behav';%['C:\Home\Data\ball'];
+                    %                     RigInfo.dirCode = 'D:\Dropbox\Work\Code\Model Neurons\SaleemLab-VR\VRCentral';%['E:\Dropbox\Work\Code\VR code\SaleemLab-VR\VRCentral'];
                     %%%%%%%%%%%%%%%%%%%%%%%%%%
                 case 'SALEEM08' %NEO
                     % Local computer info (basic)
@@ -534,6 +534,66 @@ classdef VRRigInfo < handle
                         RigInfo.RewardCal = [linspace(1,300,100); linspace(1,10,100)]';
                         display('No reward calibration file found. Using dummy values. Please calibrate your rig!');
                     end
+                case 'SALEEM12' %Aman Desktop
+                    % Local computer info (basic)
+                    RigInfo.computerName = 'SALEEM12'; % dummy name for eventual use
+                    RigInfo.screenNumber = 2;
+                    RigInfo.screenDist = 13; % in cm
+                    RigInfo.dialogueXYPosition = [680 160];
+                    
+                    %                     RigInfo.DevType = 'ARDUINO';
+                    %                     RigInfo.ARDrotCountPos = 1;
+                    %                     RigInfo.ARDCOMPort = 3;
+                    %                     RigInfo.ARDHistory = [0 0];
+                    %
+                    %                     RigInfo.screenType = '3SCREEN';
+                    %                     RigInfo.numCameras = 3;
+                    %
+                    %                     RigInfo.NIdevID = 'Dev1';
+                    %                     RigInfo.NIsessRate = 10000;
+                    %                     RigInfo.NIRotEnc = 'ctr0';
+                    %                     RigInfo.NILicEnc = 'ctr1';
+                    %                     RigInfo.NIRewVal = 'ao1';
+                    RigInfo.photodiodePos  = 'right';
+                    RigInfo.photodiodeSize = [75 75];
+                    RigInfo.rotEncPos = 'left';
+                    % Saving directories
+                    % local
+                    %                     serverName    = 'zserver';
+                    %                     serverDataDir = [filesep filesep serverName filesep 'Data' filesep];
+                    RigInfo.dirSave = 'Y:\Saleem Lab\Data\Behav';
+                    RigInfo.dirCode = 'D:\Dropbox\Work\Code\Model Neurons\SaleemLab-VR\VRCentral';
+                    % Screen related info
+                    RigInfo.screenCalibration = false;
+                    RigInfo.dirScreenCalib = '';%'C:\Home\Code\VR-Stimulus-master\Linear Track Behav - 2pNew - Dev Version - Copy\'%'C:\Users\Aman\AppData\Roaming\Psychtoolbox\GeometryCalibration\';%'C:\Users\experimenter\AppData\Roaming\Psychtoolbox\GeometryCalibration\';
+                    RigInfo.filenameScreenCalib =  '';%'geometricCorr_2.mat';%'test.mat';%'HalfCylinderCalibdata_2_2695_1024.mat';%'HalfCylinderCalibdata_1_2400_600.mat';
+                    % External computer connection info
+                    % (These are optinal)
+                    RigInfo.connectIPs{1} = []; % 'Zirkus'
+                    RigInfo.connectPCs{1} = [];
+                    %
+                    %                     RigInfo.connectIPs{2} = '144.82.135.51'; % 'Zankh'
+                    %                     RigInfo.connectPCs{2} = 'Zankh';
+                    %
+                    %                     RigInfo.connectIPs{3} = '144.82.135.117'; % 'Zankh'
+                    %                     RigInfo.connectPCs{3} = 'Zoo';
+                    
+                    RigInfo.numConnect = length(RigInfo.connectIPs);
+                    RigInfo.sendTTL = 0;
+                    RigInfo.TTLchannel = [];
+                    RigInfo.runTimeLine = 0;
+                    % load reward calibration file
+                    list = dir([RigInfo.dirCode '\data\']);
+                    RigInfo.RewardCal = 0;
+                    try
+                        Temp = load([RigInfo.dirCode '\data\' list(strcmp(['RewardCal_' hostname '.mat'],{list.name})).name]);
+                        varname = fieldnames(Temp);
+                        RigInfo.RewardCal = Temp.(varname{1})
+                        clear Temp varname;
+                    catch
+                        RigInfo.RewardCal = [linspace(1,300,100); linspace(1,10,100)]';
+                        display('No reward calibration file found. Using dummy values. Please calibrate your rig!');
+                    end
                 case 'POSTGRAD198' %Karolina Desktop
                     % Local computer info (basic)
                     RigInfo.computerName = 'SWITCH'; % dummy name for eventual use
@@ -541,19 +601,19 @@ classdef VRRigInfo < handle
                     RigInfo.screenDist = 13; % in cm
                     RigInfo.dialogueXYPosition = [680 160];
                     
-%                     RigInfo.DevType = 'ARDUINO';
-%                     RigInfo.ARDrotCountPos = 1;
-%                     RigInfo.ARDCOMPort = 3;
-%                     RigInfo.ARDHistory = [0 0];
-%                     
-%                     RigInfo.screenType = '3SCREEN';
-%                     RigInfo.numCameras = 3;
-%                     
-%                     RigInfo.NIdevID = 'Dev1';
-%                     RigInfo.NIsessRate = 10000;
-%                     RigInfo.NIRotEnc = 'ctr0';
-%                     RigInfo.NILicEnc = 'ctr1';
-%                     RigInfo.NIRewVal = 'ao1';
+                    %                     RigInfo.DevType = 'ARDUINO';
+                    %                     RigInfo.ARDrotCountPos = 1;
+                    %                     RigInfo.ARDCOMPort = 3;
+                    %                     RigInfo.ARDHistory = [0 0];
+                    %
+                    %                     RigInfo.screenType = '3SCREEN';
+                    %                     RigInfo.numCameras = 3;
+                    %
+                    %                     RigInfo.NIdevID = 'Dev1';
+                    %                     RigInfo.NIsessRate = 10000;
+                    %                     RigInfo.NIRotEnc = 'ctr0';
+                    %                     RigInfo.NILicEnc = 'ctr1';
+                    %                     RigInfo.NIRewVal = 'ao1';
                     RigInfo.photodiodePos  = 'right';
                     RigInfo.photodiodeSize = [75 75];
                     RigInfo.rotEncPos = 'left';
@@ -594,7 +654,66 @@ classdef VRRigInfo < handle
                         RigInfo.RewardCal = [linspace(1,300,100); linspace(1,10,100)]';
                         display('No reward calibration file found. Using dummy values. Please calibrate your rig!');
                     end
+                case 'SALEEM12' %Aman Desktop
+                    % Local computer info (basic)
+                    RigInfo.computerName = 'AmanDesk'; % dummy name for eventual use
+                    RigInfo.screenNumber = 2;
+                    RigInfo.screenDist = 13; % in cm
+                    RigInfo.dialogueXYPosition = [680 160];
                     
+                    %                     RigInfo.DevType = 'ARDUINO';
+                    %                     RigInfo.ARDrotCountPos = 1;
+                    %                     RigInfo.ARDCOMPort = 3;
+                    %                     RigInfo.ARDHistory = [0 0];
+                    %
+                    %                     RigInfo.screenType = '3SCREEN';
+                    %                     RigInfo.numCameras = 3;
+                    %
+                    %                     RigInfo.NIdevID = 'Dev1';
+                    %                     RigInfo.NIsessRate = 10000;
+                    %                     RigInfo.NIRotEnc = 'ctr0';
+                    %                     RigInfo.NILicEnc = 'ctr1';
+                    %                     RigInfo.NIRewVal = 'ao1';
+                    RigInfo.photodiodePos  = 'right';
+                    RigInfo.photodiodeSize = [75 75];
+                    RigInfo.rotEncPos = 'left';
+                    % Saving directories
+                    % local
+                    %                     serverName    = 'zserver';
+                    %                     serverDataDir = [filesep filesep serverName filesep 'Data' filesep];
+                    RigInfo.dirSave = 'Y:\Saleem Lab\Data\Behav';
+                    RigInfo.dirCode = 'D:\Dropbox\Work\Code\Model Neurons\SaleemLab-VR\VRCentral';
+                    % Screen related info
+                    RigInfo.screenCalibration = false;
+                    RigInfo.dirScreenCalib = '';%'C:\Home\Code\VR-Stimulus-master\Linear Track Behav - 2pNew - Dev Version - Copy\'%'C:\Users\Aman\AppData\Roaming\Psychtoolbox\GeometryCalibration\';%'C:\Users\experimenter\AppData\Roaming\Psychtoolbox\GeometryCalibration\';
+                    RigInfo.filenameScreenCalib =  '';%'geometricCorr_2.mat';%'test.mat';%'HalfCylinderCalibdata_2_2695_1024.mat';%'HalfCylinderCalibdata_1_2400_600.mat';
+                    % External computer connection info
+                    % (These are optinal)
+                    RigInfo.connectIPs{1} = []; % 'Zirkus'
+                    RigInfo.connectPCs{1} = [];
+                    %
+                    %                     RigInfo.connectIPs{2} = '144.82.135.51'; % 'Zankh'
+                    %                     RigInfo.connectPCs{2} = 'Zankh';
+                    %
+                    %                     RigInfo.connectIPs{3} = '144.82.135.117'; % 'Zankh'
+                    %                     RigInfo.connectPCs{3} = 'Zoo';
+                    
+                    RigInfo.numConnect = length(RigInfo.connectIPs);
+                    RigInfo.sendTTL = 0;
+                    RigInfo.TTLchannel = [];
+                    RigInfo.runTimeLine = 0;
+                    % load reward calibration file
+                    list = dir([RigInfo.dirCode '\data\']);
+                    RigInfo.RewardCal = 0;
+                    try
+                        Temp = load([RigInfo.dirCode '\data\' list(strcmp(['RewardCal_' hostname '.mat'],{list.name})).name]);
+                        varname = fieldnames(Temp);
+                        RigInfo.RewardCal = Temp.(varname{1})
+                        clear Temp varname;
+                    catch
+                        RigInfo.RewardCal = [linspace(1,300,100); linspace(1,10,100)]';
+                        display('No reward calibration file found. Using dummy values. Please calibrate your rig!');
+                    end
                 otherwise
                     %                     RigInfo.thisScreen=max(screens);
             end
