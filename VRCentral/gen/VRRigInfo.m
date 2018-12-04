@@ -9,7 +9,7 @@ classdef VRRigInfo < handle
         photodiodeSize;
         photodiodeRect = [0 0 1 1];
         % NI card info
-        DevType = 'NI'; %('NI' / 'ARDUINO')
+        DevType = 'NI'; %('NI' / 'ARDUINO' /'KEYBRD')
         NIdevID = 'Dev1';
         NIsessRate = 10000;
         NIRotEnc = 'ctr0';
@@ -62,11 +62,6 @@ classdef VRRigInfo < handle
                     RigInfo.computerName = 'SALEEM02';
                     RigInfo.dirSave = 'S:\Data\Behav';%['C:\Home\Data\ball'];
                     RigInfo.dirCode = 'S:\Code\VRCentral';%['E:\Dropbox\Work\Code\VR code\SaleemLab-VR\VRCentral'];
-                    %%%%%%%%%%%%%%%%%%%%%%%%%%
-                    %                 case 'SALEEM12'
-                    %                     RigInfo.computerName = 'AmanDesk';
-                    %                     RigInfo.dirSave = 'Y:\Saleem Lab\Data\Behav';%['C:\Home\Data\ball'];
-                    %                     RigInfo.dirCode = 'D:\Dropbox\Work\Code\Model Neurons\SaleemLab-VR\VRCentral';%['E:\Dropbox\Work\Code\VR code\SaleemLab-VR\VRCentral'];
                     %%%%%%%%%%%%%%%%%%%%%%%%%%
                 case 'SALEEM08' %NEO
                     % Local computer info (basic)
@@ -541,7 +536,7 @@ classdef VRRigInfo < handle
                     RigInfo.screenDist = 13; % in cm
                     RigInfo.dialogueXYPosition = [680 160];
                     
-                    %                     RigInfo.DevType = 'ARDUINO';
+                                        RigInfo.DevType = 'KEYBRD';
                     %                     RigInfo.ARDrotCountPos = 1;
                     %                     RigInfo.ARDCOMPort = 3;
                     %                     RigInfo.ARDHistory = [0 0];
@@ -601,7 +596,7 @@ classdef VRRigInfo < handle
                     RigInfo.screenDist = 13; % in cm
                     RigInfo.dialogueXYPosition = [680 160];
                     
-                    %                     RigInfo.DevType = 'ARDUINO';
+                                        RigInfo.DevType = 'KEYBRD';
                     %                     RigInfo.ARDrotCountPos = 1;
                     %                     RigInfo.ARDCOMPort = 3;
                     %                     RigInfo.ARDHistory = [0 0];
@@ -654,6 +649,7 @@ classdef VRRigInfo < handle
                         RigInfo.RewardCal = [linspace(1,300,100); linspace(1,10,100)]';
                         display('No reward calibration file found. Using dummy values. Please calibrate your rig!');
                     end
+                    %%%%
                 case 'SALEEM12' %Aman Desktop
                     % Local computer info (basic)
                     RigInfo.computerName = 'AmanDesk'; % dummy name for eventual use

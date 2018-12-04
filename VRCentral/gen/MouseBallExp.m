@@ -194,7 +194,7 @@ if expInfo.EXP.soundOn
 end
 %% AA: implement calibration and initialization of the screen
 
-try
+% try
     InitializeMatlabOpenGL;
     
     screens=Screen('Screens');
@@ -349,11 +349,11 @@ try
         [fhandle, runInfo] = feval(fhandle, rigInfo, hwInfo, expInfo, runInfo);
         
     end
-catch
-    fhandle = @trialEnd;
-    [fhandle, runInfo] = feval(fhandle, rigInfo, hwInfo, expInfo, runInfo);
-    [fhandle, runInfo] = feval(fhandle, rigInfo, hwInfo, expInfo, runInfo);
-end
+% catch
+%     fhandle = @trialEnd;
+%     [fhandle, runInfo] = feval(fhandle, rigInfo, hwInfo, expInfo, runInfo);
+%     [fhandle, runInfo] = feval(fhandle, rigInfo, hwInfo, expInfo, runInfo);
+% end
 if rigInfo.runTimeLine
     tl.stop()
 end
