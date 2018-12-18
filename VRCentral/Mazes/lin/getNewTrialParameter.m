@@ -15,7 +15,7 @@ if length(varArray)>1
     end
     varToSet = varArray(varIdx);
 else
-    varToSet = 1;
+    varToSet = varArray(varIdx);
 end
 currTrialVar = varToSet;
 
