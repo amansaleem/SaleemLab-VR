@@ -616,7 +616,7 @@ classdef VRRigInfo < handle
                     % local
                     %                     serverName    = 'zserver';
                     %                     serverDataDir = [filesep filesep serverName filesep 'Data' filesep];
-                    RigInfo.dirSave = 'Y:\Saleem Lab\Data\Behav';
+                    RigInfo.dirSave = 'X:\ibn-vision\Archive - saleemlab\Data\Behav';
                     RigInfo.dirCode = 'C:\Users\karolina.farrell\Documents\GitHub\SaleemLab-VR\VRCentral';
                     % Screen related info
                     RigInfo.screenCalibration = false;
