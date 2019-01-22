@@ -26,6 +26,8 @@ try
             DIRS.ball = 'S:\Data\Behav';
         case 'saleem08'
             DIRS.ball = 'S:\Data\Behav';
+        case 'postgrad198'
+            DIRS.ball = 'Y:\Saleem Lab\Data\Behav';
     end
 catch
     DIRS.ball = 'S:\Data\Behav';
