@@ -22,9 +22,9 @@ classdef VRRigInfo < handle
         RewardCal = []; % property for reward calibration
         rotEncPos = 'left';
         % Saving directories
-        dirSave = 'Y:\Saleem Lab\Data\Behav';%['C:\Home\Data\ball'];
+        dirSave = 'X:\ibn-vision\Archive - saleemlab\Data\Behav';%['C:\Home\Data\ball'];
         dirCode = 'C:\Home\Code\SaleemLab-VR\VRCentral';%['E:\Dropbox\Work\Code\VR code\SaleemLab-VR\VRCentral'];
-        dirSaveLocal = 'C:\Home\Data\Behaviour'; %'S:\Data\Behav';
+        dirSaveLocal = 'C:\Home\Data\Behaviour'; %'X:\ibn-vision\Archive - saleemlab\Data\Behav';
         % Screen related info
         screenCalibration = true;
         dirScreenCalib;
@@ -60,7 +60,7 @@ classdef VRRigInfo < handle
                     %%%%%%%%%%%%%%%%%%%%%%%%%%
                 case 'SALEEM02'
                     RigInfo.computerName = 'SALEEM02';
-                    RigInfo.dirSave = 'S:\Data\Behav';%['C:\Home\Data\ball'];
+                    RigInfo.dirSave = 'X:\ibn-vision\Archive - saleemlab\Data\Behav';%['C:\Home\Data\ball'];
                     RigInfo.dirCode = 'S:\Code\VRCentral';%['E:\Dropbox\Work\Code\VR code\SaleemLab-VR\VRCentral'];
                     %%%%%%%%%%%%%%%%%%%%%%%%%%
                 case 'SALEEM08' %NEO
@@ -70,7 +70,7 @@ classdef VRRigInfo < handle
                     RigInfo.screenDist = 60; % in cm
                     RigInfo.dialogueXYPosition = [440 150];
                     
-                    RigInfo.dirSave = ['S:\Data\Behav'];
+                    RigInfo.dirSave = ['X:\ibn-vision\Archive - saleemlab\Data\Behav'];
                     RigInfo.dirCode = ['C:\Home\Code\SaleemLab-VR\VRCentral'];
                     
                     RigInfo.DevType = 'ARDUINO';
@@ -154,7 +154,7 @@ classdef VRRigInfo < handle
                     % local
                     %                     serverName    = 'zserver';
                     %                     serverDataDir = [filesep filesep serverName filesep 'Data' filesep];
-                    RigInfo.dirSave = 'S:\Data\Behav';%['C:\Home\Data\ball'];
+                    RigInfo.dirSave = 'X:\ibn-vision\Archive - saleemlab\Data\Behav';%['C:\Home\Data\ball'];
                     RigInfo.dirCode = 'C:\Home\Code\SaleemLab-VR\VRCentral';%['E:\Dropbox\Work\Code\VR code\SaleemLab-VR\VRCentral'];
                     % Screen related info
                     RigInfo.screenCalibration = false;
@@ -215,7 +215,7 @@ classdef VRRigInfo < handle
                     % local
                     %                     serverName    = 'zserver';
                     %                     serverDataDir = [filesep filesep serverName filesep 'Data' filesep];
-                    RigInfo.dirSave = 'S:\Data\Behav';%['C:\Home\Data\ball'];
+                    RigInfo.dirSave = 'X:\ibn-vision\Archive - saleemlab\Data\Behav';%['C:\Home\Data\ball'];
                     RigInfo.dirCode = 'C:\Home\Code\SaleemLab-VR\VRCentral';%['E:\Dropbox\Work\Code\VR code\SaleemLab-VR\VRCentral'];
                     % Screen related info
                     RigInfo.screenCalibration = false;
@@ -398,7 +398,7 @@ classdef VRRigInfo < handle
                     %                     serverName    = 'zserver';
                     %                     serverDataDir = [filesep filesep serverName filesep 'Data' filesep];
                     RigInfo.dirSave = ['C:\Home\Data\ball'];
-                    %RigInfo.dirSaveRemote = ['S:\Data\Behav'];
+                    %RigInfo.dirSaveRemote = ['X:\ibn-vision\Archive - saleemlab\Data\Behav'];
                     RigInfo.dirCode = ['E:\Dropbox\Work\Code\VR code\SaleemLab-VR\VRCentral'];
                     % Screen related info
                     RigInfo.screenCalibration = false;
@@ -447,7 +447,7 @@ classdef VRRigInfo < handle
                     % local
                     %                     serverName    = 'zserver';
                     %                     serverDataDir = [filesep filesep serverName filesep 'Data' filesep];
-                    RigInfo.dirSave = ['S:\Data\Behav'];
+                    RigInfo.dirSave = ['X:\ibn-vision\Archive - saleemlab\Data\Behav'];
                     RigInfo.dirSaveLocal = ['C:\Home\Data\ball'];
                     RigInfo.dirCode = ['C:\Home\Code\VR-Stimulus-master\SaleemLab-VR\VRCentral'];
                     % Screen related info
@@ -616,7 +616,7 @@ classdef VRRigInfo < handle
                     % local
                     %                     serverName    = 'zserver';
                     %                     serverDataDir = [filesep filesep serverName filesep 'Data' filesep];
-                    RigInfo.dirSave = 'Y:\Saleem Lab\Data\Behav';
+                    RigInfo.dirSave = 'X:\ibn-vision\Archive - saleemlab\Data\Behav';
                     RigInfo.dirCode = 'C:\Users\karolina.farrell\Documents\GitHub\SaleemLab-VR\VRCentral';
                     % Screen related info
                     RigInfo.screenCalibration = false;
