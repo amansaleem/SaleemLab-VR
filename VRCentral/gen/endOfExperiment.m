@@ -16,6 +16,11 @@ if ~expInfo.OFFLINE
     VRmessage = ['ExpEnd ' expInfo.animalName ' ' expInfo.dateStr ' ' expInfo.sessionName];
     rigInfo.sendUDPmessage(VRmessage);
     
+    % Turning off the recording camera
+    flushinput(hwInfo.ardDev);
+    fprintf(hwInfo.ardDev, '%s\r', 'c0');
+    flushinput(hwInfo.ardDev);
+    
     bothLogs = 'true';
     VRLogMessage(expInfo, VRmessage, bothLogs);
     emptyMessage = [];

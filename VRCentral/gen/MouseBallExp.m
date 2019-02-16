@@ -231,20 +231,9 @@ end
     %%
     % initialize DIO-----------------------------------------------------------
     if ~expInfo.OFFLINE % Dev2 - Dev1 swapped for ZUPERVISION
-        %     DIO = digitalio('nidaq', 'Dev2');
-        %     addline(DIO, 0, 1, 'out', {'SOL1'});
-        %     start(DIO);
-        %     putvalue(DIO.Line(1), 1);
-        % define the UDP port
+      
         hwInfo.BALLPort = 9999;
         
-        %     % open udp port
-        %     ZirkusPort  = pnet('udpsocket', 1001);
-        %     pnet(ZirkusPort,'udpconnect','144.82.135.38',1001);
-        %
-        %     % open udp port
-        %     EYEPort  = pnet('udpsocket', 1002);
-        %     pnet(EYEPort,'udpconnect','144.82.135.51',1001); %%%Check the IP and port
         rigInfo.initialiseUDPports;
         
         if strcmp(expInfo.EXP.wheelType, 'WHEEL')
@@ -297,13 +286,18 @@ end
                     set(hwInfo.ardDev,'BaudRate',115200);
                     set(hwInfo.ardDev,'Parity','none');
                     fopen(hwInfo.ardDev);
+                    % Optional to set frame acquisition time for camera
+                    % triggered via arduino
+                    frameRate = 50;
+                    flushinput(hwInfo.ardDev);
+                    fprintf(hwInfo.ardDev, '%s\r', ['f' num2str(frameRate)]);
+                    flushinput(hwInfo.ardDev);
+                    % Making sure the recording camera is off
+                    flushinput(hwInfo.ardDev);
+                    fprintf(hwInfo.ardDev, '%s\r', 'c0');
+                    flushinput(hwInfo.ardDev);
             end
-            %        ValveClosed = 5;
-            %        ValveOpen = 0;
-            %        % defining the Analog Output object for the valve (for precise timing)
-            %        session.addAnalogOutputChannel(aoDeviceID, aoValveChannel, 'Voltage');
-            %        session.outputSingleScan(ValveClosed);
-            
+                      
         end
     end
     
@@ -342,6 +336,10 @@ end
             rigInfo.comms.send('expNum',expInfo.sessionName);
             rigInfo.comms.send('server',rigInfo.computerName);
         end
+        % Send start recording signal to recording camera terminal
+        flushinput(hwInfo.ardDev);
+        fprintf(hwInfo.ardDev, '%s\r', 'c1');
+        flushinput(hwInfo.ardDev);
         pause(1)
     end
     display('Move to prepare trial')
