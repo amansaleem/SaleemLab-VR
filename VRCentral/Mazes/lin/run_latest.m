@@ -532,12 +532,11 @@ end
                             scan_input = (hwInfo.rotEnc.readPosition);
                             hwInfo.rotEnc.zero;
                         case 'ARDUINO'
-                            
                             flushinput(hwInfo.ardDev)
-                            ard_scan = fscanf(hwInfo.ardDev, '%d\t%d\t%d\t%d\t%d');
-                            while length(ard_scan)~=5
+                            ard_scan = fscanf(hwInfo.ardDev, '%d\t%d\t%d');
+                            while length(ard_scan)~=3
                                 flushinput(hwInfo.ardDev)
-                                ard_scan = fscanf(hwInfo.ardDev, '%d\t%d\t%d\t%d\t%d');
+                                ard_scan = fscanf(hwInfo.ardDev, '%d\t%d\t%d');
                             end
                             %                             hwInfo.ardDev.zero
                             % rotary encoder
@@ -552,9 +551,10 @@ end
                             scan_input(2) = temp2;
                             flushinput(hwInfo.ardDev);
                             %sync signal
-                            day = ard_scan(3); % this the interval between 0->3500 transitions of the sync pulse signal
-                            dax = ard_scan(4); % Frame count of recording camera
-                            dby = ard_scan(5); % Frame times of recroding camera
+%                             day = ard_scan(3); % this the interval between 0->3500 transitions of the sync pulse signal
+                            %Frame details
+                            dax = ard_scan(3); % Frame count of recording camera
+%                             dby = ard_scan(5); % Frame times of recroding camera
                             
                         case 'KEYBRD'
                             ballTime = TRIAL.time(runInfo.currTrial,runInfo.count);
