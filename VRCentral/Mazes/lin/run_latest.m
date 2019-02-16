@@ -534,10 +534,10 @@ end
                         case 'ARDUINO'
                             
                             flushinput(hwInfo.ardDev)
-                            ard_scan = fscanf(hwInfo.ardDev, '%d\t%d\t%d');
-                            while length(ard_scan)~=3
+                            ard_scan = fscanf(hwInfo.ardDev, '%d\t%d\t%d\t%d\t%d');
+                            while length(ard_scan)~=5
                                 flushinput(hwInfo.ardDev)
-                                ard_scan = fscanf(hwInfo.ardDev, '%d\t%d\t%d');
+                                ard_scan = fscanf(hwInfo.ardDev, '%d\t%d\t%d\t%d\t%d');
                             end
                             %                             hwInfo.ardDev.zero
                             % rotary encoder
