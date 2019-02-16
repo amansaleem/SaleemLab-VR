@@ -27,13 +27,13 @@ if expInfo.REPLAY
             
             if (abs(runInfo.TRAJ - TRIAL.trialRewPos(runInfo.currTrial)) < expInfo.EXP.rew_tol && TRIAL.lick(runInfo.currTrial,runInfo.count))
                 if (TRIAL.trialActive(runInfo.currTrial)) || ((~TRIAL.trialActive(runInfo.currTrial)) && expInfo.EXP.PtoA)
-                    runInfo = giveReward(runInfo.count,'ACTIVE' ,runInfo.currTrial, 1, expInfo, runInfo, hwInfo, rigInfo);
+                    runInfo = giveReward(runInfo.count,'ACTIVE' ,runInfo.currTrial, 1, expInfo, runInfo, hwInfo, rigInfo, TRIAL.trialRewVal(runInfo.currTrial));
                     runInfo.reward_active = 0;
                     TRIAL.trialOutcome(runInfo.currTrial) = 2;
                 end
             elseif (~TRIAL.trialActive(runInfo.currTrial))
                 if runInfo.TRAJ >= TRIAL.trialRewPos(runInfo.currTrial)
-                    runInfo = giveReward(runInfo.count,'PASSIVE' ,runInfo.currTrial, 1, expInfo, runInfo, hwInfo, rigInfo);
+                    runInfo = giveReward(runInfo.count,'PASSIVE' ,runInfo.currTrial, 1, expInfo, runInfo, hwInfo, rigInfo, TRIAL.trialRewVal(runInfo.currTrial));
                     runInfo.reward_active = 0;
                     TRIAL.trialOutcome(runInfo.currTrial) = 1;
                 end
@@ -43,12 +43,12 @@ if expInfo.REPLAY
         if runInfo.reward_active
             
             if (abs(runInfo.TRAJ - TRIAL.trialRewPos(runInfo.currTrial)) < expInfo.EXP.rew_tol && TRIAL.lick(runInfo.currTrial,runInfo.count))
-                runInfo = giveReward(runInfo.count,'ACTIVE' ,runInfo.currTrial, 1, expInfo, runInfo, hwInfo, rigInfo);
+                runInfo = giveReward(runInfo.count,'ACTIVE' ,runInfo.currTrial, 1, expInfo, runInfo, hwInfo, rigInfo, TRIAL.trialRewVal(runInfo.currTrial));
                 runInfo.reward_active = 0;
                 TRIAL.trialOutcome(runInfo.currTrial) = 2;
             elseif (~TRIAL.trialActive(runInfo.currTrial))
                 if (runInfo.TRAJ <= (t_end - TRIAL.trialRewPos(runInfo.currTrial)))
-                    runInfo = giveReward(runInfo.count,'PASSIVE' ,runInfo.currTrial, 1, expInfo, runInfo, hwInfo, rigInfo);
+                    runInfo = giveReward(runInfo.count,'PASSIVE' ,runInfo.currTrial, 1, expInfo, runInfo, hwInfo, rigInfo, TRIAL.trialRewVal(runInfo.currTrial));
                     runInfo.reward_active = 0;
                     TRIAL.trialOutcome(runInfo.currTrial) = 1;
                 end
@@ -135,13 +135,13 @@ else
             end
             if (abs(runInfo.TRAJ - TRIAL.trialRewPos(runInfo.currTrial)) < expInfo.EXP.rew_tol && TRIAL.lick(runInfo.currTrial,runInfo.count))
                 if (TRIAL.trialActive(runInfo.currTrial)) || ((~TRIAL.trialActive(runInfo.currTrial)) && expInfo.EXP.PtoA)
-                    runInfo = giveReward(runInfo.count,'ACTIVE' ,runInfo.currTrial, 1, expInfo, runInfo, hwInfo, rigInfo);
+                    runInfo = giveReward(runInfo.count,'ACTIVE' ,runInfo.currTrial, 1, expInfo, runInfo, hwInfo, rigInfo, TRIAL.trialRewVal(runInfo.currTrial));
                     runInfo.reward_active = 0;
                     TRIAL.trialOutcome(runInfo.currTrial) = 2;
                 end
             elseif (~TRIAL.trialActive(runInfo.currTrial))
                 if runInfo.TRAJ >= TRIAL.trialRewPos(runInfo.currTrial)
-                    runInfo = giveReward(runInfo.count,'PASSIVE' ,runInfo.currTrial, 1, expInfo, runInfo, hwInfo, rigInfo);
+                    runInfo = giveReward(runInfo.count,'PASSIVE' ,runInfo.currTrial, 1, expInfo, runInfo, hwInfo, rigInfo, TRIAL.trialRewVal(runInfo.currTrial));
                     runInfo.reward_active = 0;
                     TRIAL.trialOutcome(runInfo.currTrial) = 1;
                 end
@@ -215,12 +215,12 @@ else
                 end
            end
            if (abs(runInfo.TRAJ - TRIAL.trialRewPos(runInfo.currTrial)) < expInfo.EXP.rew_tol && TRIAL.lick(runInfo.currTrial,runInfo.count))
-                runInfo = giveReward(runInfo.count,'ACTIVE' ,runInfo.currTrial, 1, expInfo, runInfo, hwInfo, rigInfo);
+                runInfo = giveReward(runInfo.count,'ACTIVE' ,runInfo.currTrial, 1, expInfo, runInfo, hwInfo, rigInfo, TRIAL.trialRewVal(runInfo.currTrial));
                 runInfo.reward_active = 0;
                 TRIAL.trialOutcome(runInfo.currTrial) = 2;
             elseif (~TRIAL.trialActive(runInfo.currTrial))
                 if (runInfo.TRAJ <= (t_end - TRIAL.trialRewPos(runInfo.currTrial)))
-                    runInfo = giveReward(runInfo.count,'PASSIVE' ,runInfo.currTrial, 1, expInfo, runInfo, hwInfo, rigInfo);
+                    runInfo = giveReward(runInfo.count,'PASSIVE' ,runInfo.currTrial, 1, expInfo, runInfo, hwInfo, rigInfo, TRIAL.trialRewVal(runInfo.currTrial));
                     runInfo.reward_active = 0;
                     TRIAL.trialOutcome(runInfo.currTrial) = 1;
                 end

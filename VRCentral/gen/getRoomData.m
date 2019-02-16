@@ -33,7 +33,7 @@ v= [-k.b  k.h -2*k.l; ...1 MAIN LINEAR CORRIDOR
     -k.b  k.h  0; ...5
     k.b   k.h  0; ...6
     k.b  -k.h  0; ...7
-    -k.b -k.h  0; % 8
+    -k.b -k.h  0; ...% 8
     ...
     ...
     -k.b+k.delta  k.h-k.delta -k.tc1-k.tw; ...1 TEXTURE 1
@@ -79,10 +79,22 @@ v= [-k.b  k.h -2*k.l; ...1 MAIN LINEAR CORRIDOR
     k.b-k.delta  -k.h+k.delta -k.tc4+k.tw; ...7
     -k.b+k.delta -k.h+k.delta -k.tc4+k.tw; ...8
     ...
-    -k.b   k.h  -k.l;  ...1 end wall
-    k.b   k.h -k.l; ...2
-    k.b  -k.h -k.l; ...3
-    -k.b -k.h -k.l];...4
+    ...
+    -k.b+k.delta  k.h-k.delta -k.tc5-k.tw; ...1 TEXTURE 5
+    k.b-k.delta   k.h-k.delta -k.tc5-k.tw; ...2
+    k.b-k.delta  -k.h+k.delta -k.tc5-k.tw; ...3
+    -k.b+k.delta -k.h+k.delta -k.tc5-k.tw; ...4
+    ...
+    -k.b+k.delta  k.h-k.delta -k.tc5+k.tw; ...5
+    k.b-k.delta   k.h-k.delta -k.tc5+k.tw; ...6
+    k.b-k.delta  -k.h+k.delta -k.tc5+k.tw; ...7
+    -k.b+k.delta -k.h+k.delta -k.tc5+k.tw; ...8
+    ...
+    -k.b   k.h  -k.l;   ...1 far end wall (different from full length of the corridor)
+    k.b   k.h -k.l;     ...2 It is half the full length
+    k.b  -k.h -k.l;     ...3
+    -k.b -k.h -k.l];    ...4
+    
     if EXP.end_walls
     v = [v; ...
         -k.b+2*k.delta  k.h-2*k.delta -k.l; ...1 TEXTURE end 1
@@ -109,9 +121,9 @@ v= [-k.b  k.h -2*k.l; ...1 MAIN LINEAR CORRIDOR
     end
     v=v';
     if EXP.end_walls
-        Room.nOfWalls = 30;
+        Room.nOfWalls = 34;%30;
     else
-        Room.nOfWalls = 22;
+        Room.nOfWalls = 26;%22;
     end
     
     % clockwise (determines the front of a wall) order of vertices of
@@ -126,15 +138,17 @@ v= [-k.b  k.h -2*k.l; ...1 MAIN LINEAR CORRIDOR
         1 2 3 4];...     % back;
         
     order = [order' order_temp']'; % walls
-    order = [order' order_temp'+8]'; % text 1
-    order = [order' order_temp'+8+8]'; % text 2
-    order = [order' order_temp'+8+8+8]'; % text 3
-    order = [order' order_temp'+8+8+8+8]'; % text 4
+    order = [order' order_temp'+8*1]'; % text 1
+    order = [order' order_temp'+8*2]'; % text 2
+    order = [order' order_temp'+8*3]'; % text 3
+    order = [order' order_temp'+8*4]'; % text 4
+    order = [order' order_temp'+8*5]'; % text 5
+    
     if EXP.end_walls
-        order = [order' order_temp'+8+8+8+8+8]'; % text end 1
-        order = [order' order_temp'+8+8+8+8+8+8]'; % text end 2
+        order = [order' order_temp'+8*6]'; % text end 1
+        order = [order' order_temp'+8*7]'; % text end 2
     end
-    order(2,:) = [41 42 43 44]; %  to shift the end wall to the limits of the current room size
+    order(2,:) = [49 50 51 52];%[41 42 43 44]; %  to shift the end wall to the limits of the current room size
     
     % wrapX = Exp.roomWidth/300;
     % wrapY = Exp.roomHeight/300;

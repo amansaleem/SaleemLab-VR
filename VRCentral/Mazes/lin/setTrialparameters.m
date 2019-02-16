@@ -18,6 +18,9 @@ TRIAL.trialRewPos(runInfo.currTrial) = getNewTrialParameter(expInfo.EXP.rew_pos,
 TRIAL.trialRewPos(runInfo.currTrial) = TRIAL.trialRewPos(runInfo.currTrial).*TRIAL.trialRL(runInfo.currTrial);
 expInfo.EXP.punishZone = TRIAL.trialRewPos(runInfo.currTrial) - expInfo.EXP.punishLim; % Needed??
 
+% Reward position
+TRIAL.trialRewVal(runInfo.currTrial) = getNewTrialParameter(expInfo.EXP.rew_val, expInfo.EXP.rew_val_rand, runInfo, expInfo);
+
 % Set the texture positions
 % Texture 1 position
 [TRIAL.tex1pos(runInfo.currTrial), tc1idx] = getNewTrialParameter(expInfo.EXP.tex1pos, expInfo.EXP.tex1pos_rand, runInfo, expInfo);
@@ -32,6 +35,9 @@ expInfo.EXP.tc3 = TRIAL.tex3pos(runInfo.currTrial);
 % Texture 4 position
 [TRIAL.tex4pos(runInfo.currTrial), tc4idx] = getNewTrialParameter(expInfo.EXP.tex4pos, expInfo.EXP.tex4pos_rand, runInfo, expInfo);
 expInfo.EXP.tc4 = TRIAL.tex4pos(runInfo.currTrial);
+% Texture 5 position
+[TRIAL.tex5pos(runInfo.currTrial), tc5idx] = getNewTrialParameter(expInfo.EXP.tex5pos, expInfo.EXP.tex5pos_rand, runInfo, expInfo);
+expInfo.EXP.tc5 = TRIAL.tex5pos(runInfo.currTrial);
 %
 % WaveLength
 [TRIAL.waveLength(runInfo.currTrial), WLidx] = getNewTrialParameter(expInfo.EXP.waveLength, expInfo.EXP.waveLength_rand, runInfo, expInfo);
@@ -39,7 +45,7 @@ expInfo.EXP.tc4 = TRIAL.tex4pos(runInfo.currTrial);
 % Contrast
 [TRIAL.trialContr(runInfo.currTrial), CONidx] = getNewTrialParameter(expInfo.EXP.contrLevels, expInfo.EXP.contrLevels_rand, runInfo, expInfo);
 
-TRIAL.currList(runInfo.currTrial) = runInfo.glLists.lookUp(CONidx, RLidx, WLidx, tc1idx, tc2idx, tc3idx, tc4idx);
+TRIAL.currList(runInfo.currTrial) = runInfo.glLists.lookUp(CONidx, RLidx, WLidx, tc1idx, tc2idx, tc3idx, tc4idx, tc5idx);
 disp(['Current list is: ' num2str(TRIAL.currList(runInfo.currTrial))]);
 
 if ~expInfo.EXP.randStart

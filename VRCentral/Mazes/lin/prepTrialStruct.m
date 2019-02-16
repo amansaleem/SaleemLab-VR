@@ -34,24 +34,32 @@ TRIAL.trialGain  = NaN.*ones(1,expInfo.EXP.maxTraj);
 TRIAL.trialBlanks  = NaN.*ones(1,expInfo.EXP.maxTraj);
 TRIAL.trialActive = 0.*ones(1,expInfo.EXP.maxTraj);
 TRIAL.trialRewPos = 110.*ones(1,expInfo.EXP.maxTraj);
+TRIAL.trialRewVal   = NaN.*ones(1,expInfo.EXP.maxTraj);
 TRIAL.trialOutcome = NaN.*ones(1,expInfo.EXP.maxTraj);
 
 TRIAL.tex1pos   = NaN.*ones(1,expInfo.EXP.maxTraj);
 TRIAL.tex2pos   = NaN.*ones(1,expInfo.EXP.maxTraj);
 TRIAL.tex3pos   = NaN.*ones(1,expInfo.EXP.maxTraj);
 TRIAL.tex4pos   = NaN.*ones(1,expInfo.EXP.maxTraj);
+TRIAL.tex5pos   = NaN.*ones(1,expInfo.EXP.maxTraj);
+
 TRIAL.waveLength= NaN.*ones(1,expInfo.EXP.maxTraj);
 TRIAL.currList  = ones(1,expInfo.EXP.maxTraj);
 
+%% setting up first trial
 TRIAL.trialActive(1) = expInfo.EXP.active(1);
 TRIAL.trialRewPos(1) = expInfo.EXP.rew_pos(1);
+TRIAL.trialRewVal(1)    = expInfo.EXP.rew_val(1);
 TRIAL.trialStart(1) = 0;
 TRIAL.trialGain(1)  = 1;
 TRIAL.trialBlanks(1) = expInfo.EXP.pause_frames;
+
 TRIAL.tex1pos(1)    = expInfo.EXP.tex1pos(1);
 TRIAL.tex2pos(1)    = expInfo.EXP.tex2pos(1);
 TRIAL.tex3pos(1)    = expInfo.EXP.tex3pos(1);
 TRIAL.tex4pos(1)    = expInfo.EXP.tex4pos(1);
+TRIAL.tex5pos(1)    = expInfo.EXP.tex4pos(1);
+
 TRIAL.waveLength(1) = expInfo.EXP.waveLength(1);
 TRIAL.currList(1)   = 1;
 
@@ -96,6 +104,7 @@ expInfo.EXP.tc1 = TRIAL.tex1pos(1);
 expInfo.EXP.tc2 = TRIAL.tex2pos(1);
 expInfo.EXP.tc3 = TRIAL.tex3pos(1);
 expInfo.EXP.tc4 = TRIAL.tex4pos(1);
+expInfo.EXP.tc5 = TRIAL.tex5pos(1);
 
 %% *** LOAD THE ROOM HERE ***
 if ~expInfo.REPLAY
