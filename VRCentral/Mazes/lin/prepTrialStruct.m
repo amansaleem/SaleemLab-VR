@@ -58,7 +58,7 @@ TRIAL.tex1pos(1)    = expInfo.EXP.tex1pos(1);
 TRIAL.tex2pos(1)    = expInfo.EXP.tex2pos(1);
 TRIAL.tex3pos(1)    = expInfo.EXP.tex3pos(1);
 TRIAL.tex4pos(1)    = expInfo.EXP.tex4pos(1);
-TRIAL.tex5pos(1)    = expInfo.EXP.tex4pos(1);
+TRIAL.tex5pos(1)    = expInfo.EXP.tex5pos(1);
 
 TRIAL.waveLength(1) = expInfo.EXP.waveLength(1);
 TRIAL.currList(1)   = 1;
