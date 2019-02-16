@@ -98,19 +98,19 @@ v= [-k.b2, k.c2, k.a2;... kc(1) LEG 1 VERTICES
      -k.b1-k.delta, k.c1+k.delta, k.tw;... t4f4(32)
      ...
     ...
-     -k.b2+k.delta, k.c2-k.delta, k.tw;... t5c1(25) TEXTURE 5
-     -k.b2+k.delta, k.c2-k.delta,-k.tw;... t5c2(26)
-     -k.b1-k.delta, k.c2-k.delta,-k.tw;... t5c3(27)
-     -k.b1-k.delta, k.c2-k.delta, k.tw;... t5c4(28)
+     ...-k.b2+k.delta, k.c2-k.delta, k.tw;... t5c1(25) TEXTURE 5
+     ...-k.b2+k.delta, k.c2-k.delta,-k.tw;... t5c2(26)
+     ...-k.b1-k.delta, k.c2-k.delta,-k.tw;... t5c3(27)
+     ...-k.b1-k.delta, k.c2-k.delta, k.tw;... t5c4(28)
     ...
-     -k.b2+k.delta, k.c1+k.delta, k.tw;... t5f1(29) TEXTURE 5
-     -k.b2+k.delta, k.c1+k.delta,-k.tw;... t5f2(30)
-     -k.b1-k.delta, k.c1+k.delta,-k.tw;... t5f3(31)
-     -k.b1-k.delta, k.c1+k.delta, k.tw;... t5f4(32)
+     ...-k.b2+k.delta, k.c1+k.delta, k.tw;... t5f1(29) TEXTURE 5
+     ...-k.b2+k.delta, k.c1+k.delta,-k.tw;... t5f2(30)
+     ...-k.b1-k.delta, k.c1+k.delta,-k.tw;... t5f3(31)
+     ...-k.b1-k.delta, k.c1+k.delta, k.tw;... t5f4(32)
     ];
 v = v';
 
-Room.nOfWalls = 36;
+Room.nOfWalls = 32; %36;
 
 % clockwise (determines the fromt of a wall) order of vertices of
 % rectangular walls
@@ -156,10 +156,10 @@ order= [...
     25    29    30    26;...    L4 TEX 3
     28    32    31    27;...    L4 TEX 4
     ...
-    31    34    33    32;...    L5 TEX 1
-    35    38    37    36;...    L5 TEX 2
-    31    35    36    32;...    L5 TEX 3
-    34    38    37    33;...    L5 TEX 4
+    ...31    34    33    32;...    L5 TEX 1
+    ...35    38    37    36;...    L5 TEX 2
+    ...31    35    36    32;...    L5 TEX 3
+    ...34    38    37    33;...    L5 TEX 4
     ];
 
 order(17:end,:) = order(17:end,:) + 24;
