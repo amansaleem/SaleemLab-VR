@@ -1,5 +1,5 @@
 texsize = 512;
-
+wn_contrast = 1;
 sf = 12; % no.of bars visible
 
 % Gray
@@ -59,10 +59,12 @@ for texID = 2:5
     Imf = conv2(filt2,Im);
     Imf = Imf(filtSize+floor(filtSize/2):end-ceil(filtSize/2)-filtSize,filtSize+floor(filtSize/2):end-ceil(filtSize/2)-filtSize);
     Imf = Imf - min(min(Imf));
-    textures(texID).matrix = Imf./max(max(Imf));
-    
+    Im_full = Imf./max(max(Imf));
+    Im_new = ((Im_full-0.5)*wn_contrast) + 0.5;
+    textures(texID).matrix = Im_new;
 end
+
 % pause(1);
 % close;
 
-clear Im ImF filt2 texID x y
+% clear Im ImF filt2 texID x y
