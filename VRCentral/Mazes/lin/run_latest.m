@@ -569,7 +569,7 @@ end
                                 end
                             end
                             TRIAL.balldata(runInfo.currTrial,runInfo.count,:) = [ballTime, dax, dbx, day, dby];
-                            dbx = nansum([dbx 0]).*scaling_factor.*expInfo.EXP.wheelToVR;
+                            dbx = nansum([dbx 0]).*scaling_factor.*expInfo; %.EXP.wheelToVR;
                             
                     end
                     if ~strcmp(rigInfo.rotEncPos,'right')
@@ -582,7 +582,7 @@ end
                     % dbx = 50*dbx; % to be removed when the room is better calibrated
                     
                     TRIAL.balldata(runInfo.currTrial,runInfo.count,:) = [ballTime, dax, dbx, day, dby];
-                    dbx = nansum([dbx 0]).*scaling_factor.*expInfo.EXP.wheelToVR;
+                    dbx = nansum([dbx 0]).*scaling_factor;%.*expInfo.EXP.wheelToVR;
                     % Remove 'BALL_TO_ROOM' after this set of animals (28th
                     % Feb)
                     currLikStatus = scan_input(2);
@@ -609,7 +609,7 @@ end
                         end
                     end
                     TRIAL.balldata(runInfo.currTrial,runInfo.count,:) = [ballTime, dax, dbx, day, dby];
-                    dbx = nansum([dbx 0]).*scaling_factor.*expInfo.EXP.wheelToVR;
+                    dbx = nansum([dbx 0]).*scaling_factor.*expInfo;%.*expInfo.EXP.wheelToVR;
             end
         else
             getNonBallDeltas;
