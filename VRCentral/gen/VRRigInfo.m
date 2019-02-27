@@ -126,6 +126,72 @@ classdef VRRigInfo < handle
                         RigInfo.RewardCal = [linspace(1,300,100); linspace(1,10,100)]';
                         display('No reward calibration file found. Using dummy values. Please calibrate your rig!');
                     end
+                    
+                    %%%%%%%%%%%%%%%%%%%%%%%%%%
+               case 'SALEEM04' %TRON
+                    % Local computer info (basic)
+                    RigInfo.computerName = 'TRON';
+                    RigInfo.screenNumber = 2;
+                    RigInfo.screenDist = 60; % in cm
+                    RigInfo.dialogueXYPosition = [440 150];
+                    
+                    RigInfo.dirSave = ['X:\Archive - saleemlab\Data\Behav'];
+                    RigInfo.dirCode = ['C:\Users\Saleem Lab\Documents\GitHub\SaleemLab-VR\VRCentral'];
+                    
+                    RigInfo.DevType = 'ARDUINO';
+                    RigInfo.ARDrotCountPos = 1;
+                    RigInfo.ARDCOMPort = 3; % com port
+                    RigInfo.ARDHistory = [0 0];
+                    
+                    RigInfo.screenType = 'DOME';
+                    RigInfo.numCameras = 7;
+                    
+                    RigInfo.NIdevID = 'Dev1';
+                    RigInfo.NIsessRate = 10000;
+                    RigInfo.NIRotEnc = 'ctr0';
+                    RigInfo.NILicEnc = 'ctr1';
+                    RigInfo.NIRewVal = 'ao1';
+                    RigInfo.photodiodePos  = 'right';
+                    RigInfo.photodiodeSize = [75 75];
+                    RigInfo.rotEncPos = 'left';
+                    % Saving directories
+                    % local
+                    %                     serverName    = 'zserver';
+                    %                     serverDataDir = [filesep filesep serverName filesep 'Data' filesep];
+                    %                     RigInfo.dirSave = ['C:\Home\Data'];
+                    %                     RigInfo.dirCode = ['E:\Dropbox\Work\Code\VR code\SaleemLab-VR\VRCentral'];
+                    % Screen related info
+                    %RigInfo.screenCalibration = false;
+                    RigInfo.dirScreenCalib = 'X:\Archive - saleemlab\Code\MeshMapping\';%'C:\Home\Code\VR-Stimulus-master\Linear Track Behav - 2pNew - Dev Version - Copy\'%'C:\Users\Aman\AppData\Roaming\Psychtoolbox\GeometryCalibration\';%'C:\Users\experimenter\AppData\Roaming\Psychtoolbox\GeometryCalibration\';
+                    RigInfo.filenameScreenCalib =  'MeshMapping_Tron1.mat';%'geometricCorr_2.mat';%'test.mat';%'HalfCylinderCalibdata_2_2695_1024.mat';%'HalfCylinderCalibdata_1_2400_600.mat';
+                    % External computer connection info
+                    % (These are optinal)
+                    RigInfo.connectIPs{1} = []; % 'Zirkus'
+                    RigInfo.connectPCs{1} = [];
+                    %
+                    %                     RigInfo.connectIPs{2} = '144.82.135.51'; % 'Zankh'
+                    %                     RigInfo.connectPCs{2} = 'Zankh';
+                    %
+                    %                     RigInfo.connectIPs{3} = '144.82.135.117'; % 'Zankh'
+                    %                     RigInfo.connectPCs{3} = 'Zoo';
+                    
+                    RigInfo.numConnect = length(RigInfo.connectIPs);
+                    RigInfo.sendTTL = 0;
+                    RigInfo.TTLchannel = [];
+                    RigInfo.runTimeLine = 0;
+                    % load reward calibration file
+                    list = dir([RigInfo.dirCode '\data\']);
+                    RigInfo.RewardCal = 0;
+                    try
+                        Temp = load([RigInfo.dirCode '\data\' list(strcmp(['RewardCal_' hostname '.mat'],{list.name})).name]);
+                        varname = fieldnames(Temp);
+                        RigInfo.RewardCal = Temp.(varname{1})
+                        clear Temp varname;
+                    catch
+                        RigInfo.RewardCal = [linspace(1,300,100); linspace(1,10,100)]';
+                        display('No reward calibration file found. Using dummy values. Please calibrate your rig!');
+                    end
+                    
                     %%%%%%%%%%%%%%%%%%%%%%%%%%
                 case 'SALEEM03' %MORPHEUS
                     % Local computer info (basic)
@@ -419,56 +485,6 @@ classdef VRRigInfo < handle
                     RigInfo.sendTTL = 0;
                     RigInfo.TTLchannel = [];
                     RigInfo.runTimeLine = 0;
-                    
-                case 'SALEEM04'
-                    % Local computer info (basic)
-                    RigInfo.computerName = 'SALEEM04';
-                    RigInfo.screenNumber = 2;
-                    RigInfo.screenDist = 60; % in cm
-                    RigInfo.dialogueXYPosition = [440 150];
-                    
-                    RigInfo.screenType = 'DOME';
-                    RigInfo.numCameras = 7;
-                    
-                    RigInfo.DevType = 'NI';
-                    RigInfo.ARDrotCountPos = 1;
-                    RigInfo.ARDCOMPort = 3;
-                    RigInfo.ARDHistory = [0 0];
-                    
-                    RigInfo.NIdevID = 'Dev1';
-                    RigInfo.NIsessRate = 10000;
-                    RigInfo.NIRotEnc = 'ctr0';
-                    RigInfo.NILicEnc = 'ctr1';
-                    RigInfo.NIRewVal = 'ao1';
-                    RigInfo.photodiodePos  = 'right';
-                    RigInfo.photodiodeSize = [75 75];
-                    RigInfo.rotEncPos = 'right';
-                    % Saving directories
-                    % local
-                    %                     serverName    = 'zserver';
-                    %                     serverDataDir = [filesep filesep serverName filesep 'Data' filesep];
-                    RigInfo.dirSave = ['X:\ibn-vision\Archive - saleemlab\Data\Behav'];
-                    RigInfo.dirSaveLocal = ['C:\Home\Data\ball'];
-                    RigInfo.dirCode = ['C:\Home\Code\VR-Stimulus-master\SaleemLab-VR\VRCentral'];
-                    % Screen related info
-                    RigInfo.dirScreenCalib = 'C:\Home\Code\VR-Stimulus-master\SaleemLab-VR\VRCentral\gen\' % same directory as current file
-                    RigInfo.filenameScreenCalib = 'MeshMapping_VR.mat'; %
-                    % External computer connection info
-                    % (These are optinal)
-                    RigInfo.connectIPs{1} = []; % 'Zirkus'
-                    RigInfo.connectPCs{1} = [];
-                    %
-                    %                     RigInfo.connectIPs{2} = '144.82.135.51'; % 'Zankh'
-                    %                     RigInfo.connectPCs{2} = 'Zankh';
-                    %
-                    %                     RigInfo.connectIPs{3} = '144.82.135.117'; % 'Zankh'
-                    %                     RigInfo.connectPCs{3} = 'Zoo';
-                    
-                    RigInfo.numConnect = length(RigInfo.connectIPs);
-                    RigInfo.sendTTL = 0;
-                    RigInfo.TTLchannel = [];
-                    RigInfo.runTimeLine = 0;
-                    
                     
                 case 'SALEEM05' % Tomaso's desk computer
                     % Local computer info (basic)
