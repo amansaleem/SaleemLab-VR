@@ -75,7 +75,7 @@ classdef VRRigInfo < handle
                     RigInfo.screenDist = 60; % in cm
                     RigInfo.dialogueXYPosition = [440 150];
                     
-                    RigInfo.dirSave = ['S:\Data\Behav'];
+                    RigInfo.dirSave = ['X:\Archive - saleemlab\Data\Behav'];%2019-02 MM needs to be properly mapped to new server %['X:\Data\Behav'];
                     RigInfo.dirCode = ['C:\Home\Code\SaleemLab-VR\VRCentral'];
                     
                     RigInfo.DevType = 'ARDUINO';
@@ -84,7 +84,7 @@ classdef VRRigInfo < handle
                     RigInfo.ARDHistory = [0 0];
                     
                     RigInfo.screenType = 'DOME';
-                    RigInfo.numCameras = 7;
+                    RigInfo.numCameras = 15;
                    
                     RigInfo.NIdevID = 'Dev1';
                     RigInfo.NIsessRate = 10000;
@@ -93,7 +93,7 @@ classdef VRRigInfo < handle
                     RigInfo.NIRewVal = 'ao1';
                     RigInfo.photodiodePos  = 'right';
                     RigInfo.photodiodeSize = [75 75];
-                    RigInfo.rotEncPos = 'right';
+                    RigInfo.rotEncPos = 'left';
                     % Saving directories
                     % local
 %                     serverName    = 'zserver';
