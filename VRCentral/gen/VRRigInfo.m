@@ -169,7 +169,7 @@ classdef VRRigInfo < handle
                     % Screen related info
                     %RigInfo.screenCalibration = false;
                     RigInfo.dirScreenCalib = 'X:\Archive - saleemlab\Code\MeshMapping\';%'C:\Home\Code\VR-Stimulus-master\Linear Track Behav - 2pNew - Dev Version - Copy\'%'C:\Users\Aman\AppData\Roaming\Psychtoolbox\GeometryCalibration\';%'C:\Users\experimenter\AppData\Roaming\Psychtoolbox\GeometryCalibration\';
-                    RigInfo.filenameScreenCalib =  'MeshMapping_Tron1.mat';%'geometricCorr_2.mat';%'test.mat';%'HalfCylinderCalibdata_2_2695_1024.mat';%'HalfCylinderCalibdata_1_2400_600.mat';
+                    RigInfo.filenameScreenCalib =  'MeshMapping_Tron2.mat';%'geometricCorr_2.mat';%'test.mat';%'HalfCylinderCalibdata_2_2695_1024.mat';%'HalfCylinderCalibdata_1_2400_600.mat';
                     % External computer connection info
                     % (These are optinal)
                     RigInfo.connectIPs{1} = []; % 'Zirkus'

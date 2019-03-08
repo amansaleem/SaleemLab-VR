@@ -2,8 +2,10 @@
 % Modified by Mai Feb 2019
 
 texsize = 512;
-wn_contrast = 0.5;
-sf = 6; % no.of bars visible
+wn_contrast = 1;
+% Making horizontal and vertical axes asymmetric because the texture aspect raio is 1:1.5 (W=8cm, H=12cm)
+sf_H = 6; % no.of horizonal bars visible ()
+sf_V = 4; % no.of vertical bars visible
 
 % Gray
 textures(1).matrix = 0.5*ones(64,64);
@@ -11,11 +13,11 @@ textures(1).matrix = 0.5*ones(64,64);
 % Unfiltered Whitenoise
 textures(2).matrix = rand(16, 512);
 
-% Horizontal grating
-textures(6).matrix = 0.5+0.5*repmat(sin(0:((2*sf*pi)/texsize):(2*sf)*pi-(((2*sf)*pi)/texsize)),texsize,1);
-
 % Vertical grating
-textures(7).matrix = 0.5+0.5*repmat(sin(0:(((2*sf)*pi)/texsize):(2*sf)*pi-(((2*sf)*pi)/texsize))',1,texsize);
+textures(6).matrix = 0.5+0.5*repmat(sin(0:((2*sf_V*pi)/texsize):(2*sf_V)*pi-(((2*sf_V)*pi)/texsize)),texsize,1);
+
+% Horizontal grating
+textures(7).matrix = 0.5+0.5*repmat(sin(0:(((2*sf_H)*pi)/texsize):(2*sf_H)*pi-(((2*sf_H)*pi)/texsize))',1,texsize);
 
 % Plaid
 textures(8).matrix = (textures(6).matrix+textures(7).matrix)/2;
@@ -36,13 +38,14 @@ textures(8).matrix = (textures(6).matrix+textures(7).matrix)/2;
 %% Filtered White noise
 % Making a 2D Gaussian filter to convolve
 filtSize = 40;
-sigma = 15;
+sigma = 10; %15 
 sigma1 = 10; %3
+length = 100; % HALF actual VR corridor length in cm
+height = 12; % VR corridor height in cm
 
 x = 1:filtSize;
 
-
-for texID = 2:5
+for texID = 2%:5
     
     %     if texID==4; sigma = 30; end;
 %     if texID==3; sigma = 5; end;
@@ -52,11 +55,12 @@ for texID = 2:5
     y = y./sum(y);
     y1 = y1./sum(y1);
     
-    
     filt2 = y'*y1;
     % imagesc(filt2); colormap(gray)
     
-    Im = rand(texsize/8+filtSize*2,texsize*2+filtSize*2);
+    % Create random matrix matching corridor length height ratio
+    Im_half = rand(texsize/8+filtSize*2,(texsize/8)*floor(length/height)+filtSize*2);    %Im = rand(texsize/8+filtSize*2,texsize*2+filtSize*2);
+    Im = [Im_half, Im_half, Im_half, Im_half]; % first and second half repeating, then another whole corridor that is hidden, so repeat 4 times
     
     % Convolving and normalizing the image to 100% contrast
     Imf = conv2(filt2,Im);
@@ -89,25 +93,25 @@ colormap gray; axis equal; box off; axis off
 subplot(4,1,2); 
 tex=textures(6).matrix;    
 imagesc(tex, [0 1]);
-title({['grating1 ', num2str(size(tex,1)),'x', num2str(size(tex,2))], ['sf=', num2str(sf)]})
+title({['grating1 ', num2str(size(tex,1)),'x', num2str(size(tex,2))], ['sf=', num2str(sf_V)]})
 colormap gray; axis equal; box off; axis off
 
 subplot(4,1,3); 
 tex=textures(7).matrix;    
 imagesc(tex, [0 1]);
-title({['grating2 ', num2str(size(tex,1)),'x', num2str(size(tex,2))], ['sf=', num2str(sf)]})
+title({['grating2 ', num2str(size(tex,1)),'x', num2str(size(tex,2))], ['sf=', num2str(sf_H)]})
 colormap gray; axis equal; box off; axis off
 
 subplot(4,1,4); 
 tex=textures(8).matrix;    
 imagesc(tex, [0 1]);
-title({['plaid ', num2str(size(tex,1)),'x', num2str(size(tex,2))], ['sf=', num2str(sf)]})
+title({['plaid ', num2str(size(tex,1)),'x', num2str(size(tex,2))], ['sf V=', num2str(sf_V),' sf H=', num2str(sf_H)]})
 colormap gray; axis equal; box off; axis off
 
 %% save
 
 savefolder='C:\Users\m.morimoto\Documents\GitHub\SaleemLab-VR\VRCentral\data';
-savefile='textures_MM4.mat';
+savefile='textures_MM5.mat';
 
 save([savefolder,filesep,savefile], 'textures')
 
