@@ -23,21 +23,21 @@ else
     myscreen.Dist = Dist;
 end
 
-% when monitor is calibrated
-% load new gamma table, which linearizes monitor luminance
-if ~expInfo.OFFLINE %& ~strcmp(rigInfo.computerName,'ZOOROPA') & ~strcmp(rigInfo.computerName,'ZURPRISE')
-    try
-        Calibration.Load(myscreen);
-        display('*********** Loaded calibration file ************')
-    catch
-        try
-            Calibration.Load;
-            display('*********** Loaded calibration file ************')
-        catch
-            display('No Gamma correction detected');
-        end
-    end
-end
+% % when monitor is calibrated
+% % load new gamma table, which linearizes monitor luminance
+% if ~expInfo.OFFLINE %& ~strcmp(rigInfo.computerName,'ZOOROPA') & ~strcmp(rigInfo.computerName,'ZURPRISE')
+%     try
+%         Calibration.Load(myscreen);
+%         display('*********** Loaded calibration file ************')
+%     catch
+%         try
+%             Calibration.Load;
+%             display('*********** Loaded calibration file ************')
+%         catch
+%             display('No Gamma correction detected');
+%         end
+%     end
+% end
 
 % if ~expInfo.OFFLINE
 %     % to get fish-eye transform: uncomment previous statement to remove

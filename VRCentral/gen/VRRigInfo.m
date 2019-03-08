@@ -29,6 +29,9 @@ classdef VRRigInfo < handle
         screenCalibration = true;
         dirScreenCalib;
         filenameScreenCalib;
+        GammaCalibration;
+        dirGammaCalib;
+        filenameGammaCalib;
         screenType = '3SCREEN'; %'3SCREEN', 'DOME'
         numCameras = 1; %
         % External computer connection info
@@ -70,7 +73,7 @@ classdef VRRigInfo < handle
                     RigInfo.screenDist = 60; % in cm
                     RigInfo.dialogueXYPosition = [440 150];
                     
-                    RigInfo.dirSave = ['X:\ibn-vision\Archive - saleemlab\Data\Behav'];
+                    RigInfo.dirSave = ['X:\Archive - saleemlab\Data\Behav'];
                     RigInfo.dirCode = ['C:\Home\Code\SaleemLab-VR\VRCentral'];
                     
                     RigInfo.DevType = 'ARDUINO';
@@ -96,9 +99,12 @@ classdef VRRigInfo < handle
                     %                     RigInfo.dirSave = ['C:\Home\Data'];
                     %                     RigInfo.dirCode = ['E:\Dropbox\Work\Code\VR code\SaleemLab-VR\VRCentral'];
                     % Screen related info
-                    %RigInfo.screenCalibration = false;
+                    RigInfo.screenCalibration = true;
                     RigInfo.dirScreenCalib = 'C:\Home\Code\SaleemLab-VR\VRCentral\gen\';%'C:\Home\Code\VR-Stimulus-master\Linear Track Behav - 2pNew - Dev Version - Copy\'%'C:\Users\Aman\AppData\Roaming\Psychtoolbox\GeometryCalibration\';%'C:\Users\experimenter\AppData\Roaming\Psychtoolbox\GeometryCalibration\';
                     RigInfo.filenameScreenCalib =  'MeshMapping_VR.mat';%'geometricCorr_2.mat';%'test.mat';%'HalfCylinderCalibdata_2_2695_1024.mat';%'HalfCylinderCalibdata_1_2400_600.mat';
+                    RigInfo.GammaCalibration = true;
+                    RigInfo.dirGammaCalib = 'C:\Home\Code\SaleemLab-VR\VRCentral\data';
+                    RigInfo.filenameGammaCalib = 'Gamma_NEO.mat';
                     % External computer connection info
                     % (These are optinal)
                     RigInfo.connectIPs{1} = []; % 'Zirkus'
