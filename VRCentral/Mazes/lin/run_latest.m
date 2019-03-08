@@ -159,9 +159,9 @@ end
 %% The main programme
 try
     while (~timeIsUp && ~TRIAL.info.abort)
-%         if runInfo.reset_textures
-%             setupTextures(textures);
-%         end
+        %         if runInfo.reset_textures
+        %             setupTextures(textures);
+        %         end
         Screen('EndOpenGL', hwInfo.MYSCREEN.windowPtr(1));
         % Show rendered image at next vertical retrace:
         %         Screen('Flip', hwInfo.MYSCREEN.windowPtr(1));
@@ -553,6 +553,20 @@ end
                             flushinput(hwInfo.ardDev);
                             %sync signal
                             day = ard_scan(3); % this the interval between 0->3500 transitions of the sync pulse signal
+                        case 'KEYBRD'
+                            ballTime = TRIAL.time(runInfo.currTrial,runInfo.count);
+                            dax = 0; day = 0; dby = 0; dbx = 0;
+                            [KeyIsDown, secs, KeyCode] = KbCheck;
+                            if KeyIsDown==1
+                                if KeyCode(38) % up
+                                    dbx = 0.4;
+                                end
+                                if KeyCode(40) % down
+                                    dbx = -0.4;
+                                end
+                            end
+                            TRIAL.balldata(runInfo.currTrial,runInfo.count,:) = [ballTime, dax, dbx, day, dby];
+                            dbx = nansum([dbx 0]).*scaling_factor.*expInfo.EXP.wheelToVR;
                             
                     end
                     if ~strcmp(rigInfo.rotEncPos,'right')
@@ -641,120 +655,120 @@ end
                             for it4 = 1:length(expInfo.EXP.tex4pos)
                                 for iWavelength = 1:length(expInfo.EXP.waveLength)
                                     
-                                        expInfo.EXP.contrLevels(iCon);
-                                        list_idx = runInfo.glLists.lookUp(iCon,iLength,iWavelength,it1,it2,it3,it4);
-                                        runInfo.glLists.lists(list_idx).list = glGenLists(1);
-                                        
-                                        TRIAL.trialContr(runInfo.currTrial) = expInfo.EXP.contrLevels(iCon);
-                                        TRIAL.trialRL(runInfo.currTrial) = expInfo.EXP.lengthSet(iLength);
-                                        TRIAL.waveLength(runInfo.currTrial) = expInfo.EXP.waveLength(iWavelength);
-                                        expInfo.EXP.tc1 = expInfo.EXP.tex1pos(it1);
-                                        expInfo.EXP.tc2 = expInfo.EXP.tex2pos(it2);
-                                        expInfo.EXP.tc3 = expInfo.EXP.tex3pos(it3);
-                                        expInfo.EXP.tc4 = expInfo.EXP.tex4pos(it4);
-                                        
-                                        runInfo.ROOM = getRoomData(expInfo.EXP, TRIAL.trialRL(runInfo.currTrial));
-                                        
-                                        glNewList(runInfo.glLists.lists(list_idx).list,GL.COMPILE);
-                                        for k=1:runInfo.ROOM.nOfWalls
-                                            switch k
-                                                case 1
-                                                    % wallface_PIT allows to take as input the wavelength and stretchs is along the track length
-                                                    if strcmp(expInfo.EXP.textureFile,'textures_PIT')
-                                                        wallface_PIT (expInfo.EXP.l,  runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texCont(iCon).texname(getTextureIndex_N(expInfo.EXP.farWallText)), iWavelength);
-                                                    else
-                                                        wallface (runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texCont(iCon).texname(getTextureIndex(expInfo.EXP.farWallText)),runInfo.ROOM.wrap(k,:));
-                                                    end
-                                                case 2
-                                                    if strcmp(expInfo.EXP.textureFile,'textures_PIT')
-                                                        wallface_PIT (expInfo.EXP.l,  runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texCont(iCon).texname(getTextureIndex_N(expInfo.EXP.nearWallText)), iWavelength);
-                                                    else                                                        
-                                                        wallface (runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texCont(iCon).texname(getTextureIndex(expInfo.EXP.nearWallText)),runInfo.ROOM.wrap(k,:));
-                                                    end
-                                                case 3
-                                                    if strcmp(expInfo.EXP.textureFile,'textures_PIT')
-                                                        wallface_PIT (expInfo.EXP.l,  runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texCont(iCon).texname(getTextureIndex_N(expInfo.EXP.leftWallText)), iWavelength);
-                                                    else
-                                                        wallface (runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texCont(iCon).texname(getTextureIndex(expInfo.EXP.leftWallText)),runInfo.ROOM.wrap(k,:));
-                                                    end
-                                                case 4
-                                                    if strcmp(expInfo.EXP.textureFile,'textures_PIT')
-                                                        wallface_PIT (expInfo.EXP.l,  runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texCont(iCon).texname(getTextureIndex_N(expInfo.EXP.rightWallText)), iWavelength);
-                                                    else                                                        
-                                                        wallface (runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texCont(iCon).texname(getTextureIndex(expInfo.EXP.rightWallText)),runInfo.ROOM.wrap(k,:));
-                                                    end
-                                                case 5
-                                                    if strcmp(expInfo.EXP.textureFile,'textures_PIT')
-                                                        wallface_PIT (expInfo.EXP.l,  runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texCont(iCon).texname(getTextureIndex_N(expInfo.EXP.ceilingText)), iWavelength);
-                                                    else
-                                                        wallface (runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texCont(iCon).texname(getTextureIndex(expInfo.EXP.ceilingText)),runInfo.ROOM.wrap(k,:));
-                                                    end
-                                                case 6
-                                                    if strcmp(expInfo.EXP.textureFile,'textures_PIT')
-                                                        wallface_PIT (expInfo.EXP.l,  runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texCont(iCon).texname(getTextureIndex_N(expInfo.EXP.floorText)), iWavelength);
-                                                    else
-                                                        wallface (runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texCont(iCon).texname(getTextureIndex(expInfo.EXP.floorText)),runInfo.ROOM.wrap(k,:));
-                                                    end
-                                                    ... Texture 1
-                                                case 7
-                                                    wallface (runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texCont(iCon).texname(getTextureIndex(expInfo.EXP.Leg1Text1)),runInfo.ROOM.wrap(k,:));
-                                                case 8
-                                                    wallface (runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texCont(iCon).texname(getTextureIndex(expInfo.EXP.Leg1Text2)),runInfo.ROOM.wrap(k,:));
-                                                case 9
-                                                    wallface (runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texCont(iCon).texname(getTextureIndex(expInfo.EXP.Leg1Text3)),runInfo.ROOM.wrap(k,:));
-                                                case 10
-                                                    wallface (runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texCont(iCon).texname(getTextureIndex(expInfo.EXP.Leg1Text4)),runInfo.ROOM.wrap(k,:));
-                                                    ... Texture 2
-                                                case 11
-                                                wallface (runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texCont(iCon).texname(getTextureIndex(expInfo.EXP.Leg2Text1)),runInfo.ROOM.wrap(k,:));
-                                                case 12
-                                                    wallface (runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texCont(iCon).texname(getTextureIndex(expInfo.EXP.Leg2Text2)),runInfo.ROOM.wrap(k,:));
-                                                case 13
-                                                    wallface (runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texCont(iCon).texname(getTextureIndex(expInfo.EXP.Leg2Text3)),runInfo.ROOM.wrap(k,:));
-                                                case 14
-                                                    wallface (runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texCont(iCon).texname(getTextureIndex(expInfo.EXP.Leg2Text4)),runInfo.ROOM.wrap(k,:));
-                                                    ... Texture 3
-                                                case 15
-                                                wallface (runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texCont(iCon).texname(getTextureIndex(expInfo.EXP.Leg3Text1)),runInfo.ROOM.wrap(k,:));
-                                                case 16
-                                                    wallface (runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texCont(iCon).texname(getTextureIndex(expInfo.EXP.Leg3Text2)),runInfo.ROOM.wrap(k,:));
-                                                case 17
-                                                    wallface (runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texCont(iCon).texname(getTextureIndex(expInfo.EXP.Leg3Text3)),runInfo.ROOM.wrap(k,:));
-                                                case 18
-                                                    wallface (runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texCont(iCon).texname(getTextureIndex(expInfo.EXP.Leg3Text4)),runInfo.ROOM.wrap(k,:));
-                                                    ... Texture 4
-                                                case 19
-                                                wallface (runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texCont(iCon).texname(getTextureIndex(expInfo.EXP.Leg4Text1)),runInfo.ROOM.wrap(k,:));
-                                                case 20
-                                                    wallface (runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texCont(iCon).texname(getTextureIndex(expInfo.EXP.Leg4Text2)),runInfo.ROOM.wrap(k,:));
-                                                case 21
-                                                    wallface (runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texCont(iCon).texname(getTextureIndex(expInfo.EXP.Leg4Text3)),runInfo.ROOM.wrap(k,:));
-                                                case 22
-                                                    wallface (runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texCont(iCon).texname(getTextureIndex(expInfo.EXP.Leg4Text4)),runInfo.ROOM.wrap(k,:));
-                                                    ... End Texture 1
-                                                case 19+4
-                                                wallface (runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texCont(iCon).texname(getTextureIndex(expInfo.EXP.End1Text1)),runInfo.ROOM.wrap(k,:));
-                                                case 20+4
-                                                    wallface (runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texCont(iCon).texname(getTextureIndex(expInfo.EXP.End1Text2)),runInfo.ROOM.wrap(k,:));
-                                                case 21+4
-                                                    wallface (runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texCont(iCon).texname(getTextureIndex(expInfo.EXP.End1Text3)),runInfo.ROOM.wrap(k,:));
-                                                case 22+4
-                                                    wallface (runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texCont(iCon).texname(getTextureIndex(expInfo.EXP.End1Text4)),runInfo.ROOM.wrap(k,:));
-                                                    ... End Texture 2
-                                                case 23+4
-                                                wallface (runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texCont(iCon).texname(getTextureIndex(expInfo.EXP.End2Text1)),runInfo.ROOM.wrap(k,:));
-                                                case 24+4
-                                                    wallface (runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texCont(iCon).texname(getTextureIndex(expInfo.EXP.End2Text2)),runInfo.ROOM.wrap(k,:));
-                                                case 25+4
-                                                    wallface (runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texCont(iCon).texname(getTextureIndex(expInfo.EXP.End2Text3)),runInfo.ROOM.wrap(k,:));
-                                                case 26+4
-                                                    wallface (runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texCont(iCon).texname(getTextureIndex(expInfo.EXP.End2Text4)),runInfo.ROOM.wrap(k,:));
-                                                    ...
-                                                otherwise
-                                                wallface (runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texCont(iCon).texname(getTextureIndex('WHITENOISE')),runInfo.ROOM.wrap(k,:));
-                                            end
+                                    expInfo.EXP.contrLevels(iCon);
+                                    list_idx = runInfo.glLists.lookUp(iCon,iLength,iWavelength,it1,it2,it3,it4);
+                                    runInfo.glLists.lists(list_idx).list = glGenLists(1);
+                                    
+                                    TRIAL.trialContr(runInfo.currTrial) = expInfo.EXP.contrLevels(iCon);
+                                    TRIAL.trialRL(runInfo.currTrial) = expInfo.EXP.lengthSet(iLength);
+                                    TRIAL.waveLength(runInfo.currTrial) = expInfo.EXP.waveLength(iWavelength);
+                                    expInfo.EXP.tc1 = expInfo.EXP.tex1pos(it1);
+                                    expInfo.EXP.tc2 = expInfo.EXP.tex2pos(it2);
+                                    expInfo.EXP.tc3 = expInfo.EXP.tex3pos(it3);
+                                    expInfo.EXP.tc4 = expInfo.EXP.tex4pos(it4);
+                                    
+                                    runInfo.ROOM = getRoomData(expInfo.EXP, TRIAL.trialRL(runInfo.currTrial));
+                                    
+                                    glNewList(runInfo.glLists.lists(list_idx).list,GL.COMPILE);
+                                    for k=1:runInfo.ROOM.nOfWalls
+                                        switch k
+                                            case 1
+                                                % wallface_PIT allows to take as input the wavelength and stretchs is along the track length
+                                                if strcmp(expInfo.EXP.textureFile,'textures_PIT')
+                                                    wallface_PIT (expInfo.EXP.l,  runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texCont(iCon).texname(getTextureIndex_N(expInfo.EXP.farWallText)), iWavelength);
+                                                else
+                                                    wallface (runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texCont(iCon).texname(getTextureIndex(expInfo.EXP.farWallText)),runInfo.ROOM.wrap(k,:));
+                                                end
+                                            case 2
+                                                if strcmp(expInfo.EXP.textureFile,'textures_PIT')
+                                                    wallface_PIT (expInfo.EXP.l,  runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texCont(iCon).texname(getTextureIndex_N(expInfo.EXP.nearWallText)), iWavelength);
+                                                else
+                                                    wallface (runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texCont(iCon).texname(getTextureIndex(expInfo.EXP.nearWallText)),runInfo.ROOM.wrap(k,:));
+                                                end
+                                            case 3
+                                                if strcmp(expInfo.EXP.textureFile,'textures_PIT')
+                                                    wallface_PIT (expInfo.EXP.l,  runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texCont(iCon).texname(getTextureIndex_N(expInfo.EXP.leftWallText)), iWavelength);
+                                                else
+                                                    wallface (runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texCont(iCon).texname(getTextureIndex(expInfo.EXP.leftWallText)),runInfo.ROOM.wrap(k,:));
+                                                end
+                                            case 4
+                                                if strcmp(expInfo.EXP.textureFile,'textures_PIT')
+                                                    wallface_PIT (expInfo.EXP.l,  runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texCont(iCon).texname(getTextureIndex_N(expInfo.EXP.rightWallText)), iWavelength);
+                                                else
+                                                    wallface (runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texCont(iCon).texname(getTextureIndex(expInfo.EXP.rightWallText)),runInfo.ROOM.wrap(k,:));
+                                                end
+                                            case 5
+                                                if strcmp(expInfo.EXP.textureFile,'textures_PIT')
+                                                    wallface_PIT (expInfo.EXP.l,  runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texCont(iCon).texname(getTextureIndex_N(expInfo.EXP.ceilingText)), iWavelength);
+                                                else
+                                                    wallface (runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texCont(iCon).texname(getTextureIndex(expInfo.EXP.ceilingText)),runInfo.ROOM.wrap(k,:));
+                                                end
+                                            case 6
+                                                if strcmp(expInfo.EXP.textureFile,'textures_PIT')
+                                                    wallface_PIT (expInfo.EXP.l,  runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texCont(iCon).texname(getTextureIndex_N(expInfo.EXP.floorText)), iWavelength);
+                                                else
+                                                    wallface (runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texCont(iCon).texname(getTextureIndex(expInfo.EXP.floorText)),runInfo.ROOM.wrap(k,:));
+                                                end
+                                                ... Texture 1
+                                            case 7
+                                            wallface (runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texCont(iCon).texname(getTextureIndex(expInfo.EXP.Leg1Text1)),runInfo.ROOM.wrap(k,:));
+                                            case 8
+                                                wallface (runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texCont(iCon).texname(getTextureIndex(expInfo.EXP.Leg1Text2)),runInfo.ROOM.wrap(k,:));
+                                            case 9
+                                                wallface (runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texCont(iCon).texname(getTextureIndex(expInfo.EXP.Leg1Text3)),runInfo.ROOM.wrap(k,:));
+                                            case 10
+                                                wallface (runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texCont(iCon).texname(getTextureIndex(expInfo.EXP.Leg1Text4)),runInfo.ROOM.wrap(k,:));
+                                                ... Texture 2
+                                            case 11
+                                            wallface (runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texCont(iCon).texname(getTextureIndex(expInfo.EXP.Leg2Text1)),runInfo.ROOM.wrap(k,:));
+                                            case 12
+                                                wallface (runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texCont(iCon).texname(getTextureIndex(expInfo.EXP.Leg2Text2)),runInfo.ROOM.wrap(k,:));
+                                            case 13
+                                                wallface (runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texCont(iCon).texname(getTextureIndex(expInfo.EXP.Leg2Text3)),runInfo.ROOM.wrap(k,:));
+                                            case 14
+                                                wallface (runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texCont(iCon).texname(getTextureIndex(expInfo.EXP.Leg2Text4)),runInfo.ROOM.wrap(k,:));
+                                                ... Texture 3
+                                            case 15
+                                            wallface (runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texCont(iCon).texname(getTextureIndex(expInfo.EXP.Leg3Text1)),runInfo.ROOM.wrap(k,:));
+                                            case 16
+                                                wallface (runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texCont(iCon).texname(getTextureIndex(expInfo.EXP.Leg3Text2)),runInfo.ROOM.wrap(k,:));
+                                            case 17
+                                                wallface (runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texCont(iCon).texname(getTextureIndex(expInfo.EXP.Leg3Text3)),runInfo.ROOM.wrap(k,:));
+                                            case 18
+                                                wallface (runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texCont(iCon).texname(getTextureIndex(expInfo.EXP.Leg3Text4)),runInfo.ROOM.wrap(k,:));
+                                                ... Texture 4
+                                            case 19
+                                            wallface (runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texCont(iCon).texname(getTextureIndex(expInfo.EXP.Leg4Text1)),runInfo.ROOM.wrap(k,:));
+                                            case 20
+                                                wallface (runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texCont(iCon).texname(getTextureIndex(expInfo.EXP.Leg4Text2)),runInfo.ROOM.wrap(k,:));
+                                            case 21
+                                                wallface (runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texCont(iCon).texname(getTextureIndex(expInfo.EXP.Leg4Text3)),runInfo.ROOM.wrap(k,:));
+                                            case 22
+                                                wallface (runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texCont(iCon).texname(getTextureIndex(expInfo.EXP.Leg4Text4)),runInfo.ROOM.wrap(k,:));
+                                                ... End Texture 1
+                                            case 19+4
+                                            wallface (runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texCont(iCon).texname(getTextureIndex(expInfo.EXP.End1Text1)),runInfo.ROOM.wrap(k,:));
+                                            case 20+4
+                                                wallface (runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texCont(iCon).texname(getTextureIndex(expInfo.EXP.End1Text2)),runInfo.ROOM.wrap(k,:));
+                                            case 21+4
+                                                wallface (runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texCont(iCon).texname(getTextureIndex(expInfo.EXP.End1Text3)),runInfo.ROOM.wrap(k,:));
+                                            case 22+4
+                                                wallface (runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texCont(iCon).texname(getTextureIndex(expInfo.EXP.End1Text4)),runInfo.ROOM.wrap(k,:));
+                                                ... End Texture 2
+                                            case 23+4
+                                            wallface (runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texCont(iCon).texname(getTextureIndex(expInfo.EXP.End2Text1)),runInfo.ROOM.wrap(k,:));
+                                            case 24+4
+                                                wallface (runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texCont(iCon).texname(getTextureIndex(expInfo.EXP.End2Text2)),runInfo.ROOM.wrap(k,:));
+                                            case 25+4
+                                                wallface (runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texCont(iCon).texname(getTextureIndex(expInfo.EXP.End2Text3)),runInfo.ROOM.wrap(k,:));
+                                            case 26+4
+                                                wallface (runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texCont(iCon).texname(getTextureIndex(expInfo.EXP.End2Text4)),runInfo.ROOM.wrap(k,:));
+                                                ...
+                                            otherwise
+                                            wallface (runInfo.ROOM.v, runInfo.ROOM.order(k,:),runInfo.ROOM.normals(k,:),texCont(iCon).texname(getTextureIndex('WHITENOISE')),runInfo.ROOM.wrap(k,:));
                                         end
-                                        glEndList();
+                                    end
+                                    glEndList();
                                 end
                             end
                         end
