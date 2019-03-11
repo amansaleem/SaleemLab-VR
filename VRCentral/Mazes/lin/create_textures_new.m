@@ -13,11 +13,11 @@ textures(1).matrix = 0.5*ones(64,64);
 % Unfiltered Whitenoise
 textures(2).matrix = rand(16, 512);
 
-% Vertical grating
-textures(6).matrix = 0.5+0.5*repmat(sin(0:((2*sf_V*pi)/texsize):(2*sf_V)*pi-(((2*sf_V)*pi)/texsize)),texsize,1);
-
 % Horizontal grating
-textures(7).matrix = 0.5+0.5*repmat(sin(0:(((2*sf_H)*pi)/texsize):(2*sf_H)*pi-(((2*sf_H)*pi)/texsize))',1,texsize);
+textures(6).matrix = 0.5+0.5*repmat(sin(0:((2*sf_H*pi)/texsize):(2*sf_H)*pi-(((2*sf_H)*pi)/texsize)),texsize,1);
+
+% Vertical grating
+textures(7).matrix = 0.5+0.5*repmat(sin(0:(((2*sf_V)*pi)/texsize):(2*sf_V)*pi-(((2*sf_V)*pi)/texsize))',1,texsize);
 
 % Plaid
 textures(8).matrix = (textures(6).matrix+textures(7).matrix)/2;
@@ -45,7 +45,7 @@ height = 12; % VR corridor height in cm
 
 x = 1:filtSize;
 
-for texID = 2%:5
+for texID = 2:5
     
     %     if texID==4; sigma = 30; end;
 %     if texID==3; sigma = 5; end;
@@ -58,8 +58,11 @@ for texID = 2%:5
     filt2 = y'*y1;
     % imagesc(filt2); colormap(gray)
     
-    % Create random matrix matching corridor length height ratio
-    Im_half = rand(texsize/8+filtSize*2,(texsize/8)*floor(length/height)+filtSize*2);    %Im = rand(texsize/8+filtSize*2,texsize*2+filtSize*2);
+    % Create random matrix matching corridor length height ratio. length
+    % needs to be multiples of 2
+    X=texsize/8+filtSize*2;
+    Y=2^round(log2(texsize/8*length/height))+filtSize*0.5;
+    Im_half = rand(X,Y);    %Im = rand(texsize/8+filtSize*2,texsize*2+filtSize*2);
     Im = [Im_half, Im_half, Im_half, Im_half]; % first and second half repeating, then another whole corridor that is hidden, so repeat 4 times
     
     % Convolving and normalizing the image to 100% contrast
@@ -93,13 +96,13 @@ colormap gray; axis equal; box off; axis off
 subplot(4,1,2); 
 tex=textures(6).matrix;    
 imagesc(tex, [0 1]);
-title({['grating1 ', num2str(size(tex,1)),'x', num2str(size(tex,2))], ['sf=', num2str(sf_V)]})
+title({['Horizontal grating', num2str(size(tex,1)),'x', num2str(size(tex,2))], ['sf=', num2str(sf_H)]})
 colormap gray; axis equal; box off; axis off
 
 subplot(4,1,3); 
 tex=textures(7).matrix;    
 imagesc(tex, [0 1]);
-title({['grating2 ', num2str(size(tex,1)),'x', num2str(size(tex,2))], ['sf=', num2str(sf_H)]})
+title({['Vertical grating', num2str(size(tex,1)),'x', num2str(size(tex,2))], ['sf=', num2str(sf_V)]})
 colormap gray; axis equal; box off; axis off
 
 subplot(4,1,4); 
@@ -110,7 +113,8 @@ colormap gray; axis equal; box off; axis off
 
 %% save
 
-savefolder='C:\Users\m.morimoto\Documents\GitHub\SaleemLab-VR\VRCentral\data';
+%savefolder='C:\Users\m.morimoto\Documents\GitHub\SaleemLab-VR\VRCentral\data';
+savefolder='C:\Users\Saleem Lab\Documents\GitHub\SaleemLab-VR\VRCentral\data';
 savefile='textures_MM5.mat';
 
 save([savefolder,filesep,savefile], 'textures')
