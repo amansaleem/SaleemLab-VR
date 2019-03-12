@@ -185,12 +185,13 @@ try
                     case 'DOME'
                         FoV = 240;
                         [ww,hh]=Screen('WindowSize',rigInfo.screenNumber);
+                        hh=hh*0.8;
                         if icam==rigInfo.numCameras
                             glViewport(round(ww/rigInfo.numCameras)*(icam-1)+1,0,(ww-1)-(round(ww/rigInfo.numCameras)*(icam-1)),hh);
                         else
                             glViewport(round(ww/rigInfo.numCameras)*(icam-1)+1,0,round(ww/rigInfo.numCameras),hh);
                         end
-                        %glViewport(round(ww/rigInfo.numCameras)*(icam-1)+1,0,round(ww/rigInfo.numCameras),hh);
+                        % glViewport(round(ww/rigInfo.numCameras)*(icam-1)+1,0,round(ww/rigInfo.numCameras),hh);
                         glMatrixMode(GL.PROJECTION);
                         glLoadIdentity;
                         glFrustum( -sind((FoV/rigInfo.numCameras/2))*0.01, ...
