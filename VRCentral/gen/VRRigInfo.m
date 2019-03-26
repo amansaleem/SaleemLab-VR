@@ -89,7 +89,7 @@ classdef VRRigInfo < handle
                     RigInfo.NIRotEnc = 'ctr0';
                     RigInfo.NILicEnc = 'ctr1';
                     RigInfo.NIRewVal = 'ao1';
-                    RigInfo.photodiodePos  = 'right';
+                    RigInfo.photodiodePos  = 'left';
                     RigInfo.photodiodeSize = [75 75];
                     RigInfo.rotEncPos = 'left';
                     % Saving directories

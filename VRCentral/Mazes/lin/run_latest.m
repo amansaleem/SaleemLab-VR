@@ -185,7 +185,7 @@ try
                     case 'DOME'
                         FoV = 240;
                         [ww,hh]=Screen('WindowSize',rigInfo.screenNumber);
-                        hh=hh*0.8;
+                        hh=hh*0.9;
                         if icam==rigInfo.numCameras
                             glViewport(round(ww/rigInfo.numCameras)*(icam-1)+1,0,(ww-1)-(round(ww/rigInfo.numCameras)*(icam-1)),hh);
                         else
