@@ -9,11 +9,11 @@ Priority(0);
 
 if ~expInfo.OFFLINE
     VRmessage = ['VR_ExpEnd ' expInfo.animalName ' ' expInfo.dateStr ' ' expInfo.sessionName];
-    rigInfo.sendUDPmessage(VRmessage);
+    rigInfo.sendUDPmessage('STOP');
     VRLogMessage(expInfo, VRmessage);
     pause(1)
     VRmessage = ['ExpEnd ' expInfo.animalName ' ' expInfo.dateStr ' ' expInfo.sessionName];
-    rigInfo.sendUDPmessage(VRmessage);
+%     rigInfo.sendUDPmessage(VRmessage);
     VRLogMessage(expInfo, VRmessage);
     
     VRLogMessage(expInfo);
