@@ -4,7 +4,7 @@
 texsize = 512;
 wn_contrast = 1;
 % Making horizontal and vertical axes asymmetric because the texture aspect raio is 1:1.5 (W=8cm, H=12cm)
-sf_H = 6; % no.of horizonal bars visible ()
+sf_H = 6; % no.of horizonal bars visible
 sf_V = 4; % no.of vertical bars visible
 
 % Gray
@@ -86,26 +86,47 @@ end
 
 figure; 
 
-subplot(4,1,1)
+subplot(7,1,1)
 tex=textures(2).matrix;    
 imagesc(tex, [0 1]);
-title({['background ', num2str(size(tex,1)),'x', num2str(size(tex,2))],...
+title({['background 1 ', num2str(size(tex,1)),'x', num2str(size(tex,2))],...
     ['contrast=', num2str(wn_contrast), ' filtsize=', num2str(filtSize),' sigma=', num2str(sigma), ' sigma1=', num2str(sigma1)]})
 colormap gray; axis equal; box off; axis off
 
-subplot(4,1,2); 
+subplot(7,1,2)
+tex=textures(3).matrix;    
+imagesc(tex, [0 1]);
+title({['background 2 ', num2str(size(tex,1)),'x', num2str(size(tex,2))],...
+    ['contrast=', num2str(wn_contrast), ' filtsize=', num2str(filtSize),' sigma=', num2str(sigma), ' sigma1=', num2str(sigma1)]})
+colormap gray; axis equal; box off; axis off
+
+subplot(7,1,3)
+tex=textures(4).matrix;    
+imagesc(tex, [0 1]);
+title({['background 3 ', num2str(size(tex,1)),'x', num2str(size(tex,2))],...
+    ['contrast=', num2str(wn_contrast), ' filtsize=', num2str(filtSize),' sigma=', num2str(sigma), ' sigma1=', num2str(sigma1)]})
+colormap gray; axis equal; box off; axis off
+
+subplot(7,1,4)
+tex=textures(5).matrix;    
+imagesc(tex, [0 1]);
+title({['background 4 ', num2str(size(tex,1)),'x', num2str(size(tex,2))],...
+    ['contrast=', num2str(wn_contrast), ' filtsize=', num2str(filtSize),' sigma=', num2str(sigma), ' sigma1=', num2str(sigma1)]})
+colormap gray; axis equal; box off; axis off
+
+subplot(7,1,5); 
 tex=textures(6).matrix;    
 imagesc(tex, [0 1]);
 title({['Horizontal grating', num2str(size(tex,1)),'x', num2str(size(tex,2))], ['sf=', num2str(sf_H)]})
 colormap gray; axis equal; box off; axis off
 
-subplot(4,1,3); 
+subplot(7,1,6); 
 tex=textures(7).matrix;    
 imagesc(tex, [0 1]);
 title({['Vertical grating', num2str(size(tex,1)),'x', num2str(size(tex,2))], ['sf=', num2str(sf_V)]})
 colormap gray; axis equal; box off; axis off
 
-subplot(4,1,4); 
+subplot(7,1,7); 
 tex=textures(8).matrix;    
 imagesc(tex, [0 1]);
 title({['plaid ', num2str(size(tex,1)),'x', num2str(size(tex,2))], ['sf V=', num2str(sf_V),' sf H=', num2str(sf_H)]})
