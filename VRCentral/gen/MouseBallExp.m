@@ -328,7 +328,7 @@ end
         VRLogMessage(expInfo);
         
         VRmessage = ['ExpStart ' expInfo.animalName ' ' expInfo.dateStr ' ' expInfo.sessionName];
-        rigInfo.sendUDPmessage(VRmessage);
+%         rigInfo.sendUDPmessage(VRmessage);
         VRLogMessage(expInfo, VRmessage);
         if ~isempty(rigInfo.comms)
             rigInfo.comms.send('animalName',expInfo.animalName);

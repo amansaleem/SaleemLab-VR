@@ -144,10 +144,10 @@ runInfo.t1= tic;
 % start acquiring data
 if ~expInfo.OFFLINE
     VRmessage = ['BlockStart ' expInfo.animalName ' ' expInfo.dateStr ' ' expInfo.sessionName];
-    rigInfo.sendUDPmessage(VRmessage);
+    rigInfo.sendUDPmessage('START'); %rigInfo.sendUDPmessage(VRmessage);
     VRLogMessage(expInfo, VRmessage);
     VRmessage = ['StimStart ' expInfo.animalName ' ' expInfo.dateStr ' ' expInfo.sessionName ' 1 1 ' num2str(round(expInfo.EXP.maxTrialDuration*10))];
-    rigInfo.sendUDPmessage(VRmessage); %%% Check this
+%     rigInfo.sendUDPmessage(VRmessage); %%% Check this
     VRLogMessage(expInfo, VRmessage);
     if rigInfo.sendTTL
         hwInfo.session.outputSingleScan(true);
@@ -261,7 +261,7 @@ try
                     VRmessage = ['StimStart ' expInfo.animalName ' ' expInfo.dateStr ...
                         ' ' expInfo.sessionName ' ' num2str(TRIAL.nCompTraj) ' 1 ' ...
                         num2str(round(expInfo.EXP.maxTrialDuration*10))];
-                    rigInfo.sendUDPmessage(VRmessage); %%%
+                    % rigInfo.sendUDPmessage(VRmessage) %%%
                     VRLogMessage(expInfo, VRmessage);
                     if rigInfo.sendTTL
                         session.outputSingleScan(true);
@@ -295,7 +295,7 @@ try
                 if ~expInfo.OFFLINE
                     VRmessage = ['StimStart ' expInfo.animalName ' ' expInfo.dateStr ' ' ...
                         expInfo.sessionName ' ' num2str(TRIAL.nCompTraj) ' 1 ' num2str(round(expInfo.EXP.maxTrialDuration*10))];
-                    rigInfo.sendUDPmessage(VRmessage); %%%
+                    % rigInfo.sendUDPmessage(VRmessage) %%%
                     VRLogMessage(expInfo, VRmessage);
                     if rigInfo.sendTTL
                         hwInfo.session.outputSingleScan(true);
@@ -369,7 +369,7 @@ try
             if ~expInfo.OFFLINE
                 VRmessage = ['StimStart ' expInfo.animalName ' ' expInfo.dateStr ' ' ...
                     expInfo.sessionName ' ' num2str(TRIAL.nCompTraj) ' 1 ' num2str(round(expInfo.EXP.maxTrialDuration*10))];
-                rigInfo.sendUDPmessage(VRmessage); %%%
+                % rigInfo.sendUDPmessage(VRmessage) %%%
                 VRLogMessage(expInfo, VRmessage);
                 if rigInfo.sendTTL
                     hwInfo.session.outputSingleScan(true);
@@ -396,7 +396,7 @@ try
             if ~expInfo.OFFLINE
                 VRmessage = ['StimEnd ' expInfo.animalName ' ' expInfo.dateStr ' ' ...
                     expInfo.sessionName ' ' num2str(TRIAL.nCompTraj) ' 1 ' num2str(round(expInfo.EXP.maxTrialDuration*10))];
-                rigInfo.sendUDPmessage(VRmessage); %%%Check this
+                % rigInfo.sendUDPmessage(VRmessage) %%%Check this
                 VRLogMessage(expInfo, VRmessage);
                 if rigInfo.sendTTL
                     hwInfo.session.outputSingleScan(false);
