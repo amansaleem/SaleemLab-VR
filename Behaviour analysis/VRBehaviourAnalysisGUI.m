@@ -37,8 +37,10 @@ try
             DIRS.ball = 'Y:\Saleem Lab\Data\Behav';
         case 'saleem02'
             DIRS.ball = 'S:\Data\Behav';
-        case 'saleem08'
-            DIRS.ball = 'S:\Data\Behav';
+        case 'saleem08'%NEO
+            DIRS.ball = 'X:\Archive - saleemlab\Data\Behav';%'S:\Data\Behav';
+        case 'saleem04'
+            DIRS.ball = 'X:\Archive - saleemlab\Data\Behav';
     end
 catch
     DIRS.ball = 'S:\Data\Behav';

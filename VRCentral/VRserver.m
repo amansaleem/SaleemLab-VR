@@ -1,4 +1,4 @@
-function VRserver
+edit run    function VRserver
 % function to start the experiment server and wait for the commands to
 % start experiment.
 % Can start experiment by connecting to this server and sending a parameter
