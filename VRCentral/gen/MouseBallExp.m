@@ -236,7 +236,7 @@ end
         %     start(DIO);
         %     putvalue(DIO.Line(1), 1);
         % define the UDP port
-        hwInfo.BALLPort = 9999;
+        hwInfo.BALLPort = 2323;%9999; -- changed to send to Bonsai. MM 2019-03
         
         %     % open udp port
         %     ZirkusPort  = pnet('udpsocket', 1001);

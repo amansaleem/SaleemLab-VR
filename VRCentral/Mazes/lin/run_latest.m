@@ -430,10 +430,10 @@ catch ME
 end
 
 
-%% close udp port and reset priority level
-if ~expInfo.OFFLINE
-    pnet(myPort,'close');
-end
+% %% close udp port and reset priority level
+% if ~expInfo.OFFLINE
+%      pnet(myPort,'close');
+% end
 
 ListenChar(0);
 Priority(0);
