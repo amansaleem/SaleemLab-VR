@@ -27,11 +27,14 @@ try
         case 'saleem08'
             DIRS.ball = 'S:\Data\Behav';
         case 'postgrad198'
-<<<<<<< HEAD
-=======
+% <<<<<<< HEAD
+% =======
             DIRS.ball = 'Y:\Saleem Lab\Data\Behav';
         otherwise
->>>>>>> 294dfdcdce3624f79b966810e11f70c6a357e9ef
+% <<<<<<< HEAD
+% >>>>>>> 294dfdcdce3624f79b966810e11f70c6a357e9ef
+% =======
+% >>>>>>> 294dfdcdce3624f79b966810e11f70c6a357e9ef
             DIRS.ball = 'X:\ibn-vision\Archive - saleemlab\Data\Behav';
     end
 catch

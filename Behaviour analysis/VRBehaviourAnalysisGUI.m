@@ -517,13 +517,18 @@ else
     
     % Position vs. time (per trial)
     plot(handles.axes1, VRdata.TRIAL.currTime', VRdata.traj');
-<<<<<<< HEAD
+% <<<<<<< HEAD
+% <<<<<<< HEAD
     set(handles.axes1, 'TickDir','out', 'box','off','color','none'); axis tight
-=======
-%     set(handles.axes1, 'TickDir','out', 'box','off','color','none',...
-%         'YTick', [VRdata.EXP.tc1 VRdata.EXP.tc2 VRdata.EXP.tc3 VRdata.EXP.tc4]); axis tight
->>>>>>> 294dfdcdce3624f79b966810e11f70c6a357e9ef
-    
+% =======
+% %     set(handles.axes1, 'TickDir','out', 'box','off','color','none',...
+% %         'YTick', [VRdata.EXP.tc1 VRdata.EXP.tc2 VRdata.EXP.tc3 VRdata.EXP.tc4]); axis tight
+% >>>>>>> 294dfdcdce3624f79b966810e11f70c6a357e9ef
+% =======
+% %     set(handles.axes1, 'TickDir','out', 'box','off','color','none',...
+% %         'YTick', [VRdata.EXP.tc1 VRdata.EXP.tc2 VRdata.EXP.tc3 VRdata.EXP.tc4]); axis tight
+% >>>>>>> 294dfdcdce3624f79b966810e11f70c6a357e9ef
+%     
     % Histogram of Run speeds
     k = hist(log(VRdata.ballspeed(VRdata.ballspeed>1)),spd_sample);
     plot(handles.axes2, exp(spd_sample), k./sum(k),'ko-');

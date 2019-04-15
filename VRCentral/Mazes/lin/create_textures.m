@@ -106,10 +106,14 @@ end
 % pause(1);
 % close;
 
-<<<<<<< HEAD
+% <<<<<<< HEAD
+% <<<<<<< HEAD
 clear Im ImF filt2 texID x y
 clearvars -except textures
 save('textures_KF.mat','textures')
-=======
-% clear Im ImF filt2 texID x y
->>>>>>> 294dfdcdce3624f79b966810e11f70c6a357e9ef
+% =======
+% % clear Im ImF filt2 texID x y
+% >>>>>>> 294dfdcdce3624f79b966810e11f70c6a357e9ef
+% =======
+% % clear Im ImF filt2 texID x y
+% >>>>>>> 294dfdcdce3624f79b966810e11f70c6a357e9ef
