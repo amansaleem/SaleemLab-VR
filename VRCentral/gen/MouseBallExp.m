@@ -101,9 +101,9 @@ else
     end
 end
 
-%% AS 03-10: saving to directory on zserver
+%% AS 03-10: saving to directory 
 expInfo.sessionName = 101;
-expInfo.dateStr =  num2str(str2num(datestr(now, 'mmdd')));
+expInfo.dateStr =  num2str(str2num(datestr(now, 'yyyymmdd')));
 
 expInfo.AnimalDir = fullfile(dataDir,expInfo.animalName);
 if ~isdir(expInfo.AnimalDir), mkdir(expInfo.AnimalDir); end
