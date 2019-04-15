@@ -27,21 +27,12 @@ global DIRS
 % global handles
 global EXPORT
 
-try
-    [~,b] = system('hostname');
-    b = b(1:end-1);
-    switch b
-        case 'saleem01' 
-            DIRS.ball = 'Y:\Saleem Lab\Data\Behav';
-        case 'saleem12'
-            DIRS.ball = 'Y:\Saleem Lab\Data\Behav';
-        case 'saleem02'
-            DIRS.ball = 'S:\Data\Behav';
-        case 'saleem08'
-            DIRS.ball = 'S:\Data\Behav';
-    end
-catch
-    DIRS.ball = 'S:\Data\Behav';
+
+%     [~,b] = system('hostname');
+%     b = b(1:end-1);
+DIRS.ball = 'X:\Archive - saleemlab\Data\Behav';
+if ~exist(DIRS.ball)
+    DIRS.ball = 'X:\ibn-vision\Archive - saleemlab\Data\Behav';
 end
 
 gui_Singleton = 1;
@@ -469,10 +460,10 @@ if isfield(VRdata.REWARD, 'count');
                         VRdata_all.TRIAL.time(VRdata.REWARD.TRIAL(rewID),VRdata.REWARD.count(rewID)-1)/60,...
                         VRdata_all.traj(VRdata.REWARD.TRIAL(rewID),VRdata.REWARD.count(rewID)-1),'o', 'Color',[.5 .5 .5]);
                 end
-                line(xlim, [VRdata.EXP.tc1 VRdata.EXP.tc1],'linestyle','--','color',[0.7 0.7 0.7])
-                line(xlim, [VRdata.EXP.tc2 VRdata.EXP.tc2],'linestyle','--','color',[0.7 0.7 0.7])
-                line(xlim, [VRdata.EXP.tc3 VRdata.EXP.tc3],'linestyle','--','color',[0.7 0.7 0.7])
-                line(xlim, [VRdata.EXP.tc4 VRdata.EXP.tc4],'linestyle','--','color',[0.7 0.7 0.7])
+%                 line(xlim, [VRdata.EXP.tc1 VRdata.EXP.tc1],'linestyle','--','color',[0.7 0.7 0.7])
+%                 line(xlim, [VRdata.EXP.tc2 VRdata.EXP.tc2],'linestyle','--','color',[0.7 0.7 0.7])
+%                 line(xlim, [VRdata.EXP.tc3 VRdata.EXP.tc3],'linestyle','--','color',[0.7 0.7 0.7])
+%                 line(xlim, [VRdata.EXP.tc4 VRdata.EXP.tc4],'linestyle','--','color',[0.7 0.7 0.7])
             case 2
                 plot(handles.axes7, ...
                     VRdata_all.TRIAL.time(VRdata.REWARD.TRIAL(rewID),VRdata.REWARD.count(rewID)-1)/60,...
@@ -526,8 +517,12 @@ else
     
     % Position vs. time (per trial)
     plot(handles.axes1, VRdata.TRIAL.currTime', VRdata.traj');
-    set(handles.axes1, 'TickDir','out', 'box','off','color','none',...
-        'YTick', [VRdata.EXP.tc1 VRdata.EXP.tc2 VRdata.EXP.tc3 VRdata.EXP.tc4]); axis tight
+<<<<<<< HEAD
+    set(handles.axes1, 'TickDir','out', 'box','off','color','none'); axis tight
+=======
+%     set(handles.axes1, 'TickDir','out', 'box','off','color','none',...
+%         'YTick', [VRdata.EXP.tc1 VRdata.EXP.tc2 VRdata.EXP.tc3 VRdata.EXP.tc4]); axis tight
+>>>>>>> 294dfdcdce3624f79b966810e11f70c6a357e9ef
     
     % Histogram of Run speeds
     k = hist(log(VRdata.ballspeed(VRdata.ballspeed>1)),spd_sample);
@@ -560,8 +555,8 @@ for itrial = 1:size(VRdata.traj,1)
     end
 end
 hold(handles.axes6,'off');
-set(handles.axes6, 'TickDir','out', 'box','off','color','none',...
-    'YTick', [VRdata.EXP.tc1 VRdata.EXP.tc2 VRdata.EXP.tc3 VRdata.EXP.tc4]);
+% set(handles.axes6, 'TickDir','out', 'box','off','color','none',...
+%     'YTick', [VRdata.EXP.tc1 VRdata.EXP.tc2 VRdata.EXP.tc3 VRdata.EXP.tc4]);
 axes(handles.axes6); axis tight
 
 % VR speed vs. Run speed (per trial)
