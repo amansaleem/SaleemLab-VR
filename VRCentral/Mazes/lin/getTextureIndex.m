@@ -21,6 +21,10 @@ switch str
         index = 9;
     case 'BLUE'
         index = 10;
+    case 'DOTS'
+        index = 11;
+    case 'CHECKERBOARD'
+        index = 12;
     otherwise
         index = 2;
 end

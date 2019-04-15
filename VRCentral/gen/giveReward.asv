@@ -17,7 +17,7 @@ if ~expInfo.OFFLINE
         % amount
         [x, index] = min(abs(expInfo.EXP.BASEvalveTime-rigInfo.RewardCal(:,2)));
         TotTime=round(rigInfo.RewardCal(index,1));
-        switch tag
+           switch tag
             case 'STOP'
                 if expInfo.EXP.soundOn
                     play(runInfo.oBeepSTOP);

@@ -75,6 +75,13 @@ if isfield(es1, 'spikeTimes')
         es.spikeTimes{icell} = [es1.spikeTimes{icell}' es2.spikeTimes{icell}']';
     end
 end
+if isfield(es, 'globalcalcium')
+%     try
+%    es.globalcalcium = [es1.globalcalcium' es2.globalcalcium']; 
+%     catch
+   es.globalcalcium = [es1.globalcalcium es2.globalcalcium'];   
+  %  end
+end
 if isfield(es, 'theta')
     es.theta.A.hill = [es1.theta.A.hill' es2.theta.A.hill']';
     es.theta.B.hill = [es1.theta.B.hill' es2.theta.B.hill']';

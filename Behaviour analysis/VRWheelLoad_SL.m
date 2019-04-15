@@ -21,13 +21,18 @@ try
         case 'saleem05'
             DIRS.ball = 'Y:\Saleem Lab\Data\Behav';
         case 'saleem12'
-            DIRS.ball = 'Y:\Saleem Lab\Data\Behav';
+            DIRS.ball = 'X:\ibn-vision\Archive - saleemlab\Data\Behav';
         case 'saleem02'
             DIRS.ball = 'S:\Data\Behav';
         case 'saleem08'
             DIRS.ball = 'S:\Data\Behav';
         case 'postgrad198'
+<<<<<<< HEAD
+=======
             DIRS.ball = 'Y:\Saleem Lab\Data\Behav';
+        otherwise
+>>>>>>> 294dfdcdce3624f79b966810e11f70c6a357e9ef
+            DIRS.ball = 'X:\ibn-vision\Archive - saleemlab\Data\Behav';
     end
 catch
     DIRS.ball = 'S:\Data\Behav';

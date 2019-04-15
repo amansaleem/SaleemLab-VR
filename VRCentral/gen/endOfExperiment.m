@@ -9,12 +9,18 @@ Priority(0);
 
 if ~expInfo.OFFLINE
     VRmessage = ['VR_ExpEnd ' expInfo.animalName ' ' expInfo.dateStr ' ' expInfo.sessionName];
-    rigInfo.sendUDPmessage(VRmessage);
+%     rigInfo.sendUDPmessage(VRmessage);
+    rigInfo.sendUDPmessage('STOP');
     VRLogMessage(expInfo, VRmessage);
     pause(1)
     
     VRmessage = ['ExpEnd ' expInfo.animalName ' ' expInfo.dateStr ' ' expInfo.sessionName];
-    rigInfo.sendUDPmessage(VRmessage);
+%     rigInfo.sendUDPmessage(VRmessage);
+    
+    % Turning off the recording camera
+    flushinput(hwInfo.ardDev);
+    fprintf(hwInfo.ardDev, '%s\r', 'c0');
+    flushinput(hwInfo.ardDev);
     
     bothLogs = 'true';
     VRLogMessage(expInfo, VRmessage, bothLogs);

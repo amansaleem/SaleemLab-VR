@@ -1,5 +1,5 @@
 texsize = 512;
-
+wn_contrast = 1;
 sf = 12; % no.of bars visible
 
 % Gray
@@ -16,6 +16,45 @@ textures(7).matrix = 0.5+0.5*repmat(sin(0:(((2*sf)*pi)/texsize):(2*sf)*pi-(((2*s
 
 % Plaid
 textures(8).matrix = (textures(6).matrix+textures(7).matrix)/2;
+
+% Dots
+
+%%Make circle 
+th = linspace(0,2*pi) ;
+R = 1. ;  % Radius of circle 
+C = [0 0] ; % Center of circle 
+xc = C(1)+R*cos(th) ; yc = C(2)+R*sin(th) ;
+%%Make mesh
+N = 100 ;
+x = C(1)+linspace(-R,R,N) ;
+y = C(2)+linspace(-R,R,N) ;
+[X,Y] = meshgrid(x,y) ;
+Z = (X.^2+Y.^2) ;
+%%Make matrix
+iwant = zeros(size(Z)) ;
+iwant(Z<=R) = 1 ;
+sz = size(Z);
+array1 = horzcat(zeros(sz(1),sz(2)*2),iwant, zeros(sz(1),sz(2)*2));
+szA = size(array1);
+array2 = vertcat(zeros(szA(1)*2,szA(2)),array1, zeros(szA(1)*2,szA(2)));
+array3 = vertcat(zeros(szA(1)*2,szA(2)), zeros(szA(1)*2,szA(2)),array1);
+array4 = horzcat(array2,array3);
+array = vertcat(array4,array4);
+array = repmat(array,5);
+array(array==0) = 0.3;
+
+textures(11).matrix = array;
+
+
+% Checkerboard
+sq = 20;
+dark = ones(sq,sq);
+light = zeros(sq,sq);
+rec1 = horzcat(dark,light);
+rec2 = horzcat(light,dark);
+rec3 = vertcat(rec1,rec2);
+textures(12).matrix = repmat(rec3,5);
+
 
 % c = [0:0.1:1.0];
 
@@ -59,10 +98,18 @@ for texID = 2:5
     Imf = conv2(filt2,Im);
     Imf = Imf(filtSize+floor(filtSize/2):end-ceil(filtSize/2)-filtSize,filtSize+floor(filtSize/2):end-ceil(filtSize/2)-filtSize);
     Imf = Imf - min(min(Imf));
-    textures(texID).matrix = Imf./max(max(Imf));
-    
+    Im_full = Imf./max(max(Imf));
+    Im_new = ((Im_full-0.5)*wn_contrast) + 0.5;
+    textures(texID).matrix = Im_new;
 end
+
 % pause(1);
 % close;
 
+<<<<<<< HEAD
 clear Im ImF filt2 texID x y
+clearvars -except textures
+save('textures_KF.mat','textures')
+=======
+% clear Im ImF filt2 texID x y
+>>>>>>> 294dfdcdce3624f79b966810e11f70c6a357e9ef

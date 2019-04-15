@@ -144,10 +144,10 @@ runInfo.t1= tic;
 % start acquiring data
 if ~expInfo.OFFLINE
     VRmessage = ['BlockStart ' expInfo.animalName ' ' expInfo.dateStr ' ' expInfo.sessionName];
-    rigInfo.sendUDPmessage(VRmessage);
+    rigInfo.sendUDPmessage('START'); %rigInfo.sendUDPmessage(VRmessage);
     VRLogMessage(expInfo, VRmessage);
     VRmessage = ['StimStart ' expInfo.animalName ' ' expInfo.dateStr ' ' expInfo.sessionName ' 1 1 ' num2str(round(expInfo.EXP.maxTrialDuration*10))];
-    rigInfo.sendUDPmessage(VRmessage); %%% Check this
+%     rigInfo.sendUDPmessage(VRmessage); %%% Check this
     VRLogMessage(expInfo, VRmessage);
     if rigInfo.sendTTL
         hwInfo.session.outputSingleScan(true);
@@ -261,7 +261,7 @@ try
                     VRmessage = ['StimStart ' expInfo.animalName ' ' expInfo.dateStr ...
                         ' ' expInfo.sessionName ' ' num2str(TRIAL.nCompTraj) ' 1 ' ...
                         num2str(round(expInfo.EXP.maxTrialDuration*10))];
-                    rigInfo.sendUDPmessage(VRmessage); %%%
+                    % rigInfo.sendUDPmessage(VRmessage) %%%
                     VRLogMessage(expInfo, VRmessage);
                     if rigInfo.sendTTL
                         session.outputSingleScan(true);
@@ -295,7 +295,7 @@ try
                 if ~expInfo.OFFLINE
                     VRmessage = ['StimStart ' expInfo.animalName ' ' expInfo.dateStr ' ' ...
                         expInfo.sessionName ' ' num2str(TRIAL.nCompTraj) ' 1 ' num2str(round(expInfo.EXP.maxTrialDuration*10))];
-                    rigInfo.sendUDPmessage(VRmessage); %%%
+                    % rigInfo.sendUDPmessage(VRmessage) %%%
                     VRLogMessage(expInfo, VRmessage);
                     if rigInfo.sendTTL
                         hwInfo.session.outputSingleScan(true);
@@ -369,7 +369,7 @@ try
             if ~expInfo.OFFLINE
                 VRmessage = ['StimStart ' expInfo.animalName ' ' expInfo.dateStr ' ' ...
                     expInfo.sessionName ' ' num2str(TRIAL.nCompTraj) ' 1 ' num2str(round(expInfo.EXP.maxTrialDuration*10))];
-                rigInfo.sendUDPmessage(VRmessage); %%%
+                % rigInfo.sendUDPmessage(VRmessage) %%%
                 VRLogMessage(expInfo, VRmessage);
                 if rigInfo.sendTTL
                     hwInfo.session.outputSingleScan(true);
@@ -396,7 +396,7 @@ try
             if ~expInfo.OFFLINE
                 VRmessage = ['StimEnd ' expInfo.animalName ' ' expInfo.dateStr ' ' ...
                     expInfo.sessionName ' ' num2str(TRIAL.nCompTraj) ' 1 ' num2str(round(expInfo.EXP.maxTrialDuration*10))];
-                rigInfo.sendUDPmessage(VRmessage); %%%Check this
+                % rigInfo.sendUDPmessage(VRmessage) %%%Check this
                 VRLogMessage(expInfo, VRmessage);
                 if rigInfo.sendTTL
                     hwInfo.session.outputSingleScan(false);
@@ -532,7 +532,6 @@ end
                             scan_input = (hwInfo.rotEnc.readPosition);
                             hwInfo.rotEnc.zero;
                         case 'ARDUINO'
-                            
                             flushinput(hwInfo.ardDev)
                             ard_scan = fscanf(hwInfo.ardDev, '%d\t%d\t%d');
                             while length(ard_scan)~=3
@@ -552,7 +551,11 @@ end
                             scan_input(2) = temp2;
                             flushinput(hwInfo.ardDev);
                             %sync signal
-                            day = ard_scan(3); % this the interval between 0->3500 transitions of the sync pulse signal
+%                             day = ard_scan(3); % this the interval between 0->3500 transitions of the sync pulse signal
+                            %Frame details
+                            dax = ard_scan(3); % Frame count of recording camera
+%                             dby = ard_scan(5); % Frame times of recroding camera
+                            
                         case 'KEYBRD'
                             ballTime = TRIAL.time(runInfo.currTrial,runInfo.count);
                             dax = 0; day = 0; dby = 0; dbx = 0;
@@ -566,7 +569,7 @@ end
                                 end
                             end
                             TRIAL.balldata(runInfo.currTrial,runInfo.count,:) = [ballTime, dax, dbx, day, dby];
-                            dbx = nansum([dbx 0]).*scaling_factor.*expInfo.EXP.wheelToVR;
+                            dbx = nansum([dbx 0]).*scaling_factor.*expInfo; %.EXP.wheelToVR;
                             
                     end
                     if ~strcmp(rigInfo.rotEncPos,'right')
@@ -579,7 +582,7 @@ end
                     % dbx = 50*dbx; % to be removed when the room is better calibrated
                     
                     TRIAL.balldata(runInfo.currTrial,runInfo.count,:) = [ballTime, dax, dbx, day, dby];
-                    dbx = nansum([dbx 0]).*scaling_factor.*expInfo.EXP.wheelToVR;
+                    dbx = nansum([dbx 0]).*scaling_factor;%.*expInfo.EXP.wheelToVR;
                     % Remove 'BALL_TO_ROOM' after this set of animals (28th
                     % Feb)
                     currLikStatus = scan_input(2);
@@ -606,7 +609,7 @@ end
                         end
                     end
                     TRIAL.balldata(runInfo.currTrial,runInfo.count,:) = [ballTime, dax, dbx, day, dby];
-                    dbx = nansum([dbx 0]).*scaling_factor.*expInfo.EXP.wheelToVR;
+                    dbx = nansum([dbx 0]).*scaling_factor.*expInfo;%.*expInfo.EXP.wheelToVR;
             end
         else
             getNonBallDeltas;
