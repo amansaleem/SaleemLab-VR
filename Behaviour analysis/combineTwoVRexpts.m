@@ -76,11 +76,15 @@ if isfield(es1, 'spikeTimes')
     end
 end
 if isfield(es, 'globalcalcium')
-%     try
-%    es.globalcalcium = [es1.globalcalcium' es2.globalcalcium']; 
-%     catch
-   es.globalcalcium = [es1.globalcalcium es2.globalcalcium'];   
-  %  end
+    try
+   es.globalcalcium = [es1.globalcalcium' es2.globalcalcium']; 
+    catch
+        try
+            es.globalcalcium = [es1.globalcalcium es2.globalcalcium];
+        catch        
+           es.globalcalcium = [es1.globalcalcium es2.globalcalcium']; 
+        end
+    end
 end
 if isfield(es, 'theta')
     es.theta.A.hill = [es1.theta.A.hill' es2.theta.A.hill']';

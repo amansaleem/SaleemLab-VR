@@ -29,7 +29,8 @@ try
         case 'postgrad198'
 % <<<<<<< HEAD
 % =======
-            DIRS.ball = 'Y:\Saleem Lab\Data\Behav';
+        DIRS.ball = 'X:\ibn-vision\Archive - saleemlab\Data\Behav';
+            %DIRS.ball = 'Y:\Saleem Lab\Data\Behav';
         otherwise
 % <<<<<<< HEAD
 % >>>>>>> 294dfdcdce3624f79b966810e11f70c6a357e9ef
