@@ -5,6 +5,10 @@ function copyToNewServer(animal_name)
 
 oldDir = 'X:\ibn-vision\Archive - saleemlab\Data\Behav';
 newDir = 'X:\ibn-vision\DATA\SUBJECTS';
+if ~exist(oldDir);
+    oldDir = 'X:\Archive - saleemlab\Data\Behav';
+    newDir = 'X:\DATA\SUBJECTS';
+end
 
 oldFullDir = fullfile(oldDir, animal_name);
 
