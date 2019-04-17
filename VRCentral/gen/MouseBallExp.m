@@ -103,12 +103,15 @@ end
 
 %% AS 03-10: saving to directory on zserver
 expInfo.sessionName = 101;
-expInfo.dateStr =  num2str(str2num(datestr(now, 'mmdd')));
+expInfo.dateStr =  num2str(str2num(datestr(now, 'yyyymmdd')));
 
 expInfo.AnimalDir = fullfile(dataDir,expInfo.animalName);
 if ~isdir(expInfo.AnimalDir), mkdir(expInfo.AnimalDir); end
 
-expInfo.TheDir = fullfile(dataDir,expInfo.animalName,expInfo.dateStr);
+expInfo.BehavDir = fullfile(expInfo.AnimalDir, 'VRBehaviour');
+if ~isdir(expInfo.BehavDir), mkdir(expInfo.BehavDir); end
+
+expInfo.TheDir = fullfile(expInfo.BehavDir,expInfo.dateStr);
 if ~isdir(expInfo.TheDir), mkdir(expInfo.TheDir); end
 
 if expInfo.REPLAY
