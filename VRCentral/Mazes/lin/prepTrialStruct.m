@@ -60,17 +60,17 @@ fprintf('*** trial %4d of %4d ***\n', TRIAL.info.no, expInfo.EXP.maxNTrials); % 
 
 
 
-TRIAL.posdata = zeros(expInfo.EXP.maxTraj, expInfo.EXP.maxTrialDuration*70,6,'double'); % x,y,z,theta,speed,inRoom
+TRIAL.posdata = zeros(expInfo.EXP.maxTraj, expInfo.EXP.pause_frames+expInfo.EXP.maxTrialDuration*70,6,'double'); % x,y,z,theta,speed,inRoom
 TRIAL.posdata(:,:,1) = 0;
-TRIAL.traj      = zeros(expInfo.EXP.maxTraj, expInfo.EXP.maxTrialDuration*70,1,'double'); % 
+TRIAL.traj      = zeros(expInfo.EXP.maxTraj, expInfo.EXP.pause_frames+expInfo.EXP.maxTrialDuration*70,1,'double'); % 
 
 TRIAL.pospars   = {'X','Y','Z','theta','speed','inRoom'};
-TRIAL.time      = zeros(expInfo.EXP.maxTraj, expInfo.EXP.maxTrialDuration*70,'double');
-TRIAL.balldata  = zeros(expInfo.EXP.maxTraj, expInfo.EXP.maxTrialDuration*70,5,'double');
-TRIAL.lick      = zeros(expInfo.EXP.maxTraj, expInfo.EXP.maxTrialDuration*70,'double');
+TRIAL.time      = zeros(expInfo.EXP.maxTraj, expInfo.EXP.pause_frames+expInfo.EXP.maxTrialDuration*70,'double');
+TRIAL.balldata  = zeros(expInfo.EXP.maxTraj, expInfo.EXP.pause_frames+expInfo.EXP.maxTrialDuration*70,5,'double');
+TRIAL.lick      = zeros(expInfo.EXP.maxTraj, expInfo.EXP.pause_frames+expInfo.EXP.maxTrialDuration*70,'double');
 
 
-TRIAL.trialIdx = zeros(expInfo.EXP.maxTraj, expInfo.EXP.maxTrialDuration*70,'double'); %
+TRIAL.trialIdx = zeros(expInfo.EXP.maxTraj, expInfo.EXP.pause_frames+expInfo.EXP.maxTrialDuration*70,'double'); %
 
 % if ~REPLAY
 if expInfo.EXP.changeLength
