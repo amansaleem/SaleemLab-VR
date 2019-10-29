@@ -92,7 +92,7 @@ if expInfo.REPLAY
         if ~expInfo.OFFLINE
             VRmessage = ['StimEnd ' expInfo.animalName ' ' expInfo.dateStr ' ' ...
                 expInfo.sessionName ' ' num2str(runInfo.currTrial) ' 1 ' num2str(round(expInfo.EXP.maxTrialDuration*10))];
-%             rigInfo.sendUDPmessage(VRmessage); %%%Check this
+            rigInfo.sendUDPmessage(VRmessage); %%%Check this
             VRLogMessage(expInfo, VRmessage);
             %             pnet(EYEPort, 'write',['StimEnd ' animalName ' ' dateStr ' ' sessionName ' ' num2str(runInfo.currTrial) ' 1 ' num2str(round(expInfo.EXP.maxTrialDuration*10))]); %%%Check this
             %             pnet(EYEPort, 'writePacket');
@@ -186,7 +186,7 @@ else
             if ~expInfo.OFFLINE
                 VRmessage = ['StimEnd ' expInfo.animalName ' ' expInfo.dateStr ' ' ...
                     expInfo.sessionName ' ' num2str(runInfo.currTrial) ' 1 ' num2str(round(expInfo.EXP.maxTrialDuration*10))];
-%                 rigInfo.sendUDPmessage(VRmessage); %%%Check this
+                rigInfo.sendUDPmessage(VRmessage); %%%Check this
                 VRLogMessage(expInfo, VRmessage);
                 if rigInfo.sendTTL
                     hwInfo.session.outputSingleScan(false);
@@ -265,7 +265,7 @@ else
             if ~expInfo.OFFLINE
                 VRmessage = ['StimEnd ' expInfo.animalName ' ' expInfo.dateStr ' ' ...
                     expInfo.sessionName ' ' num2str(runInfo.currTrial) ' 1 ' num2str(round(expInfo.EXP.maxTrialDuration*10))];
-%                 rigInfo.sendUDPmessage(VRmessage); %%%Check this
+                rigInfo.sendUDPmessage(VRmessage); %%%Check this
                 VRLogMessage(expInfo, VRmessage);
                 if rigInfo.sendTTL
                     hwInfo.session.outputSingleScan(false);

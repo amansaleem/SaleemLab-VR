@@ -69,7 +69,7 @@ classdef VRRigInfo < handle
                 case 'SALEEM08' %NEO
                     % Local computer info (basic)
                     RigInfo.computerName = 'NEO';
-                    RigInfo.screenNumber = 2;%2
+                    RigInfo.screenNumber = 2;
                     RigInfo.screenDist = 60; % in cm
                     RigInfo.dialogueXYPosition = [440 150];
                     
@@ -107,8 +107,8 @@ classdef VRRigInfo < handle
                     RigInfo.filenameGammaCalib = 'Gamma_NEO.mat';
                     % External computer connection info
                     % (These are optinal)
-                    RigInfo.connectIPs{1} = '128.40.31.225';%[]; % 'Zirkus'
-                    RigInfo.connectPCs{1} = 'saleem08';%[];
+                    RigInfo.connectIPs{1} = []; % 'Zirkus'
+                    RigInfo.connectPCs{1} = [];
                     %
                     %                     RigInfo.connectIPs{2} = '144.82.135.51'; % 'Zankh'
                     %                     RigInfo.connectPCs{2} = 'Zankh';
@@ -150,7 +150,7 @@ classdef VRRigInfo < handle
                     RigInfo.ARDHistory = [0 0];
                     
                     RigInfo.screenType = 'DOME';
-                    RigInfo.numCameras = 15;
+                    RigInfo.numCameras = 7;
                     
                     RigInfo.NIdevID = 'Dev1';
                     RigInfo.NIsessRate = 10000;
@@ -170,9 +170,6 @@ classdef VRRigInfo < handle
                     %RigInfo.screenCalibration = false;
                     RigInfo.dirScreenCalib = 'X:\Archive - saleemlab\Code\MeshMapping\';%'C:\Home\Code\VR-Stimulus-master\Linear Track Behav - 2pNew - Dev Version - Copy\'%'C:\Users\Aman\AppData\Roaming\Psychtoolbox\GeometryCalibration\';%'C:\Users\experimenter\AppData\Roaming\Psychtoolbox\GeometryCalibration\';
                     RigInfo.filenameScreenCalib =  'MeshMapping_Tron2.mat';%'geometricCorr_2.mat';%'test.mat';%'HalfCylinderCalibdata_2_2695_1024.mat';%'HalfCylinderCalibdata_1_2400_600.mat';
-                    RigInfo.GammaCalibration = true;
-                    RigInfo.dirGammaCalib = 'C:\Users\Saleem Lab\Documents\GitHub\SaleemLab-VR\VRCentral\data';
-                    RigInfo.filenameGammaCalib = 'Gamma_NEO.mat'; % temp fix, needs a TRON version
                     % External computer connection info
                     % (These are optinal)
                     RigInfo.connectIPs{1} = []; % 'Zirkus'
@@ -739,24 +736,21 @@ classdef VRRigInfo < handle
                     %                     RigInfo.thisScreen=max(screens);
             end
         end
-
-%% NEW UDP to send message to Bonsai through Osc
-%  2019-03 MM
-
+        
         function initialiseUDPports(RigInfo)
             if RigInfo.numConnect>0
                 for iIP = 1:RigInfo.numConnect
-                      RigInfo.activePorts{iIP} = udp(RigInfo.connectIPs{iIP}, 2323);
-                      fopen(RigInfo.activePorts{iIP});
-                      display(['Opened connection to ' RigInfo.connectPCs{iIP}]);
+                    RigInfo.activePorts{iIP} = pnet('udpsocket', 1001);
+                    pnet(RigInfo.activePorts{iIP}, 'udpconnect', RigInfo.connectIPs{iIP},1001);
+                    display(['Sent message to ' RigInfo.connectPCs{iIP}]);
                 end
             end
         end
         function sendUDPmessage(RigInfo, blah)
             if RigInfo.numConnect>0
                 for iIP = 1:RigInfo.numConnect
-                    oscsend(RigInfo.activePorts{iIP},'/number','s', blah); 
-                    display(['Sent message to ' RigInfo.connectPCs{iIP}]);
+                    pnet(RigInfo.activePorts{iIP},'write',blah);
+                    pnet(RigInfo.activePorts{iIP}, 'writePacket');
                 end
             end
         end
@@ -766,41 +760,10 @@ classdef VRRigInfo < handle
         function closeUDPports(RigInfo)
             if RigInfo.numConnect>0
                 for iIP = 1:RigInfo.numConnect
-                    fclose(RigInfo.activePorts{iIP});
+                    pnet(RigInfo.activePorts{iIP},'close');
                 end
             end
         end
-        
-%% OLD UDP (using pnet)
-
-%         function initialiseUDPports(RigInfo)
-%             if RigInfo.numConnect>0
-%                 for iIP = 1:RigInfo.numConnect
-%                     RigInfo.activePorts{iIP} = pnet('udpsocket', 1001);%1001
-%                     pnet(RigInfo.activePorts{iIP}, 'udpconnect', RigInfo.connectIPs{iIP},1001);%1001
-%                     display(['Sent message to ' RigInfo.connectPCs{iIP}]);
-%                 end
-%             end
-%         end
-%         function sendUDPmessage(RigInfo, blah)
-%             if RigInfo.numConnect>0
-%                 for iIP = 1:RigInfo.numConnect
-%                     pnet(RigInfo.activePorts{iIP},'write',blah);
-%                     pnet(RigInfo.activePorts{iIP}, 'writePacket');
-%                     display(['Sent message to ' RigInfo.connectPCs{iIP}]);
-%                 end
-%             end
-%         end
-%         function updateTTL(RigInfo,state)
-%             RigInfo.TTLchannel.outputSingleScan(state);
-%         end
-%         function closeUDPports(RigInfo)
-%             if RigInfo.numConnect>0
-%                 for iIP = 1:RigInfo.numConnect
-%                     pnet(RigInfo.activePorts{iIP},'close');
-%                 end
-%             end
-%         end
         % methods
     end
     % class

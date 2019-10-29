@@ -236,7 +236,7 @@ end
         %     start(DIO);
         %     putvalue(DIO.Line(1), 1);
         % define the UDP port
-        hwInfo.BALLPort = 2323;%9999; -- changed to send to Bonsai. MM 2019-03
+        hwInfo.BALLPort = 9999;
         
         %     % open udp port
         %     ZirkusPort  = pnet('udpsocket', 1001);
@@ -333,7 +333,7 @@ end
         VRLogMessage(expInfo);
         
         VRmessage = ['ExpStart ' expInfo.animalName ' ' expInfo.dateStr ' ' expInfo.sessionName];
-%         rigInfo.sendUDPmessage(VRmessage);
+        rigInfo.sendUDPmessage(VRmessage);
         VRLogMessage(expInfo, VRmessage);
         if ~isempty(rigInfo.comms)
             rigInfo.comms.send('animalName',expInfo.animalName);

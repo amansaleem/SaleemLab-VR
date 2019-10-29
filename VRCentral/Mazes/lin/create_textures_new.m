@@ -4,7 +4,7 @@
 texsize = 512;
 wn_contrast = 1;
 % Making horizontal and vertical axes asymmetric because the texture aspect raio is 1:1.5 (W=8cm, H=12cm)
-sf_H = 6; % no.of horizonal bars visible
+sf_H = 6; % no.of horizonal bars visible ()
 sf_V = 4; % no.of vertical bars visible
 
 % Gray
@@ -12,12 +12,15 @@ textures(1).matrix = 0.5*ones(64,64);
 
 % Unfiltered Whitenoise
 textures(2).matrix = rand(16, 512);
-
-% Horizontal grating
-textures(6).matrix = 0.5+0.5*repmat(sin(0:((2*sf_H*pi)/texsize):(2*sf_H)*pi-(((2*sf_H)*pi)/texsize)),texsize,1);
+textures(3).matrix = rand(16, 512);
+textures(4).matrix = rand(16, 512);
+textures(5).matrix = rand(16, 512);
 
 % Vertical grating
-textures(7).matrix = 0.5+0.5*repmat(sin(0:(((2*sf_V)*pi)/texsize):(2*sf_V)*pi-(((2*sf_V)*pi)/texsize))',1,texsize);
+textures(6).matrix = 0.5+0.5*repmat(sin(0:((2*sf_V*pi)/texsize):(2*sf_V)*pi-(((2*sf_V)*pi)/texsize)),texsize,1);
+
+% Horizontal grating
+textures(7).matrix = 0.5+0.5*repmat(sin(0:(((2*sf_H)*pi)/texsize):(2*sf_H)*pi-(((2*sf_H)*pi)/texsize))',1,texsize);
 
 % Plaid
 textures(8).matrix = (textures(6).matrix+textures(7).matrix)/2;
@@ -58,11 +61,8 @@ for texID = 2:5
     filt2 = y'*y1;
     % imagesc(filt2); colormap(gray)
     
-    % Create random matrix matching corridor length height ratio. length
-    % needs to be multiples of 2
-    X=texsize/8+filtSize*2;
-    Y=2^round(log2(texsize/8*length/height))+filtSize*0.5;
-    Im_half = rand(X,Y);    %Im = rand(texsize/8+filtSize*2,texsize*2+filtSize*2);
+    % Create random matrix matching corridor length height ratio
+    Im_half = rand(texsize/8+filtSize*2,(texsize/8)*floor(length/height)+filtSize*2);    %Im = rand(texsize/8+filtSize*2,texsize*2+filtSize*2);
     Im = [Im_half, Im_half, Im_half, Im_half]; % first and second half repeating, then another whole corridor that is hidden, so repeat 4 times
     
     % Convolving and normalizing the image to 100% contrast
@@ -86,47 +86,26 @@ end
 
 figure; 
 
-subplot(7,1,1)
+subplot(4,1,1)
 tex=textures(2).matrix;    
 imagesc(tex, [0 1]);
-title({['background 1 ', num2str(size(tex,1)),'x', num2str(size(tex,2))],...
+title({['background ', num2str(size(tex,1)),'x', num2str(size(tex,2))],...
     ['contrast=', num2str(wn_contrast), ' filtsize=', num2str(filtSize),' sigma=', num2str(sigma), ' sigma1=', num2str(sigma1)]})
 colormap gray; axis equal; box off; axis off
 
-subplot(7,1,2)
-tex=textures(3).matrix;    
-imagesc(tex, [0 1]);
-title({['background 2 ', num2str(size(tex,1)),'x', num2str(size(tex,2))],...
-    ['contrast=', num2str(wn_contrast), ' filtsize=', num2str(filtSize),' sigma=', num2str(sigma), ' sigma1=', num2str(sigma1)]})
-colormap gray; axis equal; box off; axis off
-
-subplot(7,1,3)
-tex=textures(4).matrix;    
-imagesc(tex, [0 1]);
-title({['background 3 ', num2str(size(tex,1)),'x', num2str(size(tex,2))],...
-    ['contrast=', num2str(wn_contrast), ' filtsize=', num2str(filtSize),' sigma=', num2str(sigma), ' sigma1=', num2str(sigma1)]})
-colormap gray; axis equal; box off; axis off
-
-subplot(7,1,4)
-tex=textures(5).matrix;    
-imagesc(tex, [0 1]);
-title({['background 4 ', num2str(size(tex,1)),'x', num2str(size(tex,2))],...
-    ['contrast=', num2str(wn_contrast), ' filtsize=', num2str(filtSize),' sigma=', num2str(sigma), ' sigma1=', num2str(sigma1)]})
-colormap gray; axis equal; box off; axis off
-
-subplot(7,1,5); 
+subplot(4,1,2); 
 tex=textures(6).matrix;    
 imagesc(tex, [0 1]);
-title({['Horizontal grating', num2str(size(tex,1)),'x', num2str(size(tex,2))], ['sf=', num2str(sf_H)]})
+title({['grating1 ', num2str(size(tex,1)),'x', num2str(size(tex,2))], ['sf=', num2str(sf_V)]})
 colormap gray; axis equal; box off; axis off
 
-subplot(7,1,6); 
+subplot(4,1,3); 
 tex=textures(7).matrix;    
 imagesc(tex, [0 1]);
-title({['Vertical grating', num2str(size(tex,1)),'x', num2str(size(tex,2))], ['sf=', num2str(sf_V)]})
+title({['grating2 ', num2str(size(tex,1)),'x', num2str(size(tex,2))], ['sf=', num2str(sf_H)]})
 colormap gray; axis equal; box off; axis off
 
-subplot(7,1,7); 
+subplot(4,1,4); 
 tex=textures(8).matrix;    
 imagesc(tex, [0 1]);
 title({['plaid ', num2str(size(tex,1)),'x', num2str(size(tex,2))], ['sf V=', num2str(sf_V),' sf H=', num2str(sf_H)]})
@@ -134,8 +113,7 @@ colormap gray; axis equal; box off; axis off
 
 %% save
 
-%savefolder='C:\Users\m.morimoto\Documents\GitHub\SaleemLab-VR\VRCentral\data';
-savefolder='C:\Users\Saleem Lab\Documents\GitHub\SaleemLab-VR\VRCentral\data';
+savefolder='C:\Users\m.morimoto\Documents\GitHub\SaleemLab-VR\VRCentral\data';
 savefile='textures_MM5.mat';
 
 save([savefolder,filesep,savefile], 'textures')
