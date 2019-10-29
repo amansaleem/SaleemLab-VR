@@ -1,4 +1,4 @@
-function [VRdata, VRdata_o, es] = VRWheelLoad_SL(animal, iseries, iexp, diffThres)
+ function [VRdata, VRdata_o, es] = VRWheelLoad_SL(animal, iseries, iexp, diffThres)
 
 % [VRdata, VRdata_o] = VRBallLoad_v2(animal, iseries, iexp)
 % To load the ball data for the specified session (VRdata) and

@@ -67,8 +67,12 @@ es.roomLength = [es1.roomLength' es2.roomLength']';
 es.iexp = [es1.iexp' es2.iexp']';
 if isfield(es, 'spikeTrain')
     es.spikeTrain = [es1.spikeTrain' es2.spikeTrain']';
+end
+
+if isfield(es, 'mua')
     es.mua = [es1.mua' es2.mua']';
 end
+
 if isfield(es1, 'spikeTimes')
     for icell = 1:length(es1.spikeTimes)
         es2.spikeTimes{icell} = es2.spikeTimes{icell} + es1.sampleTimes(end);

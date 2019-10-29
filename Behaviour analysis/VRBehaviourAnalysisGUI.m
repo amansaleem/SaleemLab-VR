@@ -41,6 +41,8 @@ try
             DIRS.ball = 'X:\Archive - saleemlab\Data\Behav';%'S:\Data\Behav';
         case 'saleem04'
             DIRS.ball = 'X:\Archive - saleemlab\Data\Behav';
+        case 'saleem11'
+            DIRS.ball = 'X:\Archive - saleemlab\Data\Behav';
     end
 catch
     DIRS.ball = 'S:\Data\Behav';

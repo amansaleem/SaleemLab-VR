@@ -61,9 +61,14 @@ for texID = 2:5
     % Create random matrix matching corridor length height ratio. length
     % needs to be multiples of 2
     X=texsize/8+filtSize*2;
+%     Y=2^round(log2(texsize/8*length/height))+filtSize*0.5;
     Y=2^round(log2(texsize/8*length/height))+filtSize*0.5;
-    Im_half = rand(X,Y);    %Im = rand(texsize/8+filtSize*2,texsize*2+filtSize*2);
-    Im = [Im_half, Im_half, Im_half, Im_half]; % first and second half repeating, then another whole corridor that is hidden, so repeat 4 times
+
+%     Im_half = rand(X,Y);    %Im = rand(texsize/8+filtSize*2,texsize*2+filtSize*2);
+%     Im = [Im_half, Im_half, Im_half, Im_half]; % first and second half repeating, then another whole corridor that is hidden, so repeat 4 times
+
+    Im_half = rand(X,Y/2);    %Im = rand(texsize/8+filtSize*2,texsize*2+filtSize*2);
+    Im = [Im_half, Im_half, Im_half, Im_half, Im_half, Im_half, Im_half, Im_half]; % repeating 4 times per corridor, then another whole corridor that is hidden, so repeat 8 times. 2019-10 MM
     
     % Convolving and normalizing the image to 100% contrast
     Imf = conv2(filt2,Im);
@@ -78,6 +83,7 @@ end
 % close;
 
 % clear Im ImF filt2 texID x y
+
 
 %% plot textures
 
@@ -134,9 +140,9 @@ colormap gray; axis equal; box off; axis off
 
 %% save
 
-%savefolder='C:\Users\m.morimoto\Documents\GitHub\SaleemLab-VR\VRCentral\data';
-savefolder='C:\Users\Saleem Lab\Documents\GitHub\SaleemLab-VR\VRCentral\data';
-savefile='textures_MM5.mat';
+savefolder='C:\Users\m.morimoto\Documents\GitHub\SaleemLab-VR\VRCentral\data';
+% savefolder='C:\Users\Saleem Lab\Documents\GitHub\SaleemLab-VR\VRCentral\data';
+savefile='textures_MM6.mat';
 
 save([savefolder,filesep,savefile], 'textures')
 
