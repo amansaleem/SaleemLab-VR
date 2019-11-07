@@ -144,10 +144,10 @@ runInfo.t1= tic;
 % start acquiring data
 if ~expInfo.OFFLINE
     VRmessage = ['BlockStart ' expInfo.animalName ' ' expInfo.dateStr ' ' expInfo.sessionName];
-    rigInfo.sendUDPmessage(VRmessage);
+    rigInfo.sendUDPmessage('START');
     VRLogMessage(expInfo, VRmessage);
     VRmessage = ['StimStart ' expInfo.animalName ' ' expInfo.dateStr ' ' expInfo.sessionName ' 1 1 ' num2str(round(expInfo.EXP.maxTrialDuration*10))];
-    rigInfo.sendUDPmessage(VRmessage); %%% Check this
+%     rigInfo.sendUDPmessage(VRmessage); %%% Check this
     VRLogMessage(expInfo, VRmessage);
     if rigInfo.sendTTL
         hwInfo.session.outputSingleScan(true);
@@ -185,12 +185,13 @@ try
                     case 'DOME'
                         FoV = 240;
                         [ww,hh]=Screen('WindowSize',rigInfo.screenNumber);
+                        hh=hh*0.8;
                         if icam==rigInfo.numCameras
                             glViewport(round(ww/rigInfo.numCameras)*(icam-1)+1,0,(ww-1)-(round(ww/rigInfo.numCameras)*(icam-1)),hh);
                         else
                             glViewport(round(ww/rigInfo.numCameras)*(icam-1)+1,0,round(ww/rigInfo.numCameras),hh);
                         end
-                        %glViewport(round(ww/rigInfo.numCameras)*(icam-1)+1,0,round(ww/rigInfo.numCameras),hh);
+                        % glViewport(round(ww/rigInfo.numCameras)*(icam-1)+1,0,round(ww/rigInfo.numCameras),hh);
                         glMatrixMode(GL.PROJECTION);
                         glLoadIdentity;
                         glFrustum( -sind((FoV/rigInfo.numCameras/2))*0.01, ...
@@ -261,7 +262,7 @@ try
                     VRmessage = ['StimStart ' expInfo.animalName ' ' expInfo.dateStr ...
                         ' ' expInfo.sessionName ' ' num2str(TRIAL.nCompTraj) ' 1 ' ...
                         num2str(round(expInfo.EXP.maxTrialDuration*10))];
-                    rigInfo.sendUDPmessage(VRmessage); %%%
+%                     rigInfo.sendUDPmessage(VRmessage); %%%
                     VRLogMessage(expInfo, VRmessage);
                     if rigInfo.sendTTL
                         session.outputSingleScan(true);
@@ -295,7 +296,7 @@ try
                 if ~expInfo.OFFLINE
                     VRmessage = ['StimStart ' expInfo.animalName ' ' expInfo.dateStr ' ' ...
                         expInfo.sessionName ' ' num2str(TRIAL.nCompTraj) ' 1 ' num2str(round(expInfo.EXP.maxTrialDuration*10))];
-                    rigInfo.sendUDPmessage(VRmessage); %%%
+%                     rigInfo.sendUDPmessage(VRmessage); %%%
                     VRLogMessage(expInfo, VRmessage);
                     if rigInfo.sendTTL
                         hwInfo.session.outputSingleScan(true);
@@ -369,7 +370,7 @@ try
             if ~expInfo.OFFLINE
                 VRmessage = ['StimStart ' expInfo.animalName ' ' expInfo.dateStr ' ' ...
                     expInfo.sessionName ' ' num2str(TRIAL.nCompTraj) ' 1 ' num2str(round(expInfo.EXP.maxTrialDuration*10))];
-                rigInfo.sendUDPmessage(VRmessage); %%%
+%                 rigInfo.sendUDPmessage(VRmessage); %%%
                 VRLogMessage(expInfo, VRmessage);
                 if rigInfo.sendTTL
                     hwInfo.session.outputSingleScan(true);
@@ -396,7 +397,7 @@ try
             if ~expInfo.OFFLINE
                 VRmessage = ['StimEnd ' expInfo.animalName ' ' expInfo.dateStr ' ' ...
                     expInfo.sessionName ' ' num2str(TRIAL.nCompTraj) ' 1 ' num2str(round(expInfo.EXP.maxTrialDuration*10))];
-                rigInfo.sendUDPmessage(VRmessage); %%%Check this
+%                 rigInfo.sendUDPmessage(VRmessage); %%%Check this
                 VRLogMessage(expInfo, VRmessage);
                 if rigInfo.sendTTL
                     hwInfo.session.outputSingleScan(false);
@@ -646,6 +647,8 @@ end
             length(expInfo.EXP.waveLength)* length(expInfo.EXP.tex1pos)* length(expInfo.EXP.tex2pos)* ...
             length(expInfo.EXP.tex3pos)* length(expInfo.EXP.tex4pos)];
         temp = [1:runInfo.glLists.numLists];
+        runInfo.glLists.numLists
+        runInfo.glLists.varLengths
         runInfo.glLists.lookUp = reshape(temp, runInfo.glLists.varLengths);
         for iCon = 1:length(expInfo.EXP.contrLevels)
             for iLength = 1:length(expInfo.EXP.lengthSet)

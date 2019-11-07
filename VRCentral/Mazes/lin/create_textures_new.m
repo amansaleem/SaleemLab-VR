@@ -4,7 +4,7 @@
 texsize = 512;
 wn_contrast = 1;
 % Making horizontal and vertical axes asymmetric because the texture aspect raio is 1:1.5 (W=8cm, H=12cm)
-sf_H = 6; % no.of horizonal bars visible ()
+sf_H = 6; % no.of horizonal bars visible
 sf_V = 4; % no.of vertical bars visible
 
 % Gray
@@ -12,15 +12,12 @@ textures(1).matrix = 0.5*ones(64,64);
 
 % Unfiltered Whitenoise
 textures(2).matrix = rand(16, 512);
-textures(3).matrix = rand(16, 512);
-textures(4).matrix = rand(16, 512);
-textures(5).matrix = rand(16, 512);
-
-% Vertical grating
-textures(6).matrix = 0.5+0.5*repmat(sin(0:((2*sf_V*pi)/texsize):(2*sf_V)*pi-(((2*sf_V)*pi)/texsize)),texsize,1);
 
 % Horizontal grating
-textures(7).matrix = 0.5+0.5*repmat(sin(0:(((2*sf_H)*pi)/texsize):(2*sf_H)*pi-(((2*sf_H)*pi)/texsize))',1,texsize);
+textures(6).matrix = 0.5+0.5*repmat(sin(0:((2*sf_H*pi)/texsize):(2*sf_H)*pi-(((2*sf_H)*pi)/texsize)),texsize,1);
+
+% Vertical grating
+textures(7).matrix = 0.5+0.5*repmat(sin(0:(((2*sf_V)*pi)/texsize):(2*sf_V)*pi-(((2*sf_V)*pi)/texsize))',1,texsize);
 
 % Plaid
 textures(8).matrix = (textures(6).matrix+textures(7).matrix)/2;
@@ -41,7 +38,7 @@ textures(8).matrix = (textures(6).matrix+textures(7).matrix)/2;
 %% Filtered White noise
 % Making a 2D Gaussian filter to convolve
 filtSize = 40;
-sigma = 10; %15
+sigma = 10; %15 
 sigma1 = 10; %3
 length = 100; % HALF actual VR corridor length in cm
 height = 12; % VR corridor height in cm
@@ -49,7 +46,7 @@ height = 12; % VR corridor height in cm
 x = 1:filtSize;
 
 for texID = 2:5
-
+    
     %     if texID==4; sigma = 30; end;
 %     if texID==3; sigma = 5; end;
 
@@ -57,10 +54,10 @@ for texID = 2:5
     y1 = exp(-((x-round(filtSize/2)).^2)/(2*sigma1^2));
     y = y./sum(y);
     y1 = y1./sum(y1);
-
+    
     filt2 = y'*y1;
     % imagesc(filt2); colormap(gray)
-
+    
     % Create random matrix matching corridor length height ratio. length
     % needs to be multiples of 2
     X=texsize/8+filtSize*2;
@@ -72,7 +69,7 @@ for texID = 2:5
 
     Im_half = rand(X,Y/2);    %Im = rand(texsize/8+filtSize*2,texsize*2+filtSize*2);
     Im = [Im_half, Im_half, Im_half, Im_half, Im_half, Im_half, Im_half, Im_half]; % repeating 4 times per corridor, then another whole corridor that is hidden, so repeat 8 times. 2019-10 MM
-
+    
     % Convolving and normalizing the image to 100% contrast
     Imf = conv2(filt2,Im);
     Imf = Imf(filtSize+floor(filtSize/2):end-ceil(filtSize/2)-filtSize,filtSize+floor(filtSize/2):end-ceil(filtSize/2)-filtSize);
@@ -93,29 +90,50 @@ end
 % cd C:\Users\m.morimoto\Documents\GitHub\SaleemLab-VR\VRCentral\data
 % load('textures_hf_Mik4.mat')
 
-figure;
+figure; 
 
-subplot(4,1,1)
-tex=textures(2).matrix;
+subplot(7,1,1)
+tex=textures(2).matrix;    
 imagesc(tex, [0 1]);
-title({['background ', num2str(size(tex,1)),'x', num2str(size(tex,2))],...
+title({['background 1 ', num2str(size(tex,1)),'x', num2str(size(tex,2))],...
     ['contrast=', num2str(wn_contrast), ' filtsize=', num2str(filtSize),' sigma=', num2str(sigma), ' sigma1=', num2str(sigma1)]})
 colormap gray; axis equal; box off; axis off
 
-subplot(4,1,2);
-tex=textures(6).matrix;
+subplot(7,1,2)
+tex=textures(3).matrix;    
 imagesc(tex, [0 1]);
-title({['grating1 ', num2str(size(tex,1)),'x', num2str(size(tex,2))], ['sf=', num2str(sf_V)]})
+title({['background 2 ', num2str(size(tex,1)),'x', num2str(size(tex,2))],...
+    ['contrast=', num2str(wn_contrast), ' filtsize=', num2str(filtSize),' sigma=', num2str(sigma), ' sigma1=', num2str(sigma1)]})
 colormap gray; axis equal; box off; axis off
 
-subplot(4,1,3);
-tex=textures(7).matrix;
+subplot(7,1,3)
+tex=textures(4).matrix;    
 imagesc(tex, [0 1]);
-title({['grating2 ', num2str(size(tex,1)),'x', num2str(size(tex,2))], ['sf=', num2str(sf_H)]})
+title({['background 3 ', num2str(size(tex,1)),'x', num2str(size(tex,2))],...
+    ['contrast=', num2str(wn_contrast), ' filtsize=', num2str(filtSize),' sigma=', num2str(sigma), ' sigma1=', num2str(sigma1)]})
 colormap gray; axis equal; box off; axis off
 
-subplot(4,1,4);
-tex=textures(8).matrix;
+subplot(7,1,4)
+tex=textures(5).matrix;    
+imagesc(tex, [0 1]);
+title({['background 4 ', num2str(size(tex,1)),'x', num2str(size(tex,2))],...
+    ['contrast=', num2str(wn_contrast), ' filtsize=', num2str(filtSize),' sigma=', num2str(sigma), ' sigma1=', num2str(sigma1)]})
+colormap gray; axis equal; box off; axis off
+
+subplot(7,1,5); 
+tex=textures(6).matrix;    
+imagesc(tex, [0 1]);
+title({['Horizontal grating', num2str(size(tex,1)),'x', num2str(size(tex,2))], ['sf=', num2str(sf_H)]})
+colormap gray; axis equal; box off; axis off
+
+subplot(7,1,6); 
+tex=textures(7).matrix;    
+imagesc(tex, [0 1]);
+title({['Vertical grating', num2str(size(tex,1)),'x', num2str(size(tex,2))], ['sf=', num2str(sf_V)]})
+colormap gray; axis equal; box off; axis off
+
+subplot(7,1,7); 
+tex=textures(8).matrix;    
 imagesc(tex, [0 1]);
 title({['plaid ', num2str(size(tex,1)),'x', num2str(size(tex,2))], ['sf V=', num2str(sf_V),' sf H=', num2str(sf_H)]})
 colormap gray; axis equal; box off; axis off
@@ -127,3 +145,23 @@ savefolder='C:\Users\m.morimoto\Documents\GitHub\SaleemLab-VR\VRCentral\data';
 savefile='textures_MM6.mat';
 
 save([savefolder,filesep,savefile], 'textures')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

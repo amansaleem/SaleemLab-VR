@@ -150,7 +150,7 @@ classdef VRRigInfo < handle
                     RigInfo.ARDHistory = [0 0];
                     
                     RigInfo.screenType = 'DOME';
-                    RigInfo.numCameras = 7;
+                    RigInfo.numCameras = 15;
                     
                     RigInfo.NIdevID = 'Dev1';
                     RigInfo.NIsessRate = 10000;
@@ -170,6 +170,9 @@ classdef VRRigInfo < handle
                     %RigInfo.screenCalibration = false;
                     RigInfo.dirScreenCalib = 'X:\Archive - saleemlab\Code\MeshMapping\';%'C:\Home\Code\VR-Stimulus-master\Linear Track Behav - 2pNew - Dev Version - Copy\'%'C:\Users\Aman\AppData\Roaming\Psychtoolbox\GeometryCalibration\';%'C:\Users\experimenter\AppData\Roaming\Psychtoolbox\GeometryCalibration\';
                     RigInfo.filenameScreenCalib =  'MeshMapping_Tron2.mat';%'geometricCorr_2.mat';%'test.mat';%'HalfCylinderCalibdata_2_2695_1024.mat';%'HalfCylinderCalibdata_1_2400_600.mat';
+                    RigInfo.GammaCalibration = true;
+                    RigInfo.dirGammaCalib = 'C:\Users\Saleem Lab\Documents\GitHub\SaleemLab-VR\VRCentral\data';
+                    RigInfo.filenameGammaCalib = 'Gamma_NEO.mat'; % temp fix, needs a TRON version
                     % External computer connection info
                     % (These are optinal)
                     RigInfo.connectIPs{1} = []; % 'Zirkus'
